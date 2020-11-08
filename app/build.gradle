@@ -1,0 +1,103 @@
+import dependencies.Deps
+import dependencies.Versions
+
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    compileSdkVersion Versions.androidCompileSdkVersion
+    buildToolsVersion Versions.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.github.watabee.composetemplate"
+        minSdkVersion Versions.androidMinSdkVersion
+        targetSdkVersion Versions.androidTargetSdkVersion
+        versionCode Versions.androidVersionCode
+        versionName Versions.androidVersionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        debug {
+            storeFile rootProject.file("config/debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            signingConfig signingConfigs.debug // TODO
+
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        buildConfig true
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerVersion Deps.Kotlin.version
+        kotlinCompilerExtensionVersion Deps.AndroidX.Compose.version
+    }
+
+    packagingOptions {
+        exclude("META-INF/*.kotlin_module")
+    }
+}
+
+dependencies {
+    implementation project(':data')
+
+    implementation Deps.Kotlin.stdlib
+    implementation Deps.Kotlin.Coroutines.core
+    implementation Deps.Kotlin.Coroutines.android
+
+    implementation Deps.AndroidX.appcompat
+    implementation Deps.AndroidX.activity
+    implementation Deps.AndroidX.fragment
+    implementation Deps.AndroidX.core
+
+    implementation Deps.AndroidX.Lifecycle.livedata
+    implementation Deps.AndroidX.Lifecycle.viewmodel
+    implementation Deps.AndroidX.Hilt.viewmodel
+    kapt Deps.AndroidX.Hilt.compiler
+
+    implementation Deps.Google.material
+
+    // Compose
+    implementation Deps.AndroidX.Compose.runtime
+    implementation Deps.AndroidX.Compose.ui
+    implementation Deps.AndroidX.Compose.foundation
+    implementation Deps.AndroidX.Compose.foundationLayout
+    implementation Deps.AndroidX.Compose.material
+    implementation Deps.AndroidX.Compose.runtimeLiveData
+    implementation Deps.AndroidX.Compose.uiTooling
+    implementation Deps.Google.composeThemeAdapter
+
+    implementation Deps.Coil.coil
+    implementation Deps.Accompanist.coil
+
+    implementation Deps.Dagger.Hilt.android
+    kapt Deps.Dagger.Hilt.androidCompiler
+
+    implementation Deps.timber
+}
