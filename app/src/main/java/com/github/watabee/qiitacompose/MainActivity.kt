@@ -27,7 +27,8 @@ class MainActivity : AppCompatActivity() {
                     Column(Modifier.fillMaxWidth()) {
                         Greeting("Android")
                         Spacer(modifier = Modifier.preferredHeight(8.dp))
-                        CoilImage(data = "https://www.pakutaso.com/shared/img/thumb/tomcat1567_TP_V.jpg")
+                        CoilImage(
+                            data = "https://www.pakutaso.com/shared/img/thumb/tomcat1567_TP_V.jpg")
                     }
                 }
             }
@@ -43,7 +44,5 @@ fun Greeting(name: String) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    QiitaTheme {
-        Greeting("Android")
-    }
+    QiitaTheme { Greeting("Android") }
 }

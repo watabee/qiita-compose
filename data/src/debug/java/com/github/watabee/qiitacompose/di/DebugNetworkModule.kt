@@ -12,6 +12,5 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 internal object DebugNetworkModule {
 
-    @Provides
-    fun provideLogger(): Logger = DebugLogger(Log.VERBOSE)
+    @Provides fun provideLogger(): Logger = DebugLogger(Log.VERBOSE)
 }

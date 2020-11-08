@@ -10,17 +10,16 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Dispatcher
-import okhttp3.OkHttpClient
 import java.util.Optional
 import javax.inject.Singleton
+import okhttp3.Dispatcher
+import okhttp3.OkHttpClient
 
 @Module
 @InstallIn(SingletonComponent::class)
 internal abstract class ImageModule {
 
-    @BindsOptionalOf
-    abstract fun bindOptionalLogger(): Logger
+    @BindsOptionalOf abstract fun bindOptionalLogger(): Logger
 
     companion object {
 
@@ -38,14 +37,13 @@ internal abstract class ImageModule {
                     // Don't limit concurrent network requests by host.
                     val dispatcher = Dispatcher().apply { maxRequestsPerHost = maxRequests }
 
-                    okHttpClient.newBuilder()
+                    okHttpClient
+                        .newBuilder()
                         .cache(CoilUtils.createDefaultCache(appContext))
                         .dispatcher(dispatcher)
                         .build()
                 }
-                .apply {
-                    logger.ifPresent(this::logger)
-                }
+                .apply { logger.ifPresent(this::logger) }
                 .build()
         }
     }

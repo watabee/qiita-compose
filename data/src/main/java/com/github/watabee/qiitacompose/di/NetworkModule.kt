@@ -4,11 +4,12 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import okhttp3.OkHttpClient
 
 private const val CONNECT_TIMEOUT_SECONDS = 10L
+
 private const val READ_TIMEOUT_SECONDS = 10L
 
 @Module
