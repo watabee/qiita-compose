@@ -1,4 +1,4 @@
-package com.github.watabee.composetemplate
+package com.github.watabee.qiitacompose
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -14,14 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
-import com.github.watabee.composetemplate.ui.ComposeTemplateTheme
+import com.github.watabee.qiitacompose.ui.QiitaTheme
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ComposeTemplateTheme {
+            QiitaTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     Column(Modifier.fillMaxWidth()) {
@@ -43,7 +43,7 @@ fun Greeting(name: String) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    ComposeTemplateTheme {
+    QiitaTheme {
         Greeting("Android")
     }
 }

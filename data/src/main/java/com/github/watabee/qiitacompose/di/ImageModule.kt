@@ -1,4 +1,4 @@
-package com.github.watabee.composetemplate.di
+package com.github.watabee.qiitacompose.di
 
 import android.content.Context
 import coil.ImageLoader

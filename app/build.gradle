@@ -13,7 +13,7 @@ android {
     buildToolsVersion Versions.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.github.watabee.composetemplate"
+        applicationId "com.github.watabee.qiitacompose"
         minSdkVersion Versions.androidMinSdkVersion
         targetSdkVersion Versions.androidTargetSdkVersion
         versionCode Versions.androidVersionCode

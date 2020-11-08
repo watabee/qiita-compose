@@ -1,4 +1,4 @@
-package com.github.watabee.composetemplate
+package com.github.watabee.qiitacompose
 
 import android.app.Application
 import coil.ImageLoader
@@ -8,7 +8,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltAndroidApp
-class ComposeTemplateApp : Application(), ImageLoaderFactory {
+class QiitaComposeApp : Application(), ImageLoaderFactory {
 
     @Inject lateinit var imageLoader: ImageLoader
 

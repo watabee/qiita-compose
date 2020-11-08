@@ -1,4 +1,4 @@
-package com.github.watabee.composetemplate.ui
+package com.github.watabee.qiitacompose.ui
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

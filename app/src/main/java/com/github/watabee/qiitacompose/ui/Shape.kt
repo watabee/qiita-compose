@@ -1,4 +1,4 @@
-package com.github.watabee.composetemplate.ui
+package com.github.watabee.qiitacompose.ui
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
