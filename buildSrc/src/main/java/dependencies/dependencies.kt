@@ -13,10 +13,14 @@ object Versions {
     private const val versionOffset = 0
     const val androidVersionCode = (versionMajor * 10000 + versionMinor * 100 + versionPatch) * 100 + versionOffset
     const val androidVersionName = "$versionMajor.$versionMinor.$versionPatch"
+
+    const val ktlint = "0.39.0"
+    const val ktfmt = "0.18"
 }
 
 object Deps {
     const val androidGradlePlugin = "com.android.tools.build:gradle:4.2.0-alpha15"
+    const val spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:5.7.0"
 
     object Kotlin {
         const val version = "1.4.10"
