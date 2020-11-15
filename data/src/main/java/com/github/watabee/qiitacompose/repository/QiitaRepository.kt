@@ -3,12 +3,18 @@ package com.github.watabee.qiitacompose.repository
 import androidx.annotation.IntRange
 import com.github.watabee.qiitacompose.api.QiitaApiResult
 import com.github.watabee.qiitacompose.api.await
+import com.github.watabee.qiitacompose.api.response.Error
 import com.github.watabee.qiitacompose.api.response.ErrorResponse
 import com.github.watabee.qiitacompose.api.response.Item
+import com.github.watabee.qiitacompose.api.response.Rate
+import com.github.watabee.qiitacompose.api.response.SuccessResponse
 import com.github.watabee.qiitacompose.di.Api
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.rawType
 import java.io.IOException
 import javax.inject.Inject
+import kotlin.reflect.javaType
+import kotlin.reflect.typeOf
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -22,7 +28,7 @@ interface QiitaRepository {
         @IntRange(from = 1, to = 100)
         perPage: Int,
         query: String?
-    ): QiitaApiResult<List<Item>, ErrorResponse>
+    ): QiitaApiResult<SuccessResponse<List<Item>>, ErrorResponse>
 }
 
 internal class QiitaRepositoryImpl
@@ -36,7 +42,7 @@ internal class QiitaRepositoryImpl
         @IntRange(from = 1, to = 100)
         perPage: Int,
         query: String?
-    ): QiitaApiResult<List<Item>, ErrorResponse> {
+    ): QiitaApiResult<SuccessResponse<List<Item>>, ErrorResponse> {
         val httpUrl =
             HttpUrl.Builder()
                 .scheme("https")
@@ -54,9 +60,9 @@ internal class QiitaRepositoryImpl
         return httpGet(httpUrl)
     }
 
-    private suspend inline fun <reified T : Any, reified E> httpGet(
+    private suspend inline fun <reified T : Any> httpGet(
         httpUrl: HttpUrl
-    ): QiitaApiResult<T, E> {
+    ): QiitaApiResult<T, ErrorResponse> {
         val request = Request.Builder().url(httpUrl).get().build()
 
         return try {
@@ -68,16 +74,25 @@ internal class QiitaRepositoryImpl
         }
     }
 
-    private inline fun <reified T : Any, reified E> parseResponse(
+    @OptIn(ExperimentalStdlibApi::class)
+    private inline fun <reified T : Any> parseResponse(
         response: Response
-    ): QiitaApiResult<T, E> {
+    ): QiitaApiResult<T, ErrorResponse> {
         val source = response.body?.source()
         try {
             return if (response.isSuccessful) {
-                QiitaApiResult.Success(moshi.adapter(T::class.java).fromJson(source)!!)
+                if (T::class == SuccessResponse::class) {
+                    val type = typeOf<T>().arguments[0].type?.javaType?.rawType
+                    val rawResponse = moshi.adapter(type).fromJson(source)!!
+                    val rate = Rate.parseHeaders(response.headers)
+                    QiitaApiResult.Success(SuccessResponse(rate, rawResponse) as T)
+                } else {
+                    QiitaApiResult.Success(moshi.adapter(T::class.java).fromJson(source)!!)
+                }
             } else {
-                QiitaApiResult.Failure.HttpFailure(
-                    response.code, moshi.adapter(E::class.java).fromJson(source)!!)
+                val error = moshi.adapter(Error::class.java).fromJson(source)!!
+                val rate = Rate.parseHeaders(response.headers)
+                QiitaApiResult.Failure.HttpFailure(response.code, ErrorResponse(rate, error))
             }
         } finally {
             source?.closeQuietly()
