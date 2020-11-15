@@ -1,12 +1,8 @@
 package com.github.watabee.qiitacompose.di
 
 import android.content.Context
-import com.github.watabee.qiitacompose.api.QiitaErrorResponseConverterFactory
-import com.slack.eithernet.ApiResultCallAdapterFactory
-import com.slack.eithernet.ApiResultConverterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
-import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,8 +15,6 @@ import javax.inject.Singleton
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 
 private const val CONNECT_TIMEOUT_SECONDS = 10L
 
@@ -60,17 +54,5 @@ internal abstract class NetworkModule {
         @Singleton
         fun provideMoshi(): Moshi =
             Moshi.Builder().add(Date::class.java, Rfc3339DateJsonAdapter()).build()
-
-        @Provides
-        @Singleton
-        fun provideRetrofit(@Api okHttpClient: Lazy<OkHttpClient>, moshi: Moshi): Retrofit =
-            Retrofit.Builder()
-                .callFactory { request -> okHttpClient.get().newCall(request) }
-                .baseUrl("https://qiita.com")
-                .addConverterFactory(ApiResultConverterFactory)
-                .addCallAdapterFactory(ApiResultCallAdapterFactory)
-                .addConverterFactory(QiitaErrorResponseConverterFactory)
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
-                .build()
     }
 }

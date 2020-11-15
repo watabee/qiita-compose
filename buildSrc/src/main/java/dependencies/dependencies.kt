@@ -81,11 +81,6 @@ object Deps {
         const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:4.9.0"
     }
 
-    object Retrofit {
-        const val retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
-        const val converterMoshi = "com.squareup.retrofit2:converter-moshi:2.9.0"
-    }
-
     object Moshi {
         const val moshi = "com.squareup.moshi:moshi:1.11.0"
         const val codegen = "com.squareup.moshi:moshi-kotlin-codegen:1.11.0"
@@ -107,9 +102,6 @@ object Deps {
     object Accompanist {
         const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.3.2"
     }
-
-    // https://github.com/slackhq/EitherNet
-    const val eitherNet = "com.slack.eithernet:eithernet:0.2.0"
 
     const val timber = "com.jakewharton.timber:timber:4.7.1"
 
