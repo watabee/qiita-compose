@@ -39,4 +39,8 @@ dependencies {
     implementation Deps.timber
 
     coreLibraryDesugaring Deps.desugarJdkLibs
+
+    testImplementation Deps.junit
+    testImplementation Deps.truth
+    testImplementation Deps.AndroidX.Test.junit
 }

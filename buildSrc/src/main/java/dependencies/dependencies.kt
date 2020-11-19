@@ -50,6 +50,7 @@ object Deps {
             const val runner = "androidx.test:runner:1.3.0"
             const val rules = "androidx.test:rules:1.3.0"
             const val espressoCore = "androidx.test.espresso:espresso-core:3.3.0"
+            const val junit = "androidx.test.ext:junit-ktx:1.1.2"
         }
 
         object Lifecycle {

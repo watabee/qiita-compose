@@ -8,6 +8,7 @@ import com.github.watabee.qiitacompose.api.response.ErrorResponse
 import com.github.watabee.qiitacompose.api.response.Item
 import com.github.watabee.qiitacompose.api.response.Rate
 import com.github.watabee.qiitacompose.api.response.SuccessResponse
+import com.github.watabee.qiitacompose.api.response.SuccessResponseWithPagination
 import com.github.watabee.qiitacompose.di.Api
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.rawType
@@ -28,7 +29,7 @@ interface QiitaRepository {
         @IntRange(from = 1, to = 100)
         perPage: Int,
         query: String?
-    ): QiitaApiResult<SuccessResponse<List<Item>>, ErrorResponse>
+    ): QiitaApiResult<SuccessResponseWithPagination<List<Item>>, ErrorResponse>
 }
 
 internal class QiitaRepositoryImpl
@@ -42,7 +43,7 @@ internal class QiitaRepositoryImpl
         @IntRange(from = 1, to = 100)
         perPage: Int,
         query: String?
-    ): QiitaApiResult<SuccessResponse<List<Item>>, ErrorResponse> {
+    ): QiitaApiResult<SuccessResponseWithPagination<List<Item>>, ErrorResponse> {
         val httpUrl =
             HttpUrl.Builder()
                 .scheme("https")
@@ -81,13 +82,23 @@ internal class QiitaRepositoryImpl
         val source = response.body?.source()
         try {
             return if (response.isSuccessful) {
-                if (T::class == SuccessResponse::class) {
-                    val type = typeOf<T>().arguments[0].type?.javaType?.rawType
-                    val rawResponse = moshi.adapter(type).fromJson(source)!!
-                    val rate = Rate.parseHeaders(response.headers)
-                    QiitaApiResult.Success(SuccessResponse(rate, rawResponse) as T)
-                } else {
-                    QiitaApiResult.Success(moshi.adapter(T::class.java).fromJson(source)!!)
+                when {
+                    T::class == SuccessResponseWithPagination::class -> {
+                        val type = typeOf<T>().arguments[0].type?.javaType?.rawType
+                        val rawResponse = moshi.adapter(type).fromJson(source)!!
+                        val responseWithPagination =
+                            SuccessResponseWithPagination.create(response.headers, rawResponse)
+                        QiitaApiResult.Success(responseWithPagination as T)
+                    }
+                    T::class == SuccessResponse::class -> {
+                        val type = typeOf<T>().arguments[0].type?.javaType?.rawType
+                        val rawResponse = moshi.adapter(type).fromJson(source)!!
+                        val rate = Rate.parseHeaders(response.headers)
+                        QiitaApiResult.Success(SuccessResponse(rate, rawResponse) as T)
+                    }
+                    else -> {
+                        QiitaApiResult.Success(moshi.adapter(T::class.java).fromJson(source)!!)
+                    }
                 }
             } else {
                 val error = moshi.adapter(Error::class.java).fromJson(source)!!
