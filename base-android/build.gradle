@@ -1,0 +1,29 @@
+import dependencies.Deps
+import dependencies.Versions
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
+
+android {
+    compileSdkVersion Versions.androidCompileSdkVersion
+    defaultConfig {
+        minSdkVersion Versions.androidMinSdkVersion
+        targetSdkVersion Versions.androidTargetSdkVersion
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    api project(':base')
+
+    implementation Deps.Kotlin.Coroutines.android
+
+    implementation Deps.Dagger.Hilt.android
+    kapt Deps.Dagger.Hilt.androidCompiler
+}

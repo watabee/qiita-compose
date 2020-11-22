@@ -1,3 +1,5 @@
 rootProject.name = "qiita-compose"
 include ':app'
+include ':base'
+include ':base-android'
 include ':data'

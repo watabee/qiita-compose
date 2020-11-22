@@ -24,6 +24,8 @@ android {
 }
 
 dependencies {
+    api project(':base-android')
+
     implementation Deps.OkHttp.okhttp
     debugImplementation Deps.OkHttp.loggingInterceptor
 
