@@ -12,4 +12,5 @@ data class Item(
     val createdAt: Date,
     @Json(name = "updated_at")
     val updatedAt: Date,
-    val url: String)
+    val url: String
+)

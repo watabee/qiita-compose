@@ -40,8 +40,6 @@ subprojects { subproject ->
             targetExclude('bin/**/*.kt')
 
             ktlint(Versions.ktlint)
-
-            ktfmt(Versions.ktfmt).dropboxStyle()
         }
     }
 

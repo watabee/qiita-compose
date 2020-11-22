@@ -1,10 +1,9 @@
 package com.github.watabee.qiitacompose.api.response
 
-import java.util.Date
 import okhttp3.Headers
+import java.util.Date
 
-data class Rate
-    internal constructor(val rateLimit: Int, val rateRemaining: Int, val rateReset: Date) {
+data class Rate internal constructor(val rateLimit: Int, val rateRemaining: Int, val rateReset: Date) {
 
     companion object {
         fun parseHeaders(headers: Headers): Rate? {

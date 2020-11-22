@@ -10,12 +10,13 @@ class SuccessResponseWithPaginationTest {
     fun testWithNextPage() {
         val headers =
             mapOf(
-                    "rate-limit" to "60",
-                    "rate-remaining" to "54",
-                    "rate-reset" to "1605770634",
-                    "link" to
-                        "<https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"first\", <https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"prev\", <https://qiita.com/api/v2/items?page=3&per_page=10&query=Android>; rel=\"next\", <https://qiita.com/api/v2/items?page=2946&per_page=10&query=Android>; rel=\"last\"",
-                    "total-count" to "29455")
+                "rate-limit" to "60",
+                "rate-remaining" to "54",
+                "rate-reset" to "1605770634",
+                "link" to
+                    "<https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"first\", <https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"prev\", <https://qiita.com/api/v2/items?page=3&per_page=10&query=Android>; rel=\"next\", <https://qiita.com/api/v2/items?page=2946&per_page=10&query=Android>; rel=\"last\"",
+                "total-count" to "29455"
+            )
                 .toHeaders()
 
         val response = SuccessResponseWithPagination.create(headers, Unit)
@@ -32,12 +33,13 @@ class SuccessResponseWithPaginationTest {
     fun testWithoutNextPage() {
         val headers =
             mapOf(
-                    "rate-limit" to "60",
-                    "rate-remaining" to "54",
-                    "rate-reset" to "1605770634",
-                    "link" to
-                        "<https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"first\", <https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"prev\", <https://qiita.com/api/v2/items?page=2946&per_page=10&query=Android>; rel=\"last\"",
-                    "total-count" to "29455")
+                "rate-limit" to "60",
+                "rate-remaining" to "54",
+                "rate-reset" to "1605770634",
+                "link" to
+                    "<https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"first\", <https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"prev\", <https://qiita.com/api/v2/items?page=2946&per_page=10&query=Android>; rel=\"last\"",
+                "total-count" to "29455"
+            )
                 .toHeaders()
 
         val response = SuccessResponseWithPagination.create(headers, Unit)

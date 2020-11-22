@@ -10,7 +10,8 @@ private val DarkColorPalette =
     darkColors(primary = purple200, primaryVariant = purple700, secondary = teal200)
 
 private val LightColorPalette =
-    lightColors(primary = purple500, primaryVariant = purple700, secondary = teal200
+    lightColors(
+        primary = purple500, primaryVariant = purple700, secondary = teal200
 
         /* Other default colors to override
         background = Color.White,
@@ -20,7 +21,7 @@ private val LightColorPalette =
         onBackground = Color.Black,
         onSurface = Color.Black,
         */
-        )
+    )
 
 @Composable
 fun QiitaTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {

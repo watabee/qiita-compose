@@ -15,7 +15,6 @@ object Versions {
     const val androidVersionName = "$versionMajor.$versionMinor.$versionPatch"
 
     const val ktlint = "0.39.0"
-    const val ktfmt = "0.18"
 }
 
 object Deps {

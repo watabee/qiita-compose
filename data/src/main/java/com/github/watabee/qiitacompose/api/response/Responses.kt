@@ -5,7 +5,10 @@ import okhttp3.Headers
 class SuccessResponse<out T : Any>(val rate: Rate?, val response: T)
 
 class SuccessResponseWithPagination<out T : Any>(
-    val rate: Rate?, val totalCount: Int, val nextPage: Int?, val response: T
+    val rate: Rate?,
+    val totalCount: Int,
+    val nextPage: Int?,
+    val response: T
 ) {
     companion object {
         private val LINK_REGEX = """<.+[?&]page=(\d+).*>""".toRegex()

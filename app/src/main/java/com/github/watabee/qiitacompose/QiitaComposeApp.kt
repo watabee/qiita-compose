@@ -4,8 +4,8 @@ import android.app.Application
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import dagger.hilt.android.HiltAndroidApp
-import javax.inject.Inject
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltAndroidApp
 class QiitaComposeApp : Application(), ImageLoaderFactory {
