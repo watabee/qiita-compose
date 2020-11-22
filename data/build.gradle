@@ -35,6 +35,8 @@ dependencies {
 
     implementation Deps.Coil.coil
 
+    implementation Deps.AndroidX.dataStorePreferences
+
     implementation Deps.Dagger.Hilt.android
     kapt Deps.Dagger.Hilt.androidCompiler
 
