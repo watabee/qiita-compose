@@ -20,6 +20,9 @@ android {
         versionName Versions.androidVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "QIITA_CLIENT_ID", "\"${project.properties["QIITA_CLIENT_ID"]}\""
+        buildConfigField "String", "QIITA_CLIENT_SECRET", "\"${project.properties["QIITA_CLIENT_SECRET"]}\""
     }
 
     signingConfigs {
