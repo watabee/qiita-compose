@@ -5,3 +5,4 @@ include ':base-android'
 include ':data'
 
 include ':ui:common'
+include ':ui:login'

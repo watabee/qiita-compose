@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_toolbar_title">ログイン</string>
+
+    <string name="login_success_login">ログインに成功しました</string>
+    <string name="login_failure_login">ログインに失敗しました。リトライしますか？</string>
+    <string name="login_error_auth">認証時にエラーが発生しました</string>
+    <string name="login_error_loading_web">読み込みに失敗しました</string>
+    <string name="login_retry">リトライ</string>
+</resources>
