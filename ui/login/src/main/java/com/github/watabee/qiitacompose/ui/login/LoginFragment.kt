@@ -10,7 +10,6 @@ import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.ProgressBar
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
@@ -22,6 +21,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.github.watabee.qiitacompose.util.Env
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.progressindicator.ProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -47,12 +47,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         toolbar.setNavigationOnClickListener { parentFragmentManager.popBackStack() }
 
         val webView: WebView = view.findViewById(R.id.web_view)
-        val progressBar: ProgressBar = view.findViewById(R.id.web_progress_bar)
+        val progressIndicator: ProgressIndicator = view.findViewById(R.id.progress_indicator)
 
         @SuppressLint("SetJavaScriptEnabled")
         webView.settings.javaScriptEnabled = true
-        webView.webViewClient = createWebViewClient(state, progressBar, viewLifecycleOwner)
-        webView.webChromeClient = createWebChromeClient(progressBar)
+        webView.webViewClient = createWebViewClient(state, progressIndicator, viewLifecycleOwner)
+        webView.webChromeClient = createWebChromeClient(progressIndicator)
 
         requireActivity().onBackPressedDispatcher
             .addCallback(
@@ -115,14 +115,18 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         return "https://qiita.com/api/v2/oauth/authorize?client_id=${env.qiitaClientId}&scope=$scope&state=$state"
     }
 
-    private fun createWebChromeClient(progressBar: ProgressBar): WebChromeClient = object : WebChromeClient() {
+    private fun createWebChromeClient(progressIndicator: ProgressIndicator): WebChromeClient = object : WebChromeClient() {
         override fun onProgressChanged(view: WebView?, newProgress: Int) {
             super.onProgressChanged(view, newProgress)
-            progressBar.progress = newProgress
+            progressIndicator.progress = newProgress
         }
     }
 
-    private fun createWebViewClient(state: String, progressBar: ProgressBar, viewLifecycleOwner: LifecycleOwner): WebViewClient =
+    private fun createWebViewClient(
+        state: String,
+        progressIndicator: ProgressIndicator,
+        viewLifecycleOwner: LifecycleOwner
+    ): WebViewClient =
         object : WebViewClient() {
             private var snackbar: Snackbar? = null
 
@@ -138,13 +142,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
             override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
-                progressBar.isVisible = true
+                progressIndicator.show()
                 dismissSnackbar()
             }
 
             override fun onPageFinished(view: WebView, url: String) {
                 super.onPageFinished(view, url)
-                progressBar.isVisible = false
+                progressIndicator.hide()
             }
 
             override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
