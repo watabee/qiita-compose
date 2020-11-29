@@ -12,6 +12,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,8 +20,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import com.github.watabee.qiitacompose.ui.common.AppDialogFragment
+import com.github.watabee.qiitacompose.ui.common.DialogEvent
+import com.github.watabee.qiitacompose.ui.common.setOnAppDialogFragmentEventListener
 import com.github.watabee.qiitacompose.util.Env
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.ProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,12 +34,23 @@ import javax.inject.Inject
 
 private const val CALLBACK_URL = "qiita-compose://auth/oauth2callback"
 
+private const val SUCCESS_LOGIN_DIALOG_TAG = "success_login_dialog"
+private const val FAILURE_LOGIN_DIALOG_TAG = "failure_login_dialog"
+private const val AUTH_ERROR_DIALOG_TAG = "auth_error_dialog"
+
+private const val CODE = "code"
+
 @AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
     @Inject lateinit var env: Env
 
     private val viewModel: LoginViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setOnAppDialogFragmentEventListener(this::handleDialogEvent)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -86,28 +100,55 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun showAuthErrorDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setMessage(R.string.login_error_auth)
-            .setPositiveButton(android.R.string.ok) { _, _ -> parentFragmentManager.popBackStack() }
-            .setOnCancelListener { parentFragmentManager.popBackStack() }
-            .show()
+        AppDialogFragment.Builder()
+            .message(getString(R.string.login_error_auth))
+            .positiveButtonTitle(getString(android.R.string.ok))
+            .show(parentFragmentManager, AUTH_ERROR_DIALOG_TAG)
     }
 
     private fun showSuccessLoginDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setMessage(R.string.login_success_login)
-            .setPositiveButton(android.R.string.ok) { _, _ -> parentFragmentManager.popBackStack() }
-            .setOnCancelListener { parentFragmentManager.popBackStack() }
-            .show()
+        AppDialogFragment.Builder()
+            .message(getString(R.string.login_success_login))
+            .positiveButtonTitle(getString(android.R.string.ok))
+            .show(parentFragmentManager, SUCCESS_LOGIN_DIALOG_TAG)
     }
 
     private fun showFailureLoginDialog(code: String) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setMessage(R.string.login_failure_login)
-            .setPositiveButton(R.string.common_yes) { _, _ -> viewModel.requestAccessTokens(code) }
-            .setNegativeButton(R.string.common_no) { _, _ -> parentFragmentManager.popBackStack() }
-            .setOnCancelListener { parentFragmentManager.popBackStack() }
-            .show()
+        AppDialogFragment.Builder()
+            .message(getString(R.string.login_failure_login))
+            .positiveButtonTitle(getString(R.string.common_yes))
+            .negativeButtonTitle(getString(R.string.common_no))
+            .extraParams(bundleOf(CODE to code))
+            .show(parentFragmentManager, FAILURE_LOGIN_DIALOG_TAG)
+    }
+
+    private fun handleDialogEvent(tag: String?, event: DialogEvent, extraParams: Bundle?) {
+        when (tag) {
+            SUCCESS_LOGIN_DIALOG_TAG -> {
+                when (event) {
+                    DialogEvent.POSITIVE_BUTTON_CLICKED -> parentFragmentManager.popBackStack()
+                    DialogEvent.CANCELED -> parentFragmentManager.popBackStack()
+                    else -> throw IllegalStateException()
+                }
+            }
+            FAILURE_LOGIN_DIALOG_TAG -> {
+                when (event) {
+                    DialogEvent.POSITIVE_BUTTON_CLICKED -> {
+                        val code = extraParams?.getString(CODE) ?: throw IllegalStateException("'code' must not be null.")
+                        viewModel.requestAccessTokens(code)
+                    }
+                    DialogEvent.NEGATIVE_BUTTON_CLICKED -> parentFragmentManager.popBackStack()
+                    DialogEvent.CANCELED -> parentFragmentManager.popBackStack()
+                }
+            }
+            AUTH_ERROR_DIALOG_TAG -> {
+                when (event) {
+                    DialogEvent.POSITIVE_BUTTON_CLICKED -> parentFragmentManager.popBackStack()
+                    DialogEvent.CANCELED -> parentFragmentManager.popBackStack()
+                    else -> throw IllegalStateException()
+                }
+            }
+        }
     }
 
     private fun makeAuthUrl(state: String): String {
