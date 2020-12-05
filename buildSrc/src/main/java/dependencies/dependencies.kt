@@ -18,7 +18,7 @@ object Versions {
 }
 
 object Deps {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:4.2.0-alpha15"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-alpha02"
     const val spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:5.7.0"
 
     object Kotlin {
