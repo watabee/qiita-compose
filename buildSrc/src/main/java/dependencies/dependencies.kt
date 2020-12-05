@@ -101,7 +101,7 @@ object Deps {
     }
 
     object Accompanist {
-        const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.3.2"
+        const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.4.0"
     }
 
     const val timber = "com.jakewharton.timber:timber:4.7.1"
