@@ -60,10 +60,10 @@ object Deps {
         }
 
         object Compose {
-            const val version = "1.0.0-alpha06"
+            const val version = "1.0.0-alpha08"
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val ui = "androidx.compose.ui:ui:$version"
-            const val uiTooling = "androidx.ui:ui-tooling:$version"
+            const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
             const val foundationLayout = "androidx.compose.foundation:foundation-layout:$version"
             const val material = "androidx.compose.material:material:$version"
