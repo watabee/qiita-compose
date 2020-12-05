@@ -27,9 +27,9 @@ object Deps {
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20"
 
         object Coroutines {
-            const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1"
-            const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1"
-            const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.1"
+            const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
+            const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2"
+            const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2"
         }
     }
 
