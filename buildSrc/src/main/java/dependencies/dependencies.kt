@@ -14,7 +14,7 @@ object Versions {
     const val androidVersionCode = (versionMajor * 10000 + versionMinor * 100 + versionPatch) * 100 + versionOffset
     const val androidVersionName = "$versionMajor.$versionMinor.$versionPatch"
 
-    const val ktlint = "0.39.0"
+    const val ktlint = "0.40.0"
 }
 
 object Deps {
