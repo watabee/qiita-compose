@@ -22,9 +22,9 @@ object Deps {
     const val spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:5.7.0"
 
     object Kotlin {
-        const val version = "1.4.10"
-        const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.10"
-        const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10"
+        const val version = "1.4.20"
+        const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.20"
+        const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20"
 
         object Coroutines {
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1"
