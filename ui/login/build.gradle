@@ -54,4 +54,5 @@ dependencies {
     testImplementation Deps.AndroidX.Test.junit
     testImplementation Deps.turbine
     testImplementation Deps.robolectric
+    testImplementation Deps.Mockk.mockk
 }

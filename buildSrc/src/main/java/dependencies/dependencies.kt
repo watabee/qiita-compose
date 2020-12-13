@@ -112,4 +112,8 @@ object Deps {
     const val truth = "com.google.truth:truth:1.0.1"
     const val turbine = "app.cash.turbine:turbine:0.3.0"
     const val robolectric = "org.robolectric:robolectric:4.4"
+
+    object Mockk {
+        const val mockk = "io.mockk:mockk:1.10.3-jdk8"
+    }
 }
