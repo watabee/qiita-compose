@@ -111,4 +111,5 @@ object Deps {
     const val junit = "junit:junit:4.13"
     const val truth = "com.google.truth:truth:1.0.1"
     const val turbine = "app.cash.turbine:turbine:0.3.0"
+    const val robolectric = "org.robolectric:robolectric:4.4"
 }

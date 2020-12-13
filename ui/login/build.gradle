@@ -19,6 +19,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -47,4 +53,5 @@ dependencies {
     testImplementation Deps.truth
     testImplementation Deps.AndroidX.Test.junit
     testImplementation Deps.turbine
+    testImplementation Deps.robolectric
 }
