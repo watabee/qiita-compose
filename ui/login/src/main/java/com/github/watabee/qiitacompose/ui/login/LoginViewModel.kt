@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -25,40 +26,58 @@ internal class LoginViewModel @ViewModelInject constructor(
     private val userDataStore: UserDataStore
 ) : ViewModel() {
 
-    private val requestAccessTokens = MutableSharedFlow<String>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    private val requestAccessTokens = MutableSharedFlow<String>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_LATEST)
 
-    private val _isRequesting = MutableStateFlow(false)
-    val isRequesting: StateFlow<Boolean> = _isRequesting.asStateFlow()
+    private val _uiState = MutableStateFlow(LoginUiState.initialValue())
+    val uiState: Flow<LoginUiState> = _uiState.asStateFlow()
 
-    private val _uiEvent = ConflatedBroadcastChannel<LoginUiEvent>()
-    @OptIn(FlowPreview::class) val uiEvent: Flow<LoginUiEvent> get() = _uiEvent.asFlow()
+    private val _outputEvent = MutableSharedFlow<LoginOutputEvent>()
+    val outputEvent: Flow<LoginOutputEvent> = _outputEvent.asSharedFlow()
 
     init {
         viewModelScope.launch {
             requestAccessTokens.collectLatest { code ->
-                _isRequesting.value = true
+                _uiState.value = LoginUiState(isRequesting = true)
                 when (val result = qiitaRepository.requestAccessTokens(code)) {
                     is QiitaApiResult.Success -> {
-                        _isRequesting.value = false
+                        _uiState.value = LoginUiState(isRequesting = false)
                         userDataStore.updateAccessToken(result.response.response.token)
-                        _uiEvent.offer(LoginUiEvent.SuccessLogin)
+                        _outputEvent.emit(LoginOutputEvent.SuccessLogin)
                     }
                     is QiitaApiResult.Failure -> {
-                        _isRequesting.value = false
-                        _uiEvent.offer(LoginUiEvent.FailureLogin(code))
+                        _uiState.value = LoginUiState(isRequesting = false)
+                        _outputEvent.emit(LoginOutputEvent.FailureLogin(code))
                     }
                 }
             }
         }
     }
 
-    fun requestAccessTokens(code: String) {
-        requestAccessTokens.tryEmit(code)
+    fun requestEvent(event: LoginInputEvent) {
+        when (event) {
+            is LoginInputEvent.RequestAccessTokens -> {
+                requestAccessTokens.tryEmit(event.code)
+            }
+        }
     }
 }
 
-internal sealed class LoginUiEvent {
-    object SuccessLogin : LoginUiEvent()
+internal data class LoginUiState(
+    val isRequesting: Boolean
+) {
+    companion object {
+        fun initialValue() = LoginUiState(isRequesting = false)
+    }
+}
 
-    data class FailureLogin(val code: String) : LoginUiEvent()
+// View -> ViewModel
+internal sealed class LoginInputEvent {
+    class RequestAccessTokens(val code: String): LoginInputEvent()
+}
+
+// ViewModel -> View
+internal sealed class LoginOutputEvent {
+    object SuccessLogin : LoginOutputEvent()
+
+    data class FailureLogin(val code: String) : LoginOutputEvent()
 }

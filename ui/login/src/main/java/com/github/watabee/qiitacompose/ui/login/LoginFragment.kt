@@ -83,15 +83,15 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             )
 
         val loadingView: View = view.findViewById(R.id.loading_view)
-        viewModel.isRequesting
-            .onEach { loadingView.isVisible = it }
+        viewModel.uiState
+            .onEach { loadingView.isVisible = it.isRequesting }
             .launchIn(viewLifecycleOwner.lifecycleScope)
 
-        viewModel.uiEvent
+        viewModel.outputEvent
             .onEach { event ->
                 when (event) {
-                    LoginUiEvent.SuccessLogin -> showSuccessLoginDialog()
-                    is LoginUiEvent.FailureLogin -> showFailureLoginDialog(event.code)
+                    LoginOutputEvent.SuccessLogin -> showSuccessLoginDialog()
+                    is LoginOutputEvent.FailureLogin -> showFailureLoginDialog(event.code)
                 }
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
@@ -135,7 +135,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 when (event) {
                     DialogEvent.POSITIVE_BUTTON_CLICKED -> {
                         val code = extraParams?.getString(CODE) ?: throw IllegalStateException("'code' must not be null.")
-                        viewModel.requestAccessTokens(code)
+                        viewModel.requestEvent(LoginInputEvent.RequestAccessTokens(code))
                     }
                     DialogEvent.NEGATIVE_BUTTON_CLICKED -> parentFragmentManager.popBackStack()
                     DialogEvent.CANCELED -> parentFragmentManager.popBackStack()
@@ -221,7 +221,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     return true
                 }
 
-                viewModel.requestAccessTokens(code)
+                viewModel.requestEvent(LoginInputEvent.RequestAccessTokens(code))
                 return true
             }
 
