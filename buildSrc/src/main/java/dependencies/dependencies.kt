@@ -114,6 +114,6 @@ object Deps {
     const val robolectric = "org.robolectric:robolectric:4.5.1"
 
     object Mockk {
-        const val mockk = "io.mockk:mockk:1.10.3-jdk8"
+        const val mockk = "io.mockk:mockk:1.10.6"
     }
 }
