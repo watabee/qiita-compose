@@ -60,7 +60,7 @@ object Deps {
         }
 
         object Compose {
-            const val version = "1.0.0-alpha08"
+            const val version = "1.0.0-alpha12"
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val ui = "androidx.compose.ui:ui:$version"
             const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
@@ -101,7 +101,7 @@ object Deps {
     }
 
     object Accompanist {
-        const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.4.0"
+        const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.5.1"
     }
 
     const val timber = "com.jakewharton.timber:timber:4.7.1"
