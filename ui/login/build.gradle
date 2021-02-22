@@ -49,6 +49,7 @@ dependencies {
 
     implementation Deps.timber
 
+    testImplementation project(':test-util')
     testImplementation Deps.junit
     testImplementation Deps.truth
     testImplementation Deps.AndroidX.Test.junit

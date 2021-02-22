@@ -6,3 +6,5 @@ include ':data'
 
 include ':ui:common'
 include ':ui:login'
+
+include ':test-util'

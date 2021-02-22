@@ -7,11 +7,10 @@ sealed class QiitaApiResult<out T, out E> {
     data class Success<T : Any>(val response: T) : QiitaApiResult<T, Nothing>()
 
     sealed class Failure<out E> : QiitaApiResult<Nothing, E>() {
-        data class NetworkFailure internal constructor(val error: IOException) : Failure<Nothing>()
+        data class NetworkFailure(val error: IOException) : Failure<Nothing>()
 
-        data class UnknownFailure internal constructor(val error: Throwable) : Failure<Nothing>()
+        data class UnknownFailure(val error: Throwable) : Failure<Nothing>()
 
-        data class HttpFailure<out E> internal constructor(val code: Int, val error: E?) :
-            Failure<E>()
+        data class HttpFailure<out E>(val code: Int, val error: E?) : Failure<E>()
     }
 }

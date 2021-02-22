@@ -1,0 +1,11 @@
+import dependencies.Deps
+
+apply plugin: 'kotlin'
+
+dependencies {
+    api Deps.Kotlin.stdlib
+    api Deps.Kotlin.Coroutines.core
+    api Deps.Kotlin.Coroutines.test
+
+    api Deps.junit
+}
