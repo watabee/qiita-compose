@@ -109,7 +109,7 @@ object Deps {
     const val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.0.10"
 
     const val junit = "junit:junit:4.13.2"
-    const val truth = "com.google.truth:truth:1.0.1"
+    const val truth = "com.google.truth:truth:1.1.2"
     const val turbine = "app.cash.turbine:turbine:0.3.0"
     const val robolectric = "org.robolectric:robolectric:4.4"
 
