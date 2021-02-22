@@ -23,6 +23,7 @@ import androidx.lifecycle.lifecycleScope
 import com.github.watabee.qiitacompose.ui.common.AppDialogFragment
 import com.github.watabee.qiitacompose.ui.common.DialogEvent
 import com.github.watabee.qiitacompose.ui.common.setOnAppDialogFragmentEventListener
+import com.github.watabee.qiitacompose.ui.util.launchWhenResumed
 import com.github.watabee.qiitacompose.util.Env
 import com.google.android.material.progressindicator.ProgressIndicator
 import com.google.android.material.snackbar.Snackbar
@@ -94,7 +95,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     is LoginOutputEvent.FailureLogin -> showFailureLoginDialog(event.code)
                 }
             }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+            .launchWhenResumed(viewLifecycleOwner)
 
         webView.loadUrl(makeAuthUrl(state))
     }
