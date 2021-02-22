@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
+import javax.inject.Singleton
 
 interface UserDataStore {
     val accessTokenFlow: Flow<String?>
@@ -22,7 +23,8 @@ interface UserDataStore {
     suspend fun updateAccessToken(accessToken: String?)
 }
 
-internal class UserDataStoreImpl @Inject constructor(@ApplicationContext private val appContext: Context) : UserDataStore {
+@Singleton
+internal class UserDataStoreImpl @Inject constructor(@ApplicationContext appContext: Context) : UserDataStore {
     private val dataStore: DataStore<Preferences> = appContext.createDataStore("user")
 
     private object PreferencesKeys {
