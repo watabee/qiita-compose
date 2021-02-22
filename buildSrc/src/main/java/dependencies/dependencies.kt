@@ -34,7 +34,7 @@ object Deps {
     }
 
     object Google {
-        const val material = "com.google.android.material:material:1.3.0-alpha03"
+        const val material = "com.google.android.material:material:1.3.0"
         const val composeThemeAdapter = "com.google.android.material:compose-theme-adapter:${AndroidX.Compose.version}"
     }
 

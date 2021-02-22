@@ -25,7 +25,7 @@ import com.github.watabee.qiitacompose.ui.common.DialogEvent
 import com.github.watabee.qiitacompose.ui.common.setOnAppDialogFragmentEventListener
 import com.github.watabee.qiitacompose.ui.util.launchWhenResumed
 import com.github.watabee.qiitacompose.util.Env
-import com.google.android.material.progressindicator.ProgressIndicator
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -62,7 +62,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         toolbar.setNavigationOnClickListener { parentFragmentManager.popBackStack() }
 
         val webView: WebView = view.findViewById(R.id.web_view)
-        val progressIndicator: ProgressIndicator = view.findViewById(R.id.progress_indicator)
+        val progressIndicator: LinearProgressIndicator = view.findViewById(R.id.progress_indicator)
 
         @SuppressLint("SetJavaScriptEnabled")
         webView.settings.javaScriptEnabled = true
@@ -157,7 +157,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         return "https://qiita.com/api/v2/oauth/authorize?client_id=${env.qiitaClientId}&scope=$scope&state=$state"
     }
 
-    private fun createWebChromeClient(progressIndicator: ProgressIndicator): WebChromeClient = object : WebChromeClient() {
+    private fun createWebChromeClient(progressIndicator: LinearProgressIndicator): WebChromeClient = object : WebChromeClient() {
         override fun onProgressChanged(view: WebView?, newProgress: Int) {
             super.onProgressChanged(view, newProgress)
             progressIndicator.progress = newProgress
@@ -166,7 +166,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun createWebViewClient(
         state: String,
-        progressIndicator: ProgressIndicator,
+        progressIndicator: LinearProgressIndicator,
         viewLifecycleOwner: LifecycleOwner
     ): WebViewClient =
         object : WebViewClient() {
