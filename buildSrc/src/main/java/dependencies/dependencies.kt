@@ -57,6 +57,9 @@ object Deps {
             const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
             const val compiler = "androidx.lifecycle:lifecycle-compiler:2.3.0"
             const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
+
+            // Jetpack Compose Integration for ViewModel
+            const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha01"
         }
 
         object Compose {
