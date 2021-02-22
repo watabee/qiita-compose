@@ -111,7 +111,7 @@ object Deps {
     const val junit = "junit:junit:4.13.2"
     const val truth = "com.google.truth:truth:1.1.2"
     const val turbine = "app.cash.turbine:turbine:0.4.0"
-    const val robolectric = "org.robolectric:robolectric:4.4"
+    const val robolectric = "org.robolectric:robolectric:4.5.1"
 
     object Mockk {
         const val mockk = "io.mockk:mockk:1.10.3-jdk8"
