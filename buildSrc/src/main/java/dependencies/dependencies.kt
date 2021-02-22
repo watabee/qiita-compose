@@ -40,7 +40,7 @@ object Deps {
 
     object AndroidX {
         const val appcompat = "androidx.appcompat:appcompat:1.3.0-beta01"
-        const val activity = "androidx.activity:activity-ktx:1.2.0-beta01"
+        const val activity = "androidx.activity:activity-ktx:1.2.0"
         const val fragment = "androidx.fragment:fragment-ktx:1.3.0-beta01"
         const val core = "androidx.core:core-ktx:1.5.0-alpha04"
         const val dataStorePreferences = "androidx.datastore:datastore-preferences:1.0.0-alpha04"
