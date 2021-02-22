@@ -5,8 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.core.preferencesKey
-import androidx.datastore.preferences.core.remove
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.createDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -28,7 +27,7 @@ internal class UserDataStoreImpl @Inject constructor(@ApplicationContext appCont
     private val dataStore: DataStore<Preferences> = appContext.createDataStore("user")
 
     private object PreferencesKeys {
-        val ACCESS_TOKEN = preferencesKey<String>("access_token")
+        val ACCESS_TOKEN = stringPreferencesKey("access_token")
     }
 
     override val accessTokenFlow: Flow<String?> = dataStore.data
