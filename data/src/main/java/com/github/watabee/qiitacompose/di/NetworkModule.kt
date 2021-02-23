@@ -1,13 +1,16 @@
 package com.github.watabee.qiitacompose.di
 
 import android.content.Context
+import com.github.watabee.qiitacompose.api.interceptor.AccessTokenInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dagger.multibindings.IntoSet
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -25,6 +28,10 @@ private const val MAX_CACHE_SIZE = 50L * 1024 * 1024
 @Module
 @InstallIn(SingletonComponent::class)
 internal abstract class NetworkModule {
+
+    @Binds
+    @IntoSet
+    abstract fun bindAccessTokenInterceptor(instance: AccessTokenInterceptor): Interceptor
 
     companion object {
         @Base
