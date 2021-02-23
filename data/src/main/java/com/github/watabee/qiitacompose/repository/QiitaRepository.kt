@@ -13,6 +13,7 @@ import com.github.watabee.qiitacompose.api.response.SuccessResponseWithPaginatio
 import com.github.watabee.qiitacompose.di.Api
 import com.github.watabee.qiitacompose.util.Env
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import com.squareup.moshi.rawType
 import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaType
@@ -24,6 +25,7 @@ import okhttp3.Response
 import okhttp3.internal.closeQuietly
 import java.io.IOException
 import javax.inject.Inject
+import kotlin.reflect.KType
 import kotlin.reflect.javaType
 import kotlin.reflect.typeOf
 import com.github.watabee.qiitacompose.api.request.AccessTokens as RequestAccessTokens
@@ -110,10 +112,14 @@ internal class QiitaRepositoryImpl @Inject constructor(
             return if (response.isSuccessful) {
                 when {
                     T::class == SuccessResponseWithPagination::class -> {
-                        val type = typeOf<T>().arguments[0].type?.javaType?.rawType
-                        val rawResponse = moshi.adapter(type).fromJson(source)!!
-                        val responseWithPagination =
-                            SuccessResponseWithPagination.create(response.headers, rawResponse)
+                        val listType: KType = typeOf<T>().arguments[0].type!!
+                        val type = Types.newParameterizedType(
+                            listType.javaType.rawType,
+                            *listType.arguments.mapNotNull { it.type?.javaType }.toTypedArray()
+                        )
+
+                        val rawResponse = moshi.adapter<List<Any>>(type).fromJson(source)!!
+                        val responseWithPagination = SuccessResponseWithPagination.create(response.headers, rawResponse)
                         QiitaApiResult.Success(responseWithPagination as T)
                     }
                     T::class == SuccessResponse::class -> {

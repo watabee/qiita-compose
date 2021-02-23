@@ -69,6 +69,7 @@ android {
 dependencies {
     implementation project(':data')
     implementation project(':ui:login')
+    implementation project(':ui:items')
 
     implementation Deps.Kotlin.stdlib
     implementation Deps.Kotlin.Coroutines.core
