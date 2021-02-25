@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredHeight
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -48,7 +48,7 @@ fun Items() {
                                 CircularProgressIndicator(
                                     modifier = Modifier.fillMaxWidth()
                                         .wrapContentWidth()
-                                        .preferredHeight(64.dp)
+                                        .requiredHeight(64.dp)
                                 )
                             }
                         }

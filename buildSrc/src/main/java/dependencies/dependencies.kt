@@ -18,7 +18,7 @@ object Versions {
 }
 
 object Deps {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-alpha07"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-alpha08"
     const val spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:5.10.2"
 
     object Kotlin {
@@ -57,13 +57,10 @@ object Deps {
             const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
             const val compiler = "androidx.lifecycle:lifecycle-compiler:2.3.0"
             const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"
-
-            // Jetpack Compose Integration for ViewModel
-            const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha01"
         }
 
         object Compose {
-            const val version = "1.0.0-alpha12"
+            const val version = "1.0.0-beta01"
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val ui = "androidx.compose.ui:ui:$version"
             const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
@@ -72,7 +69,10 @@ object Deps {
             const val material = "androidx.compose.material:material:$version"
             const val runtimeLiveData = "androidx.compose.runtime:runtime-livedata:$version"
             const val themeAdapter = "androidx.compose.material:compose-theme-adapter:$version"
-            const val paging = "androidx.paging:paging-compose:1.0.0-alpha07"
+
+            const val paging = "androidx.paging:paging-compose:1.0.0-alpha08"
+            // Jetpack Compose Integration for ViewModel
+            const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha02"
         }
 
         object Hilt {
@@ -105,7 +105,7 @@ object Deps {
     }
 
     object Accompanist {
-        const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.5.1"
+        const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.6.0"
     }
 
     const val timber = "com.jakewharton.timber:timber:4.7.1"

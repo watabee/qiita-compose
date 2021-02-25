@@ -82,7 +82,6 @@ dependencies {
 
     implementation Deps.AndroidX.Lifecycle.livedata
     implementation Deps.AndroidX.Lifecycle.viewmodel
-    implementation Deps.AndroidX.Lifecycle.viewModelCompose
     implementation Deps.AndroidX.Hilt.viewmodel
     kapt Deps.AndroidX.Hilt.compiler
 
@@ -97,6 +96,7 @@ dependencies {
     implementation Deps.AndroidX.Compose.runtimeLiveData
     implementation Deps.AndroidX.Compose.uiTooling
     implementation Deps.Google.composeThemeAdapter
+    implementation Deps.AndroidX.Compose.viewModel
 
     implementation Deps.Coil.coil
     implementation Deps.Accompanist.coil

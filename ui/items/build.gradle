@@ -48,7 +48,7 @@ dependencies {
     implementation Deps.AndroidX.Compose.uiTooling
     implementation Deps.Google.composeThemeAdapter
     implementation Deps.AndroidX.Compose.paging
-    implementation Deps.AndroidX.Lifecycle.viewModelCompose
+    implementation Deps.AndroidX.Compose.viewModel
 
     implementation Deps.Coil.coil
     implementation Deps.Accompanist.coil
