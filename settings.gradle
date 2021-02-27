@@ -5,6 +5,7 @@ include ':base-android'
 include ':data'
 
 include ':ui:common'
+include ':ui:home'
 include ':ui:login'
 include ':ui:items'
 

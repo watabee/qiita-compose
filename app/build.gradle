@@ -68,8 +68,9 @@ android {
 
 dependencies {
     implementation project(':data')
+    implementation project(':ui:common')
+    implementation project(':ui:home')
     implementation project(':ui:login')
-    implementation project(':ui:items')
 
     implementation Deps.Kotlin.stdlib
     implementation Deps.Kotlin.Coroutines.core
@@ -105,4 +106,8 @@ dependencies {
     kapt Deps.Dagger.Hilt.androidCompiler
 
     implementation Deps.timber
+}
+
+hilt {
+    enableExperimentalClasspathAggregation = true
 }

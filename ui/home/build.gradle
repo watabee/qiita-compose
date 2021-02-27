@@ -1,0 +1,61 @@
+import dependencies.Deps
+import dependencies.Versions
+
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    compileSdkVersion Versions.androidCompileSdkVersion
+    defaultConfig {
+        minSdkVersion Versions.androidMinSdkVersion
+        targetSdkVersion Versions.androidTargetSdkVersion
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion Deps.AndroidX.Compose.version
+    }
+}
+
+dependencies {
+    implementation project(':data')
+    implementation project(':ui:common')
+    implementation project(':ui:items')
+
+    // Compose
+    implementation Deps.AndroidX.Compose.runtime
+    implementation Deps.AndroidX.Compose.ui
+    implementation Deps.AndroidX.Compose.foundation
+    implementation Deps.AndroidX.Compose.foundationLayout
+    implementation Deps.AndroidX.Compose.material
+    implementation Deps.AndroidX.Compose.runtimeLiveData
+    implementation Deps.AndroidX.Compose.uiTooling
+    implementation Deps.Google.composeThemeAdapter
+    implementation Deps.AndroidX.Compose.paging
+    implementation Deps.AndroidX.Compose.viewModel
+
+    implementation Deps.Coil.coil
+    implementation Deps.Accompanist.coil
+
+    implementation Deps.Dagger.Hilt.android
+    kapt Deps.Dagger.Hilt.androidCompiler
+
+    implementation Deps.AndroidX.Hilt.viewmodel
+    kapt Deps.AndroidX.Hilt.compiler
+
+    implementation Deps.Google.material
+
+    implementation Deps.timber
+}
