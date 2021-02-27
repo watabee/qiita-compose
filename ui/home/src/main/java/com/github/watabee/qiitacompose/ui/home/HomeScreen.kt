@@ -31,8 +31,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.github.watabee.qiitacompose.ui.items.ItemsScreen
+import com.github.watabee.qiitacompose.ui.theme.QiitaFontFamily
 import kotlinx.coroutines.launch
 
 @Composable
@@ -45,7 +47,9 @@ fun HomeScreen(scaffoldState: ScaffoldState = rememberScaffoldState()) {
         },
         topBar = {
             TopAppBar(
-                title = { Text(text = "Qiita") },
+                title = {
+                    Text(text = "Qiita", fontFamily = QiitaFontFamily.codecCold, fontWeight = FontWeight.Bold)
+                },
                 navigationIcon = {
                     IconButton(onClick = { coroutineScope.launch { scaffoldState.drawerState.open() } }) {
                         Icon(imageVector = Icons.Filled.Menu, contentDescription = null)
