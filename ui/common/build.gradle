@@ -18,6 +18,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    buildFeatures {
+        compose true
+    }
 }
 
 dependencies {
@@ -27,6 +31,8 @@ dependencies {
     implementation Deps.AndroidX.activity
     implementation Deps.AndroidX.fragment
     implementation Deps.AndroidX.core
+
+    implementation Deps.AndroidX.Compose.material
 
     implementation Deps.AndroidX.Lifecycle.livedata
 
