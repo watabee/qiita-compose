@@ -4,6 +4,7 @@ import androidx.annotation.IntRange
 import com.github.watabee.qiitacompose.api.QiitaApiResult
 import com.github.watabee.qiitacompose.api.await
 import com.github.watabee.qiitacompose.api.response.AccessTokens
+import com.github.watabee.qiitacompose.api.response.AuthenticatedUser
 import com.github.watabee.qiitacompose.api.response.Error
 import com.github.watabee.qiitacompose.api.response.ErrorResponse
 import com.github.watabee.qiitacompose.api.response.Item
@@ -38,6 +39,8 @@ interface QiitaRepository {
     ): QiitaApiResult<SuccessResponseWithPagination<List<Item>>, ErrorResponse>
 
     suspend fun requestAccessTokens(code: String): QiitaApiResult<SuccessResponse<AccessTokens>, ErrorResponse>
+
+    suspend fun fetchAuthenticatedUser(): QiitaApiResult<SuccessResponse<AuthenticatedUser>, ErrorResponse>
 }
 
 internal class QiitaRepositoryImpl @Inject constructor(
@@ -79,6 +82,16 @@ internal class QiitaRepositoryImpl @Inject constructor(
         val requestBody = accessTokensJson.toRequestBody("application/json; charset=utf-8".toMediaType())
 
         return httpPost(httpUrl, requestBody)
+    }
+
+    override suspend fun fetchAuthenticatedUser(): QiitaApiResult<SuccessResponse<AuthenticatedUser>, ErrorResponse> {
+        val httpUrl = HttpUrl.Builder()
+            .scheme("https")
+            .host("qiita.com")
+            .addPathSegments("api/v2/authenticated_user")
+            .build()
+
+        return httpGet(httpUrl)
     }
 
     private suspend inline fun <reified T : Any> httpGet(httpUrl: HttpUrl): QiitaApiResult<T, ErrorResponse> {
