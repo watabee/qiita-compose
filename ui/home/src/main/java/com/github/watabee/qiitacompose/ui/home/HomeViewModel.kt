@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
@@ -27,8 +28,10 @@ internal class HomeViewModel @Inject constructor(
     dataStore: UserDataStore
 ) : ViewModel() {
 
-    private val requestToGetAuthenticatedUserFlow =
+    private val actionGetAuthenticatedUserFlow =
         MutableSharedFlow<Unit>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+
+    private val actionLogoutFlow = MutableSharedFlow<Unit>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 
     private val getAuthenticatedUserFlow = flow {
         emit(GetAuthenticatedUserState.Loading)
@@ -47,18 +50,25 @@ internal class HomeViewModel @Inject constructor(
         .stateIn(viewModelScope, started = SharingStarted.Eagerly, initialValue = false)
 
     val authenticatedUserState: StateFlow<GetAuthenticatedUserState> =
-        requestToGetAuthenticatedUserFlow.flatMapLatest { getAuthenticatedUserFlow }
+        actionGetAuthenticatedUserFlow.flatMapLatest { getAuthenticatedUserFlow }
             .stateIn(viewModelScope, started = SharingStarted.Eagerly, initialValue = GetAuthenticatedUserState.Loading)
 
     init {
         isLoggedIn
             .scan(false) { wasLoggedIn, isLoggedIn ->
                 if (!wasLoggedIn && isLoggedIn) {
-                    requestToGetAuthenticatedUserFlow.tryEmit(Unit)
+                    actionGetAuthenticatedUserFlow.tryEmit(Unit)
                 }
                 isLoggedIn
             }
             .launchIn(viewModelScope)
+
+        actionLogoutFlow.onEach { dataStore.updateAccessToken(null) }
+            .launchIn(viewModelScope)
+    }
+
+    fun logout() {
+        actionLogoutFlow.tryEmit(Unit)
     }
 }
 

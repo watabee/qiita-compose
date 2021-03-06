@@ -86,6 +86,9 @@ dependencies {
     implementation Deps.AndroidX.Hilt.viewmodel
     kapt Deps.AndroidX.Hilt.compiler
 
+    implementation Deps.AndroidX.Navigation.fragment
+    implementation Deps.AndroidX.Navigation.ui
+
     implementation Deps.Google.material
 
     // Compose

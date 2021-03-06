@@ -75,6 +75,12 @@ object Deps {
             const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha02"
         }
 
+        object Navigation {
+            private const val version = "2.3.3"
+            const val fragment = "androidx.navigation:navigation-fragment-ktx:$version"
+            const val ui = "androidx.navigation:navigation-ui-ktx:$version"
+        }
+
         object Hilt {
             const val viewmodel = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
             const val compiler = "androidx.hilt:hilt-compiler:1.0.0-alpha03"

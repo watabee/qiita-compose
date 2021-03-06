@@ -2,4 +2,11 @@
 <resources>
     <string name="home_getting_user_information">ユーザー情報取得中…</string>
     <string name="home_failed_to_get_user_information">ユーザー情報の取得に失敗しました</string>
+
+    <string name="home_confirm_to_logout">ログアウトしますか？</string>
+
+    <string name="home_login">Login</string>
+    <string name="home_logout">Logout</string>
+
+    <string name="home_drawer_menu_home">Home</string>
 </resources>
