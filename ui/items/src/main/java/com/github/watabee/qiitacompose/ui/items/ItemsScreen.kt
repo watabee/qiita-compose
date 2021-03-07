@@ -1,15 +1,29 @@
 package com.github.watabee.qiitacompose.ui.items
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.LoadState
@@ -32,7 +46,40 @@ fun ItemsScreen() {
                         .wrapContentSize()
                 )
             }
-            is LoadState.Error -> {}
+            is LoadState.Error -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp)
+                        .wrapContentSize()
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentSize(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_error),
+                            contentDescription = null,
+                            colorFilter = ColorFilter.tint(color = MaterialTheme.colors.error),
+                            modifier = Modifier.requiredSize(32.dp)
+                        )
+                        Spacer(modifier = Modifier.requiredWidth(8.dp))
+                        Text(text = stringResource(id = R.string.common_connection_error_message), style = MaterialTheme.typography.body1)
+                    }
+
+                    Spacer(modifier = Modifier.requiredHeight(32.dp))
+
+                    OutlinedButton(
+                        onClick = { lazyPagingItems.retry() },
+                        shape = MaterialTheme.shapes.small.copy(all = CornerSize(50)),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(text = stringResource(id = R.string.common_retry), style = MaterialTheme.typography.button)
+                    }
+                }
+            }
             is LoadState.NotLoading -> {
                 ItemsList(lazyPagingItems = lazyPagingItems)
             }

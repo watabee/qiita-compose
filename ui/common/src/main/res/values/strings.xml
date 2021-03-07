@@ -3,4 +3,7 @@
     <string name="common_yes">はい</string>
     <string name="common_no">いいえ</string>
     <string name="common_cancel">キャンセル</string>
+
+    <string name="common_connection_error_message">通信エラーが発生しました</string>
+    <string name="common_retry">リトライ</string>
 </resources>
