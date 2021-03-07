@@ -73,6 +73,7 @@ object Deps {
             const val paging = "androidx.paging:paging-compose:1.0.0-alpha08"
             // Jetpack Compose Integration for ViewModel
             const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha02"
+            const val navigation = "androidx.navigation:navigation-compose:1.0.0-alpha08"
         }
 
         object Navigation {
@@ -83,6 +84,7 @@ object Deps {
 
         object Hilt {
             const val viewmodel = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
+            const val navigation = "androidx.hilt:hilt-navigation:1.0.0-alpha03"
             const val compiler = "androidx.hilt:hilt-compiler:1.0.0-alpha03"
         }
     }

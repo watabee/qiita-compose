@@ -30,10 +30,11 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.github.watabee.qiitacompose.api.response.Item
 import com.github.watabee.qiitacompose.ui.common.AppOutlinedButton
+import com.github.watabee.qiitacompose.ui.common.navViewModel
 
 @Composable
 fun ItemsScreen() {
-    val viewModel: ItemsViewModel = viewModel()
+    val viewModel: ItemsViewModel = navViewModel()
     val lazyPagingItems = viewModel.itemsFlow.collectAsLazyPagingItems()
 
     Surface(modifier = Modifier.fillMaxSize()) {

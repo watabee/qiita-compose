@@ -101,6 +101,7 @@ dependencies {
     implementation Deps.AndroidX.Compose.uiTooling
     implementation Deps.Google.composeThemeAdapter
     implementation Deps.AndroidX.Compose.viewModel
+    implementation Deps.AndroidX.Compose.navigation
 
     implementation Deps.Coil.coil
     implementation Deps.Accompanist.coil

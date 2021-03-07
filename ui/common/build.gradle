@@ -33,10 +33,13 @@ dependencies {
     implementation Deps.AndroidX.core
 
     implementation Deps.AndroidX.Compose.material
+    implementation Deps.AndroidX.Compose.navigation
 
     implementation Deps.AndroidX.Lifecycle.livedata
 
     implementation Deps.Google.material
+
+    implementation Deps.AndroidX.Hilt.navigation
 
     implementation Deps.timber
 }

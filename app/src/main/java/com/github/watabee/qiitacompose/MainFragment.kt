@@ -9,7 +9,6 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.github.watabee.qiitacompose.ui.home.HomeScreen
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,7 +21,7 @@ internal class MainFragment : Fragment() {
                 QiitaTheme {
                     // A surface container using the 'background' color from the theme
                     Surface(color = MaterialTheme.colors.background) {
-                        HomeScreen {
+                        NavGraph {
                             findNavController().navigate(R.id.nav_login)
                         }
                     }

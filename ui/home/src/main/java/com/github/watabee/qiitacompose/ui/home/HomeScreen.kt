@@ -1,6 +1,7 @@
 package com.github.watabee.qiitacompose.ui.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -49,10 +50,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.transform.CircleCropTransformation
 import com.github.watabee.qiitacompose.api.response.AuthenticatedUser
 import com.github.watabee.qiitacompose.ui.common.AppOutlinedButton
+import com.github.watabee.qiitacompose.ui.common.navViewModel
 import com.github.watabee.qiitacompose.ui.items.ItemsScreen
 import com.github.watabee.qiitacompose.ui.theme.QiitaFontFamily
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
@@ -60,15 +61,15 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen(scaffoldState: ScaffoldState = rememberScaffoldState(), openLoginScreen: () -> Unit) {
+fun HomeScreen(scaffoldState: ScaffoldState = rememberScaffoldState(), homeRouting: HomeRouting) {
     val coroutineScope = rememberCoroutineScope()
     var isVisibleLogoutConfirmationDialog by remember { mutableStateOf(false) }
     Scaffold(
         scaffoldState = scaffoldState,
         drawerContent = {
             AppDrawer(
+                homeRouting = homeRouting,
                 closeDrawer = { coroutineScope.launch { scaffoldState.drawerState.close() } },
-                openLoginScreen = openLoginScreen,
                 onLogoutButtonClicked = { isVisibleLogoutConfirmationDialog = true }
             )
         },
@@ -94,13 +95,17 @@ fun HomeScreen(scaffoldState: ScaffoldState = rememberScaffoldState(), openLogin
 }
 
 @Composable
-private fun AppDrawer(closeDrawer: () -> Unit, openLoginScreen: () -> Unit, onLogoutButtonClicked: () -> Unit) {
-    val viewModel: HomeViewModel = viewModel()
+private fun AppDrawer(
+    homeRouting: HomeRouting,
+    closeDrawer: () -> Unit,
+    onLogoutButtonClicked: () -> Unit
+) {
+    val viewModel: HomeViewModel = navViewModel()
     val isLoggedIn: Boolean by viewModel.isLoggedIn.collectAsState()
     Column(modifier = Modifier.fillMaxSize()) {
         DrawerHeader(
+            homeRouting = homeRouting,
             isLoggedIn = isLoggedIn,
-            openLoginScreen = openLoginScreen,
             onLogoutButtonClicked = onLogoutButtonClicked
         )
         Spacer(Modifier.requiredHeight(24.dp))
@@ -117,14 +122,22 @@ private fun AppDrawer(closeDrawer: () -> Unit, openLoginScreen: () -> Unit, onLo
 }
 
 @Composable
-private fun DrawerHeader(isLoggedIn: Boolean, openLoginScreen: () -> Unit, onLogoutButtonClicked: () -> Unit) {
-    val viewModel: HomeViewModel = viewModel()
+private fun DrawerHeader(
+    homeRouting: HomeRouting,
+    isLoggedIn: Boolean,
+    onLogoutButtonClicked: () -> Unit
+) {
+    val viewModel: HomeViewModel = navViewModel()
     Box(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 32.dp)) {
         if (isLoggedIn) {
             val authenticatedUserState: GetAuthenticatedUserState by viewModel.authenticatedUserState.collectAsState()
-            UserInformation(authenticatedUserState = authenticatedUserState, onLogoutButtonClicked = onLogoutButtonClicked)
+            UserInformation(
+                authenticatedUserState = authenticatedUserState,
+                onLogoutButtonClicked = onLogoutButtonClicked,
+                openUserScreen = homeRouting.openUserScreen
+            )
         } else {
-            AppOutlinedButton(onClick = openLoginScreen) {
+            AppOutlinedButton(onClick = homeRouting.openLoginScreen) {
                 Text(text = stringResource(id = R.string.home_login), style = MaterialTheme.typography.button)
             }
         }
@@ -132,11 +145,21 @@ private fun DrawerHeader(isLoggedIn: Boolean, openLoginScreen: () -> Unit, onLog
 }
 
 @Composable
-private fun UserInformation(authenticatedUserState: GetAuthenticatedUserState, onLogoutButtonClicked: () -> Unit) {
+private fun UserInformation(
+    authenticatedUserState: GetAuthenticatedUserState,
+    onLogoutButtonClicked: () -> Unit,
+    openUserScreen: () -> Unit
+) {
     when (authenticatedUserState) {
         is GetAuthenticatedUserState.Success -> {
             Column {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { openUserScreen() }
+                        .padding(vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     CoilImage(
                         data = authenticatedUserState.user.profileImageUrl,
                         contentDescription = null,
@@ -175,7 +198,7 @@ private fun UserInformation(authenticatedUserState: GetAuthenticatedUserState, o
                 }
                 Spacer(modifier = Modifier.requiredHeight(16.dp))
 
-                val homeViewModel: HomeViewModel = viewModel()
+                val homeViewModel: HomeViewModel = navViewModel()
                 AppOutlinedButton(
                     onClick = { homeViewModel.retryToGetAuthenticatedUser() }
                 ) {
@@ -259,7 +282,7 @@ private fun DrawerButton(
 
 @Composable
 private fun LogoutConfirmationDialog(onDismissRequest: () -> Unit) {
-    val viewModel: HomeViewModel = viewModel()
+    val viewModel: HomeViewModel = navViewModel()
     AlertDialog(
         onDismissRequest = onDismissRequest,
         text = {
@@ -307,6 +330,10 @@ private fun UserInformationPreview() {
         websiteUrl = null
     )
     QiitaTheme {
-        UserInformation(authenticatedUserState = GetAuthenticatedUserState.Success(authenticatedUser), onLogoutButtonClicked = {})
+        UserInformation(
+            authenticatedUserState = GetAuthenticatedUserState.Success(authenticatedUser),
+            onLogoutButtonClicked = {},
+            openUserScreen = {}
+        )
     }
 }
