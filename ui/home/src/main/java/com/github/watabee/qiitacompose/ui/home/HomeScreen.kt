@@ -157,19 +157,29 @@ private fun UserInformation(authenticatedUserState: GetAuthenticatedUserState, o
             }
         }
         GetAuthenticatedUserState.Error -> {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_error),
-                        contentDescription = null,
-                        modifier = Modifier.requiredSize(32.dp),
-                        tint = MaterialTheme.colors.error
-                    )
-                    Spacer(modifier = Modifier.requiredWidth(8.dp))
-                    Text(
-                        text = stringResource(id = R.string.home_failed_to_get_user_information),
-                        style = MaterialTheme.typography.subtitle2
-                    )
+            Column {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_error),
+                            contentDescription = null,
+                            modifier = Modifier.requiredSize(32.dp),
+                            tint = MaterialTheme.colors.error
+                        )
+                        Spacer(modifier = Modifier.requiredWidth(8.dp))
+                        Text(
+                            text = stringResource(id = R.string.home_failed_to_get_user_information),
+                            style = MaterialTheme.typography.subtitle2
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.requiredHeight(16.dp))
+
+                val homeViewModel: HomeViewModel = viewModel()
+                AppOutlinedButton(
+                    onClick = { homeViewModel.retryToGetAuthenticatedUser() }
+                ) {
+                    Text(text = stringResource(id = R.string.common_retry), style = MaterialTheme.typography.button)
                 }
             }
         }

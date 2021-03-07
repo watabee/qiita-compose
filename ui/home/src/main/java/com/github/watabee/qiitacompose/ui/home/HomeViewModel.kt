@@ -67,6 +67,10 @@ internal class HomeViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    fun retryToGetAuthenticatedUser() {
+        actionGetAuthenticatedUserFlow.tryEmit(Unit)
+    }
+
     fun logout() {
         actionLogoutFlow.tryEmit(Unit)
     }
