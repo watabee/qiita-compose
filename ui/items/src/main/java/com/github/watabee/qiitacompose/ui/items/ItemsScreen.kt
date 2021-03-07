@@ -12,10 +12,8 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +29,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.github.watabee.qiitacompose.api.response.Item
+import com.github.watabee.qiitacompose.ui.common.AppOutlinedButton
 
 @Composable
 fun ItemsScreen() {
@@ -71,9 +70,8 @@ fun ItemsScreen() {
 
                     Spacer(modifier = Modifier.requiredHeight(32.dp))
 
-                    OutlinedButton(
+                    AppOutlinedButton(
                         onClick = { lazyPagingItems.retry() },
-                        shape = MaterialTheme.shapes.small.copy(all = CornerSize(50)),
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(text = stringResource(id = R.string.common_retry), style = MaterialTheme.typography.button)

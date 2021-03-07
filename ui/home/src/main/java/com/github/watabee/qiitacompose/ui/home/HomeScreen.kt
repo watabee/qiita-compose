@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ContentAlpha
@@ -21,7 +20,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Surface
@@ -54,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.transform.CircleCropTransformation
 import com.github.watabee.qiitacompose.api.response.AuthenticatedUser
+import com.github.watabee.qiitacompose.ui.common.AppOutlinedButton
 import com.github.watabee.qiitacompose.ui.items.ItemsScreen
 import com.github.watabee.qiitacompose.ui.theme.QiitaFontFamily
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
@@ -125,7 +124,7 @@ private fun DrawerHeader(isLoggedIn: Boolean, openLoginScreen: () -> Unit, onLog
             val authenticatedUserState: GetAuthenticatedUserState by viewModel.authenticatedUserState.collectAsState()
             UserInformation(authenticatedUserState = authenticatedUserState, onLogoutButtonClicked = onLogoutButtonClicked)
         } else {
-            OutlinedButton(onClick = openLoginScreen, shape = MaterialTheme.shapes.small.copy(all = CornerSize(50))) {
+            AppOutlinedButton(onClick = openLoginScreen) {
                 Text(text = stringResource(id = R.string.home_login), style = MaterialTheme.typography.button)
             }
         }
@@ -152,7 +151,7 @@ private fun UserInformation(authenticatedUserState: GetAuthenticatedUserState, o
 
                 Spacer(modifier = Modifier.requiredHeight(16.dp))
 
-                OutlinedButton(onClick = onLogoutButtonClicked, shape = MaterialTheme.shapes.small.copy(all = CornerSize(50))) {
+                AppOutlinedButton(onClick = onLogoutButtonClicked) {
                     Text(text = stringResource(id = R.string.home_logout), style = MaterialTheme.typography.button)
                 }
             }
