@@ -15,14 +15,14 @@ private val DarkColorPalette = darkColors()
 @Composable
 private fun lightColorPalette(): Colors {
     return lightColors(
-        primary = colorResource(id = R.color.green_500),
-        primaryVariant = colorResource(id = R.color.green_800),
-        secondary = colorResource(id = R.color.blue_grey_600),
+        primary = colorResource(id = R.color.green_60),
+        primaryVariant = colorResource(id = R.color.green_80),
+        secondary = colorResource(id = R.color.green_60),
         background = colorResource(id = R.color.white),
         surface = colorResource(id = R.color.white),
         onPrimary = colorResource(id = R.color.white),
-        onBackground = colorResource(id = R.color.grey_900),
-        onSurface = colorResource(id = R.color.grey_900)
+        onBackground = colorResource(id = R.color.black),
+        onSurface = colorResource(id = R.color.black)
     )
 }
 

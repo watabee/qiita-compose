@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="green_500">#FF55C500</color>
-    <color name="green_800">#FF008D00</color>
+    <color name="green_20">#FFE5F8E2</color>
+    <color name="green_40">#FFB3EAA5</color>
+    <color name="green_60">#FF55C500</color>
+    <color name="green_70">#FF4DA600</color>
+    <color name="green_80">#FF408100</color>
 
-    <color name="blue_grey_600">#FF616F7B</color>
-    <color name="blue_grey_800">#FF41484f</color>
-
-    <color name="grey_800">#FF424242</color>
-    <color name="grey_900">#FF212121</color>
+    <color name="grey_10">#FFF9F9F9</color>
+    <color name="grey_20">#FFF2F2F2</color>
+    <color name="grey_30">#FFDCDCDC</color>
+    <color name="grey_40">#FFC2C2C3</color>
+    <color name="grey_50">#FFA6A7A7</color>
+    <color name="grey_60">#FF8A8B8B</color>
+    <color name="grey_70">#FF6E6F70</color>
+    <color name="grey_80">#FF545656</color>
+    <color name="grey_90">#FF3D4040</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
