@@ -1,6 +1,5 @@
 package com.github.watabee.qiitacompose.ui.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,7 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.AlertDialog
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
@@ -23,13 +24,11 @@ import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -43,8 +42,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -102,7 +101,11 @@ private fun AppDrawer(
 ) {
     val viewModel: HomeViewModel = navViewModel()
     val isLoggedIn: Boolean by viewModel.isLoggedIn.collectAsState()
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(all = 16.dp)
+    ) {
         DrawerHeader(
             homeRouting = homeRouting,
             isLoggedIn = isLoggedIn,
@@ -110,8 +113,11 @@ private fun AppDrawer(
         )
         Spacer(Modifier.requiredHeight(24.dp))
         Divider(color = MaterialTheme.colors.onSurface.copy(alpha = .2f))
+        Spacer(modifier = Modifier.requiredHeight(16.dp))
+        Text(text = "記事フィード", style = MaterialTheme.typography.caption, fontWeight = FontWeight.W700)
+        Spacer(modifier = Modifier.requiredHeight(8.dp))
         DrawerButton(
-            icon = Icons.Filled.Home,
+            icon = painterResource(id = R.drawable.ic_home_home),
             label = stringResource(id = R.string.home_drawer_menu_home),
             isSelected = true,
             action = {
@@ -128,7 +134,7 @@ private fun DrawerHeader(
     onLogoutButtonClicked: () -> Unit
 ) {
     val viewModel: HomeViewModel = navViewModel()
-    Box(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 32.dp)) {
+    Box(modifier = Modifier.padding(top = 16.dp)) {
         if (isLoggedIn) {
             val authenticatedUserState: GetAuthenticatedUserState by viewModel.authenticatedUserState.collectAsState()
             UserInformation(
@@ -222,59 +228,30 @@ private fun UserInformation(
 
 @Composable
 private fun DrawerButton(
-    icon: ImageVector,
+    icon: Painter,
     label: String,
     isSelected: Boolean,
     action: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val colors = MaterialTheme.colors
-    val imageAlpha = if (isSelected) {
-        1f
-    } else {
-        0.6f
-    }
-    val textIconColor = if (isSelected) {
-        colors.primary
-    } else {
-        colors.onSurface.copy(alpha = 0.6f)
-    }
-    val backgroundColor = if (isSelected) {
-        colors.primary.copy(alpha = 0.12f)
-    } else {
-        Color.Transparent
-    }
+    val alpha = if (isSelected) ContentAlpha.high else ContentAlpha.medium
+    val backgroundColor = if (isSelected) colorResource(id = R.color.green_40) else Color.Transparent
 
-    val surfaceModifier = modifier
-        .padding(start = 8.dp, top = 8.dp, end = 8.dp)
-        .fillMaxWidth()
-
-    Surface(
-        modifier = surfaceModifier,
-        color = backgroundColor,
-        shape = MaterialTheme.shapes.small
+    TextButton(
+        onClick = action,
+        modifier = modifier.fillMaxWidth(),
+        colors = ButtonDefaults.buttonColors(backgroundColor = backgroundColor, contentColor = MaterialTheme.colors.onBackground),
+        shape = MaterialTheme.shapes.small.copy(all = CornerSize(0.dp))
     ) {
-        TextButton(
-            onClick = action,
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Image(
-                    imageVector = icon,
-                    contentDescription = null, // decorative
-                    colorFilter = ColorFilter.tint(textIconColor),
-                    alpha = imageAlpha
-                )
-                Spacer(Modifier.requiredWidth(16.dp))
-                Text(
-                    text = label,
-                    style = MaterialTheme.typography.body2,
-                    color = textIconColor
-                )
+            CompositionLocalProvider(LocalContentAlpha provides alpha) {
+                Icon(painter = icon, contentDescription = null)
+                Spacer(Modifier.requiredWidth(8.dp))
+                Text(text = label, style = MaterialTheme.typography.caption, fontWeight = FontWeight.W700)
             }
         }
     }
