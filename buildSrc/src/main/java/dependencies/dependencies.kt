@@ -84,8 +84,8 @@ object Deps {
 
         object Hilt {
             const val viewmodel = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
-            const val navigation = "androidx.hilt:hilt-navigation:1.0.0-alpha03"
-            const val compiler = "androidx.hilt:hilt-compiler:1.0.0-alpha03"
+            const val navigation = "androidx.hilt:hilt-navigation:1.0.0-beta01"
+            const val compiler = "androidx.hilt:hilt-compiler:1.0.0-beta01"
         }
     }
 
@@ -102,9 +102,9 @@ object Deps {
 
     object Dagger {
         object Hilt {
-            const val android = "com.google.dagger:hilt-android:2.32-alpha"
-            const val androidCompiler = "com.google.dagger:hilt-android-compiler:2.32-alpha"
-            const val androidGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:2.32-alpha"
+            const val android = "com.google.dagger:hilt-android:2.33-beta"
+            const val androidCompiler = "com.google.dagger:hilt-android-compiler:2.33-beta"
+            const val androidGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:2.33-beta"
         }
     }
 
