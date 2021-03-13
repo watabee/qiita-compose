@@ -2,11 +2,12 @@ package com.github.watabee.qiitacompose.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.createDataStore
+import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -23,14 +24,14 @@ interface UserDataStore {
 }
 
 @Singleton
-internal class UserDataStoreImpl @Inject constructor(@ApplicationContext appContext: Context) : UserDataStore {
-    private val dataStore: DataStore<Preferences> = appContext.createDataStore("user")
+internal class UserDataStoreImpl @Inject constructor(@ApplicationContext private val appContext: Context) : UserDataStore {
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("user")
 
     private object PreferencesKeys {
         val ACCESS_TOKEN = stringPreferencesKey("access_token")
     }
 
-    override val accessTokenFlow: Flow<String?> = dataStore.data
+    override val accessTokenFlow: Flow<String?> = appContext.dataStore.data
         .catch { e ->
             if (e is IOException) {
                 emit(emptyPreferences())
@@ -42,7 +43,7 @@ internal class UserDataStoreImpl @Inject constructor(@ApplicationContext appCont
         .distinctUntilChanged()
 
     override suspend fun updateAccessToken(accessToken: String?) {
-        dataStore.edit { preferences ->
+        appContext.dataStore.edit { preferences ->
             if (accessToken != null) {
                 preferences[PreferencesKeys.ACCESS_TOKEN] = accessToken
             } else {
