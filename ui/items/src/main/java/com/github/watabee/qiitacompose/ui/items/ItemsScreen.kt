@@ -17,13 +17,14 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -32,55 +33,61 @@ import com.github.watabee.qiitacompose.api.response.Item
 import com.github.watabee.qiitacompose.ui.common.AppOutlinedButton
 import com.github.watabee.qiitacompose.ui.common.navViewModel
 
+internal val LocalItemsRouting = compositionLocalOf<ItemsRouting> {
+    error("CompositionLocal LocalNavHostController not present")
+}
+
 @Composable
-fun ItemsScreen() {
+fun ItemsScreen(itemsRouting: ItemsRouting) {
     val viewModel: ItemsViewModel = navViewModel()
     val lazyPagingItems = viewModel.itemsFlow.collectAsLazyPagingItems()
 
-    Surface(modifier = Modifier.fillMaxSize()) {
-        when (lazyPagingItems.loadState.refresh) {
-            LoadState.Loading -> {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .wrapContentSize()
-                )
-            }
-            is LoadState.Error -> {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 16.dp)
-                        .wrapContentSize()
-                ) {
-                    Row(
+    CompositionLocalProvider(LocalItemsRouting provides itemsRouting) {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            when (lazyPagingItems.loadState.refresh) {
+                LoadState.Loading -> {
+                    CircularProgressIndicator(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentSize(),
-                        verticalAlignment = Alignment.CenterVertically
+                            .fillMaxSize()
+                            .wrapContentSize()
+                    )
+                }
+                is LoadState.Error -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp)
+                            .wrapContentSize()
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_error),
-                            contentDescription = null,
-                            colorFilter = ColorFilter.tint(color = MaterialTheme.colors.error),
-                            modifier = Modifier.requiredSize(32.dp)
-                        )
-                        Spacer(modifier = Modifier.requiredWidth(8.dp))
-                        Text(text = stringResource(id = R.string.common_connection_error_message), style = MaterialTheme.typography.body1)
-                    }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentSize(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_error),
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(color = MaterialTheme.colors.error),
+                                modifier = Modifier.requiredSize(32.dp)
+                            )
+                            Spacer(modifier = Modifier.requiredWidth(8.dp))
+                            Text(text = stringResource(id = R.string.common_connection_error_message), style = MaterialTheme.typography.body1)
+                        }
 
-                    Spacer(modifier = Modifier.requiredHeight(32.dp))
+                        Spacer(modifier = Modifier.requiredHeight(32.dp))
 
-                    AppOutlinedButton(
-                        onClick = { lazyPagingItems.retry() },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(text = stringResource(id = R.string.common_retry), style = MaterialTheme.typography.button)
+                        AppOutlinedButton(
+                            onClick = { lazyPagingItems.retry() },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(text = stringResource(id = R.string.common_retry), style = MaterialTheme.typography.button)
+                        }
                     }
                 }
-            }
-            is LoadState.NotLoading -> {
-                ItemsList(lazyPagingItems = lazyPagingItems)
+                is LoadState.NotLoading -> {
+                    ItemsList(lazyPagingItems = lazyPagingItems)
+                }
             }
         }
     }

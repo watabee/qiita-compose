@@ -1,22 +1,26 @@
 package com.github.watabee.qiitacompose.ui.items
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,7 +40,17 @@ internal fun ItemListItem(item: Item) {
         ) {
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = "@${item.user.id}", style = MaterialTheme.typography.body2)
+                    val itemsRouting = LocalItemsRouting.current
+                    TextButton(
+                        onClick = { itemsRouting.openUserScreen(item.user.id) },
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color.Transparent,
+                            contentColor = MaterialTheme.colors.onSurface
+                        ),
+                        contentPadding = PaddingValues(0.dp)
+                    ) {
+                        Text(text = "@${item.user.id}", style = MaterialTheme.typography.body2)
+                    }
                     Spacer(modifier = Modifier.requiredWidth(4.dp))
                     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                         Text(
@@ -63,7 +77,11 @@ internal fun ItemListItem(item: Item) {
                 }
                 Spacer(modifier = Modifier.requiredHeight(8.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(painter = painterResource(id = R.drawable.ic_items_lgtm), contentDescription = null, tint = MaterialTheme.colors.primary)
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_items_lgtm),
+                        contentDescription = null,
+                        tint = MaterialTheme.colors.primary
+                    )
                     Spacer(modifier = Modifier.requiredWidth(8.dp))
                     Text(text = item.likesCount.toString(), style = MaterialTheme.typography.body2)
                 }
@@ -98,7 +116,15 @@ private fun PreviewItemListItem() {
                 reactionsCount = 20,
                 pageViewsCount = 10,
                 commentsCount = 5,
-                tags = listOf(Item.Tag("HTML"), Item.Tag("CSS"), Item.Tag("JavaScript"), Item.Tag("JavaScript"), Item.Tag("JavaScript"), Item.Tag("JavaScript"), Item.Tag("JavaScript"))
+                tags = listOf(
+                    Item.Tag("HTML"),
+                    Item.Tag("CSS"),
+                    Item.Tag("JavaScript"),
+                    Item.Tag("JavaScript"),
+                    Item.Tag("JavaScript"),
+                    Item.Tag("JavaScript"),
+                    Item.Tag("JavaScript")
+                )
             )
         )
     }

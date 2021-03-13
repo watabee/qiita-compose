@@ -53,6 +53,7 @@ import coil.transform.CircleCropTransformation
 import com.github.watabee.qiitacompose.api.response.AuthenticatedUser
 import com.github.watabee.qiitacompose.ui.common.AppOutlinedButton
 import com.github.watabee.qiitacompose.ui.common.navViewModel
+import com.github.watabee.qiitacompose.ui.items.ItemsRouting
 import com.github.watabee.qiitacompose.ui.items.ItemsScreen
 import com.github.watabee.qiitacompose.ui.theme.QiitaFontFamily
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
@@ -60,7 +61,7 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen(scaffoldState: ScaffoldState = rememberScaffoldState(), homeRouting: HomeRouting) {
+fun HomeScreen(scaffoldState: ScaffoldState = rememberScaffoldState(), homeRouting: HomeRouting, itemsRouting: ItemsRouting) {
     val coroutineScope = rememberCoroutineScope()
     var isVisibleLogoutConfirmationDialog by remember { mutableStateOf(false) }
     Scaffold(
@@ -85,7 +86,7 @@ fun HomeScreen(scaffoldState: ScaffoldState = rememberScaffoldState(), homeRouti
             )
         },
         content = {
-            ItemsScreen()
+            ItemsScreen(itemsRouting)
             if (isVisibleLogoutConfirmationDialog) {
                 LogoutConfirmationDialog(onDismissRequest = { isVisibleLogoutConfirmationDialog = false })
             }
@@ -140,7 +141,7 @@ private fun DrawerHeader(
             UserInformation(
                 authenticatedUserState = authenticatedUserState,
                 onLogoutButtonClicked = onLogoutButtonClicked,
-                openUserScreen = homeRouting.openUserScreen
+                openUserScreen = { }
             )
         } else {
             AppOutlinedButton(onClick = homeRouting.openLoginScreen) {

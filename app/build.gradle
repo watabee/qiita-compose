@@ -71,6 +71,8 @@ dependencies {
     implementation project(':ui:common')
     implementation project(':ui:home')
     implementation project(':ui:login')
+    implementation project(':ui:user')
+    implementation project(':ui:items')
 
     implementation Deps.Kotlin.stdlib
     implementation Deps.Kotlin.Coroutines.core
