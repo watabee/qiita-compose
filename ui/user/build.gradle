@@ -49,6 +49,7 @@ dependencies {
     implementation Deps.Google.composeThemeAdapter
     implementation Deps.AndroidX.Compose.paging
     implementation Deps.AndroidX.Compose.viewModel
+    implementation Deps.AndroidX.Compose.constraintLayout
 
     implementation Deps.Coil.coil
     implementation Deps.Accompanist.coil

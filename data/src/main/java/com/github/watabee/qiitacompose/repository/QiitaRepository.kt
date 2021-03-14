@@ -23,6 +23,7 @@ import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
+import okhttp3.internal.EMPTY_REQUEST
 import okhttp3.internal.closeQuietly
 import java.io.IOException
 import javax.inject.Inject
@@ -41,6 +42,12 @@ interface QiitaRepository {
     suspend fun requestAccessTokens(code: String): QiitaApiResult<SuccessResponse<AccessTokens>, ErrorResponse>
 
     suspend fun fetchAuthenticatedUser(): QiitaApiResult<SuccessResponse<AuthenticatedUser>, ErrorResponse>
+
+    suspend fun isFollowingUser(userId: String): QiitaApiResult<SuccessResponse<Boolean>, ErrorResponse>
+
+    suspend fun followUser(userId: String): QiitaApiResult<SuccessResponse<Unit>, ErrorResponse>
+
+    suspend fun unfollowUser(userId: String): QiitaApiResult<SuccessResponse<Unit>, ErrorResponse>
 }
 
 internal class QiitaRepositoryImpl @Inject constructor(
@@ -92,6 +99,82 @@ internal class QiitaRepositoryImpl @Inject constructor(
             .build()
 
         return httpGet(httpUrl)
+    }
+
+    override suspend fun isFollowingUser(userId: String): QiitaApiResult<SuccessResponse<Boolean>, ErrorResponse> {
+        val httpUrl = HttpUrl.Builder()
+            .scheme("https")
+            .host("qiita.com")
+            .addPathSegments("api/v2/users/$userId/following")
+            .build()
+
+        val request = Request.Builder().url(httpUrl).get().build()
+
+        return try {
+            val response = okHttpClient.newCall(request).await()
+            val source = response.body?.source()
+            try {
+                // Following user -> status code: 204
+                // Not following user -> status code: 404
+                if (response.isSuccessful || response.code == 404) {
+                    val rate = Rate.parseHeaders(response.headers)
+                    QiitaApiResult.Success(SuccessResponse(rate, response.code == 204))
+                } else {
+                    val error = moshi.adapter(Error::class.java).fromJson(source)!!
+                    val rate = Rate.parseHeaders(response.headers)
+                    QiitaApiResult.Failure.HttpFailure(response.code, ErrorResponse(rate, error))
+                }
+            } finally {
+                source?.closeQuietly()
+            }
+        } catch (e: IOException) {
+            QiitaApiResult.Failure.NetworkFailure(e)
+        } catch (e: Throwable) {
+            QiitaApiResult.Failure.UnknownFailure(e)
+        }
+    }
+
+    override suspend fun followUser(userId: String): QiitaApiResult<SuccessResponse<Unit>, ErrorResponse> {
+        return followOrUnfollowUser(userId, follow = true)
+    }
+
+    override suspend fun unfollowUser(userId: String): QiitaApiResult<SuccessResponse<Unit>, ErrorResponse> {
+        return followOrUnfollowUser(userId, follow = false)
+    }
+
+    private suspend fun followOrUnfollowUser(userId: String, follow: Boolean): QiitaApiResult<SuccessResponse<Unit>, ErrorResponse> {
+        val httpUrl = HttpUrl.Builder()
+            .scheme("https")
+            .host("qiita.com")
+            .addPathSegments("api/v2/users/$userId/following")
+            .build()
+
+        val request = Request.Builder().url(httpUrl)
+            .apply {
+                if (follow) put(EMPTY_REQUEST) else delete()
+            }
+            .build()
+
+        return try {
+            val response = okHttpClient.newCall(request).await()
+            val source = response.body?.source()
+            try {
+                if (response.isSuccessful) {
+                    val rate = Rate.parseHeaders(response.headers)
+                    QiitaApiResult.Success(SuccessResponse(rate, Unit))
+                } else {
+                    val error = moshi.adapter(Error::class.java).fromJson(source)!!
+                    val rate = Rate.parseHeaders(response.headers)
+                    QiitaApiResult.Failure.HttpFailure(response.code, ErrorResponse(rate, error))
+                }
+            } finally {
+                source?.closeQuietly()
+            }
+        } catch (e: IOException) {
+            QiitaApiResult.Failure.NetworkFailure(e)
+        } catch (e: Throwable) {
+            QiitaApiResult.Failure.UnknownFailure(e)
+        }
     }
 
     private suspend inline fun <reified T : Any> httpGet(httpUrl: HttpUrl): QiitaApiResult<T, ErrorResponse> {

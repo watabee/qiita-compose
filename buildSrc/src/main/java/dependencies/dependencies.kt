@@ -69,6 +69,7 @@ object Deps {
             const val material = "androidx.compose.material:material:$version"
             const val runtimeLiveData = "androidx.compose.runtime:runtime-livedata:$version"
             const val themeAdapter = "androidx.compose.material:compose-theme-adapter:$version"
+            const val constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha03"
 
             const val paging = "androidx.paging:paging-compose:1.0.0-alpha08"
             // Jetpack Compose Integration for ViewModel

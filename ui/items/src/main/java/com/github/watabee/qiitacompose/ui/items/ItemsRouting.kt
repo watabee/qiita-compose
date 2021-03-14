@@ -1,5 +1,7 @@
 package com.github.watabee.qiitacompose.ui.items
 
+import com.github.watabee.qiitacompose.api.response.User
+
 interface ItemsRouting {
-    val openUserScreen: (userId: String) -> Unit
+    val openUserScreen: (user: User) -> Unit
 }

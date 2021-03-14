@@ -42,7 +42,7 @@ internal fun ItemListItem(item: Item) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     val itemsRouting = LocalItemsRouting.current
                     TextButton(
-                        onClick = { itemsRouting.openUserScreen(item.user.id) },
+                        onClick = { itemsRouting.openUserScreen(item.user) },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = Color.Transparent,
                             contentColor = MaterialTheme.colors.onSurface
@@ -110,7 +110,13 @@ private fun PreviewItemListItem() {
                     followeesCount = 10,
                     followersCount = 10,
                     itemsCount = 32,
-                    profileImageUrl = ""
+                    profileImageUrl = "",
+                    location = null,
+                    facebookId = null,
+                    githubLoginName = null,
+                    twitterScreenName = null,
+                    websiteUrl = null,
+                    linkedinId = null
                 ),
                 likesCount = 10,
                 reactionsCount = 20,
