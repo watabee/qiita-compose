@@ -153,7 +153,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun makeAuthUrl(state: String): String {
-        val scope = "read_qiita+write_qiita_team"
+        val scope = "read_qiita+write_qiita"
         return "https://qiita.com/api/v2/oauth/authorize?client_id=${env.qiitaClientId}&scope=$scope&state=$state"
     }
 
