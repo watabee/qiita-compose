@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.github.watabee.qiitacompose.api.QiitaApiResult
 import com.github.watabee.qiitacompose.datastore.UserDataStore
 import com.github.watabee.qiitacompose.repository.QiitaRepository
+import com.github.watabee.qiitacompose.util.throttleFirst
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
