@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.ContentAlpha
@@ -24,10 +25,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.transform.CircleCropTransformation
 import com.github.watabee.qiitacompose.api.response.Item
 import com.github.watabee.qiitacompose.api.response.User
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
 import com.github.watabee.qiitacompose.ui.util.AppDateFormatter
+import com.google.accompanist.coil.CoilImage
 import java.util.Date
 
 @Composable
@@ -41,11 +44,20 @@ internal fun ItemListItem(item: Item) {
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     val itemsRouting = LocalItemsRouting.current
+                    CoilImage(
+                        data = item.user.profileImageUrl,
+                        contentDescription = null,
+                        modifier = Modifier.requiredSize(20.dp),
+                        requestBuilder = {
+                            transformations(CircleCropTransformation())
+                        }
+                    )
+                    Spacer(modifier = Modifier.requiredWidth(8.dp))
                     TextButton(
                         onClick = { itemsRouting.openUserScreen(item.user) },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = Color.Transparent,
-                            contentColor = MaterialTheme.colors.onSurface
+                            contentColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.high)
                         ),
                         contentPadding = PaddingValues(0.dp)
                     ) {
