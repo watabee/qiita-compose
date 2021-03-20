@@ -22,9 +22,8 @@ object Deps {
     const val spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:5.10.2"
 
     object Kotlin {
-        const val version = "1.4.20"
-        const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.30"
-        const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30"
+        const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.31"
+        const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.31"
 
         object Coroutines {
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3"
@@ -60,7 +59,8 @@ object Deps {
         }
 
         object Compose {
-            const val version = "1.0.0-beta01"
+            const val version = "1.0.0-beta02"
+            const val compiler = "androidx.compose.compiler:compiler:$version"
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val ui = "androidx.compose.ui:ui:$version"
             const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
@@ -74,7 +74,7 @@ object Deps {
             const val paging = "androidx.paging:paging-compose:1.0.0-alpha08"
             // Jetpack Compose Integration for ViewModel
             const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha02"
-            const val navigation = "androidx.navigation:navigation-compose:1.0.0-alpha08"
+            const val navigation = "androidx.navigation:navigation-compose:1.0.0-alpha09"
         }
 
         object Navigation {

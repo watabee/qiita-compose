@@ -22,6 +22,10 @@ android {
     buildFeatures {
         compose true
     }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion Deps.AndroidX.Compose.version
+    }
 }
 
 dependencies {
