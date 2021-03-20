@@ -57,7 +57,7 @@ import com.github.watabee.qiitacompose.ui.items.ItemsRouting
 import com.github.watabee.qiitacompose.ui.items.ItemsScreen
 import com.github.watabee.qiitacompose.ui.theme.QiitaFontFamily
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
-import dev.chrisbanes.accompanist.coil.CoilImage
+import com.google.accompanist.coil.CoilImage
 import kotlinx.coroutines.launch
 
 @Composable

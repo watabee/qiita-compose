@@ -45,7 +45,7 @@ import com.github.watabee.qiitacompose.ui.common.ErrorScreen
 import com.github.watabee.qiitacompose.ui.common.LoadingScreen
 import com.github.watabee.qiitacompose.ui.common.navViewModel
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
-import dev.chrisbanes.accompanist.coil.CoilImage
+import com.google.accompanist.coil.CoilImage
 import kotlinx.coroutines.flow.collect
 
 private val LocalUserRouting = compositionLocalOf<UserRouting> {
