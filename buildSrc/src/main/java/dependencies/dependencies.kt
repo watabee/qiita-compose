@@ -115,6 +115,7 @@ object Deps {
 
     object Accompanist {
         const val coil = "com.google.accompanist:accompanist-coil:0.6.2"
+        const val flowLayout = "com.google.accompanist:accompanist-flowlayout:0.6.3-SNAPSHOT"
     }
 
     const val timber = "com.jakewharton.timber:timber:4.7.1"

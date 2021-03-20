@@ -2,6 +2,7 @@ package com.github.watabee.qiitacompose.ui.user
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.ContentAlpha
@@ -40,12 +44,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.transform.CircleCropTransformation
+import com.github.watabee.qiitacompose.api.response.Tag
 import com.github.watabee.qiitacompose.api.response.User
 import com.github.watabee.qiitacompose.ui.common.ErrorScreen
 import com.github.watabee.qiitacompose.ui.common.LoadingScreen
 import com.github.watabee.qiitacompose.ui.common.navViewModel
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
+import com.github.watabee.qiitacompose.ui.theme.tagBackground
 import com.google.accompanist.coil.CoilImage
+import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.coroutines.flow.collect
 
 private val LocalUserRouting = compositionLocalOf<UserRouting> {
@@ -61,7 +68,7 @@ fun UserScreen(user: User, userRouting: UserRouting) {
     val event = viewModel.event
 
     LaunchedEffect(user.id) {
-        dispatchAction(UserViewModel.Action.CheckFollowingUser(user.id))
+        dispatchAction(UserViewModel.Action.GetUserInfo(user.id))
     }
 
     LaunchedEffect(event) {
@@ -70,16 +77,16 @@ fun UserScreen(user: User, userRouting: UserRouting) {
         }
     }
 
-    when (val state = state) {
-        UserViewModel.State.Loading -> {
+    when {
+        state.isLoading -> {
             LoadingScreen()
         }
-        UserViewModel.State.FindUserError -> {
-            ErrorScreen(onRetryButtonClicked = { dispatchAction(UserViewModel.Action.CheckFollowingUser(user.id)) })
+        state.getUserInfoError -> {
+            ErrorScreen(onRetryButtonClicked = { dispatchAction(UserViewModel.Action.GetUserInfo(user.id)) })
         }
-        is UserViewModel.State.VisibleUser -> {
+        else -> {
             CompositionLocalProvider(LocalUserRouting provides userRouting) {
-                UserProfileScreen(user, state.isFollowingUser)
+                UserProfileScreen(user, state.isFollowingUser, state.followingTags)
             }
         }
     }
@@ -97,10 +104,11 @@ private fun handleEvent(context: Context, event: UserViewModel.Event) {
 }
 
 @Composable
-private fun UserProfileScreen(user: User, isFollowingUser: Boolean) {
+private fun UserProfileScreen(user: User, isFollowingUser: Boolean, followingTags: List<Tag>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -148,6 +156,8 @@ private fun UserProfileScreen(user: User, isFollowingUser: Boolean) {
 
         Spacer(modifier = Modifier.requiredHeight(24.dp))
         FollowButton(userId = user.id, isFollowingUser = isFollowingUser)
+
+        FollowingTags(followingTags = followingTags)
     }
 }
 
@@ -267,6 +277,32 @@ private fun FollowButton(userId: String, isFollowingUser: Boolean) {
 }
 
 @Composable
+private fun FollowingTags(followingTags: List<Tag>) {
+    if (followingTags.isEmpty()) {
+        return
+    }
+
+    Spacer(modifier = Modifier.requiredHeight(48.dp))
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Icon(painter = painterResource(id = R.drawable.ic_tags), contentDescription = null, tint = MaterialTheme.colors.primary)
+        Spacer(modifier = Modifier.requiredWidth(8.dp))
+        Text(text = stringResource(id = R.string.user_following_tags), style = MaterialTheme.typography.body2, fontWeight = FontWeight.W700)
+    }
+    Spacer(modifier = Modifier.requiredHeight(8.dp))
+    FlowRow(modifier = Modifier.fillMaxWidth(), mainAxisSpacing = 8.dp, crossAxisSpacing = 8.dp) {
+        followingTags.forEach { tag ->
+            Text(
+                text = tag.id,
+                modifier = Modifier
+                    .background(color = MaterialTheme.colors.tagBackground)
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                style = MaterialTheme.typography.caption
+            )
+        }
+    }
+}
+
+@Composable
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 private fun PreviewUserProfileScreen() {
     val user = User(
@@ -286,7 +322,12 @@ private fun PreviewUserProfileScreen() {
         websiteUrl = null
     )
 
+    val tags = listOf(
+        Tag(id = "Android", itemsCount = 1000, followersCount = 100, iconUrl = ""),
+        Tag(id = "iOS", itemsCount = 1000, followersCount = 100, iconUrl = "")
+    )
+
     QiitaTheme {
-        UserProfileScreen(user, isFollowingUser = true)
+        UserProfileScreen(user, isFollowingUser = true, followingTags = tags)
     }
 }

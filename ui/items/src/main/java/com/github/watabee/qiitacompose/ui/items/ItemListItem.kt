@@ -65,7 +65,7 @@ internal fun ItemListItem(item: Item) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_items_tags),
+                            painter = painterResource(id = R.drawable.ic_tags),
                             contentDescription = null
                         )
                     }

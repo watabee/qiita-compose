@@ -6,6 +6,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import com.github.watabee.qiitacompose.ui.common.R
 
@@ -25,6 +26,9 @@ private fun lightColorPalette(): Colors {
         onSurface = colorResource(id = R.color.black)
     )
 }
+
+val Colors.tagBackground: Color
+    get() = Color(0xFFEEEEEE)
 
 @Composable
 fun QiitaTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {

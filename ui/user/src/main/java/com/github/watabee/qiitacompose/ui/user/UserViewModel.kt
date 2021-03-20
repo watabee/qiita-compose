@@ -3,10 +3,15 @@ package com.github.watabee.qiitacompose.ui.user
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.watabee.qiitacompose.api.QiitaApiResult
+import com.github.watabee.qiitacompose.api.response.SuccessResponse
+import com.github.watabee.qiitacompose.api.response.SuccessResponseWithPagination
+import com.github.watabee.qiitacompose.api.response.Tag
 import com.github.watabee.qiitacompose.datastore.UserDataStore
 import com.github.watabee.qiitacompose.repository.QiitaRepository
 import com.github.watabee.qiitacompose.util.throttleFirst
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -21,6 +26,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,7 +35,7 @@ class UserViewModel @Inject constructor(
     dataStore: UserDataStore
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<State>(State.Loading)
+    private val _state = MutableStateFlow(State(isLoading = true))
     val state: StateFlow<State> = _state.asStateFlow()
 
     private val eventChannel = Channel<Event>(Channel.UNLIMITED)
@@ -40,8 +46,8 @@ class UserViewModel @Inject constructor(
 
     val dispatchAction: (Action) -> Unit = { action ->
         when (action) {
-            is Action.CheckFollowingUser -> {
-                viewModelScope.launch { checkFollowingUser(action.userId) }
+            is Action.GetUserInfo -> {
+                viewModelScope.launch { getUserInfo(action.userId) }
             }
             is Action.FollowUser, is Action.UnfollowUser -> {
                 actionFollowOrUnfollowUser.tryEmit(action)
@@ -54,7 +60,7 @@ class UserViewModel @Inject constructor(
         .stateIn(viewModelScope, started = SharingStarted.Eagerly, initialValue = false)
 
     init {
-        actionFollowOrUnfollowUser
+        actionFollowOrUnfollowUser.throttleFirst(1000L)
             .onEach { action ->
                 when (action) {
                     is Action.FollowUser -> followUser(action.userId)
@@ -67,14 +73,20 @@ class UserViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    private suspend fun checkFollowingUser(userId: String) {
-        _state.emit(State.Loading)
-        when (val result = qiitaRepository.isFollowingUser(userId)) {
-            is QiitaApiResult.Success -> {
-                _state.emit(State.VisibleUser(result.response.response))
-            }
-            is QiitaApiResult.Failure -> {
-                _state.emit(State.FindUserError)
+    private suspend fun getUserInfo(userId: String) {
+        supervisorScope {
+            _state.emit(State(isLoading = true))
+            val (isFollowingUserResult, fetchUserFollowingTagsResult) = awaitAll(
+                async { qiitaRepository.isFollowingUser(userId) },
+                async { qiitaRepository.fetchUserFollowingTags(userId) }
+            )
+            @Suppress("UNCHECKED_CAST")
+            if (isFollowingUserResult is QiitaApiResult.Success && fetchUserFollowingTagsResult is QiitaApiResult.Success) {
+                val isFollowingUser = (isFollowingUserResult.response as SuccessResponse<Boolean>).response
+                val followingTags = (fetchUserFollowingTagsResult.response as SuccessResponseWithPagination<List<Tag>>).response
+                _state.emit(State(isFollowingUser = isFollowingUser, followingTags = followingTags))
+            } else {
+                _state.emit(State(getUserInfoError = false))
             }
         }
     }
@@ -82,7 +94,7 @@ class UserViewModel @Inject constructor(
     private suspend fun followUser(userId: String) {
         when (qiitaRepository.followUser(userId)) {
             is QiitaApiResult.Success -> {
-                _state.emit(State.VisibleUser(isFollowingUser = true))
+                _state.emit(State(isFollowingUser = true, followingTags = _state.value.followingTags))
             }
             is QiitaApiResult.Failure -> {
                 eventChannel.send(Event.ShowFollowUserError)
@@ -93,7 +105,7 @@ class UserViewModel @Inject constructor(
     private suspend fun unfollowUser(userId: String) {
         when (qiitaRepository.unfollowUser(userId)) {
             is QiitaApiResult.Success -> {
-                _state.emit(State.VisibleUser(isFollowingUser = false))
+                _state.emit(State(isFollowingUser = false, followingTags = _state.value.followingTags))
             }
             is QiitaApiResult.Failure -> {
                 eventChannel.send(Event.ShowUnfollowUserError)
@@ -101,11 +113,12 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    sealed class State {
-        object Loading : State()
-        object FindUserError : State()
-        data class VisibleUser(val isFollowingUser: Boolean) : State()
-    }
+    data class State(
+        val isLoading: Boolean = false,
+        val getUserInfoError: Boolean = false,
+        val isFollowingUser: Boolean = false,
+        val followingTags: List<Tag> = emptyList()
+    )
 
     sealed class Event {
         object ShowFollowUserError : Event()
@@ -113,7 +126,7 @@ class UserViewModel @Inject constructor(
     }
 
     sealed class Action {
-        data class CheckFollowingUser(val userId: String) : Action()
+        data class GetUserInfo(val userId: String) : Action()
 
         data class FollowUser(val userId: String) : Action()
 

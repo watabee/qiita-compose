@@ -6,6 +6,7 @@
 
     <string name="user_follow">フォロー</string>
     <string name="user_now_following">フォロー中</string>
+    <string name="user_following_tags">フォロー中のタグ</string>
 
     <string name="user_follow_user_error_message">フォローに失敗しました</string>
     <string name="user_unfollow_user_error_message">フォローの解除に失敗しました</string>

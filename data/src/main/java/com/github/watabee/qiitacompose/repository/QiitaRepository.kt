@@ -11,6 +11,7 @@ import com.github.watabee.qiitacompose.api.response.Item
 import com.github.watabee.qiitacompose.api.response.Rate
 import com.github.watabee.qiitacompose.api.response.SuccessResponse
 import com.github.watabee.qiitacompose.api.response.SuccessResponseWithPagination
+import com.github.watabee.qiitacompose.api.response.Tag
 import com.github.watabee.qiitacompose.di.Api
 import com.github.watabee.qiitacompose.util.Env
 import com.squareup.moshi.Moshi
@@ -44,6 +45,8 @@ interface QiitaRepository {
     suspend fun fetchAuthenticatedUser(): QiitaApiResult<SuccessResponse<AuthenticatedUser>, ErrorResponse>
 
     suspend fun isFollowingUser(userId: String): QiitaApiResult<SuccessResponse<Boolean>, ErrorResponse>
+
+    suspend fun fetchUserFollowingTags(userId: String): QiitaApiResult<SuccessResponseWithPagination<List<Tag>>, ErrorResponse>
 
     suspend fun followUser(userId: String): QiitaApiResult<SuccessResponse<Unit>, ErrorResponse>
 
@@ -132,6 +135,16 @@ internal class QiitaRepositoryImpl @Inject constructor(
         } catch (e: Throwable) {
             QiitaApiResult.Failure.UnknownFailure(e)
         }
+    }
+
+    override suspend fun fetchUserFollowingTags(userId: String): QiitaApiResult<SuccessResponseWithPagination<List<Tag>>, ErrorResponse> {
+        val httpUrl = HttpUrl.Builder()
+            .scheme("https")
+            .host("qiita.com")
+            .addPathSegments("api/v2/users/$userId/following_tags")
+            .build()
+
+        return httpGet(httpUrl)
     }
 
     override suspend fun followUser(userId: String): QiitaApiResult<SuccessResponse<Unit>, ErrorResponse> {

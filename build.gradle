@@ -21,6 +21,9 @@ allprojects {
         google()
         mavenCentral()
         jcenter()
+
+        // Used for Accompanist snapshots
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
 
     tasks.withType(KotlinCompile).configureEach {
