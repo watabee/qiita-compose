@@ -49,10 +49,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import coil.transform.CircleCropTransformation
 import com.github.watabee.qiitacompose.api.response.AuthenticatedUser
 import com.github.watabee.qiitacompose.ui.common.AppOutlinedButton
-import com.github.watabee.qiitacompose.ui.common.navViewModel
 import com.github.watabee.qiitacompose.ui.items.ItemsRouting
 import com.github.watabee.qiitacompose.ui.items.ItemsScreen
 import com.github.watabee.qiitacompose.ui.theme.QiitaFontFamily
@@ -63,12 +63,14 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(scaffoldState: ScaffoldState = rememberScaffoldState(), homeRouting: HomeRouting, itemsRouting: ItemsRouting) {
+    val viewModel: HomeViewModel = hiltNavGraphViewModel()
     val coroutineScope = rememberCoroutineScope()
     var isVisibleLogoutConfirmationDialog by remember { mutableStateOf(false) }
     Scaffold(
         scaffoldState = scaffoldState,
         drawerContent = {
             AppDrawer(
+                viewModel = viewModel,
                 homeRouting = homeRouting,
                 closeDrawer = { coroutineScope.launch { scaffoldState.drawerState.close() } },
                 onLogoutButtonClicked = { isVisibleLogoutConfirmationDialog = true }
@@ -89,7 +91,7 @@ fun HomeScreen(scaffoldState: ScaffoldState = rememberScaffoldState(), homeRouti
         content = {
             ItemsScreen(itemsRouting)
             if (isVisibleLogoutConfirmationDialog) {
-                LogoutConfirmationDialog(onDismissRequest = { isVisibleLogoutConfirmationDialog = false })
+                LogoutConfirmationDialog(viewModel = viewModel, onDismissRequest = { isVisibleLogoutConfirmationDialog = false })
             }
         }
     )
@@ -97,11 +99,11 @@ fun HomeScreen(scaffoldState: ScaffoldState = rememberScaffoldState(), homeRouti
 
 @Composable
 private fun AppDrawer(
+    viewModel: HomeViewModel,
     homeRouting: HomeRouting,
     closeDrawer: () -> Unit,
     onLogoutButtonClicked: () -> Unit
 ) {
-    val viewModel: HomeViewModel = navViewModel()
     val isLoggedIn: Boolean by viewModel.isLoggedIn.lifecycleAwareFlow().collectAsState(initial = false)
     Column(
         modifier = Modifier
@@ -109,6 +111,7 @@ private fun AppDrawer(
             .padding(all = 16.dp)
     ) {
         DrawerHeader(
+            viewModel = viewModel,
             homeRouting = homeRouting,
             isLoggedIn = isLoggedIn,
             onLogoutButtonClicked = onLogoutButtonClicked
@@ -131,16 +134,17 @@ private fun AppDrawer(
 
 @Composable
 private fun DrawerHeader(
+    viewModel: HomeViewModel,
     homeRouting: HomeRouting,
     isLoggedIn: Boolean,
     onLogoutButtonClicked: () -> Unit
 ) {
-    val viewModel: HomeViewModel = navViewModel()
     Box(modifier = Modifier.padding(top = 16.dp)) {
         if (isLoggedIn) {
             val authenticatedUserState by viewModel.authenticatedUserState.lifecycleAwareFlow()
                 .collectAsState(GetAuthenticatedUserState.Loading)
             UserInformation(
+                viewModel = viewModel,
                 authenticatedUserState = authenticatedUserState,
                 onLogoutButtonClicked = onLogoutButtonClicked,
                 openUserScreen = { }
@@ -155,6 +159,7 @@ private fun DrawerHeader(
 
 @Composable
 private fun UserInformation(
+    viewModel: HomeViewModel,
     authenticatedUserState: GetAuthenticatedUserState,
     onLogoutButtonClicked: () -> Unit,
     openUserScreen: () -> Unit
@@ -207,9 +212,8 @@ private fun UserInformation(
                 }
                 Spacer(modifier = Modifier.requiredHeight(16.dp))
 
-                val homeViewModel: HomeViewModel = navViewModel()
                 AppOutlinedButton(
-                    onClick = { homeViewModel.retryToGetAuthenticatedUser() }
+                    onClick = { viewModel.dispatchAction(HomeViewModel.Action.GetAuthenticatedUser) }
                 ) {
                     Text(text = stringResource(id = R.string.common_retry), style = MaterialTheme.typography.button)
                 }
@@ -261,8 +265,7 @@ private fun DrawerButton(
 }
 
 @Composable
-private fun LogoutConfirmationDialog(onDismissRequest: () -> Unit) {
-    val viewModel: HomeViewModel = navViewModel()
+private fun LogoutConfirmationDialog(viewModel: HomeViewModel, onDismissRequest: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismissRequest,
         text = {
@@ -271,7 +274,7 @@ private fun LogoutConfirmationDialog(onDismissRequest: () -> Unit) {
         confirmButton = {
             TextButton(
                 onClick = {
-                    viewModel.logout()
+                    viewModel.dispatchAction(HomeViewModel.Action.Logout)
                     onDismissRequest()
                 }
             ) {
@@ -311,6 +314,7 @@ private fun UserInformationPreview() {
     )
     QiitaTheme {
         UserInformation(
+            viewModel = hiltNavGraphViewModel(),
             authenticatedUserState = GetAuthenticatedUserState.Success(authenticatedUser),
             onLogoutButtonClicked = {},
             openUserScreen = {}

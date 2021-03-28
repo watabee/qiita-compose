@@ -40,7 +40,7 @@ dependencies {
 
     implementation Deps.Google.material
 
-    implementation Deps.AndroidX.Hilt.navigation
+    api Deps.AndroidX.Hilt.compose
 
     implementation Deps.timber
 }

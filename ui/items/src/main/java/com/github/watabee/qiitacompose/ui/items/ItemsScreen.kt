@@ -13,6 +13,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -20,7 +21,6 @@ import androidx.paging.compose.items
 import com.github.watabee.qiitacompose.api.response.Item
 import com.github.watabee.qiitacompose.ui.common.ErrorScreen
 import com.github.watabee.qiitacompose.ui.common.LoadingScreen
-import com.github.watabee.qiitacompose.ui.common.navViewModel
 
 internal val LocalItemsRouting = compositionLocalOf<ItemsRouting> {
     error("CompositionLocal LocalNavHostController not present")
@@ -28,7 +28,7 @@ internal val LocalItemsRouting = compositionLocalOf<ItemsRouting> {
 
 @Composable
 fun ItemsScreen(itemsRouting: ItemsRouting) {
-    val viewModel: ItemsViewModel = navViewModel()
+    val viewModel: ItemsViewModel = hiltNavGraphViewModel()
     val lazyPagingItems = viewModel.itemsFlow.collectAsLazyPagingItems()
 
     CompositionLocalProvider(LocalItemsRouting provides itemsRouting) {
