@@ -25,7 +25,7 @@ deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:5.10.2
 
 deps.Kotlin = [
     stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.31",
-    gradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.31",
+    gradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32",
 ]
 
 deps.Kotlin.Coroutines = [
