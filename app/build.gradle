@@ -80,7 +80,6 @@ dependencies {
     implementation Deps.AndroidX.fragment
     implementation Deps.AndroidX.core
 
-    implementation Deps.AndroidX.Lifecycle.livedata
     implementation Deps.AndroidX.Lifecycle.viewmodel
     implementation Deps.AndroidX.Hilt.viewmodel
     kapt Deps.AndroidX.Hilt.compiler
@@ -96,7 +95,6 @@ dependencies {
     implementation Deps.AndroidX.Compose.foundation
     implementation Deps.AndroidX.Compose.foundationLayout
     implementation Deps.AndroidX.Compose.material
-    implementation Deps.AndroidX.Compose.runtimeLiveData
     implementation Deps.AndroidX.Compose.uiTooling
     implementation Deps.Google.composeThemeAdapter
     implementation Deps.AndroidX.Compose.viewModel

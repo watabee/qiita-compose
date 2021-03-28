@@ -51,6 +51,7 @@ import com.github.watabee.qiitacompose.ui.common.LoadingScreen
 import com.github.watabee.qiitacompose.ui.common.navViewModel
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
 import com.github.watabee.qiitacompose.ui.theme.tagBackground
+import com.github.watabee.qiitacompose.ui.util.lifecycleAwareFlow
 import com.google.accompanist.coil.CoilImage
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.coroutines.flow.collect
@@ -63,7 +64,7 @@ private val LocalUserRouting = compositionLocalOf<UserRouting> {
 fun UserScreen(user: User, userRouting: UserRouting) {
     val context = LocalContext.current
     val viewModel: UserViewModel = navViewModel()
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.lifecycleAwareFlow().collectAsState(UserViewModel.State(isLoading = true))
     val dispatchAction = viewModel.dispatchAction
     val event = viewModel.event
 
@@ -242,7 +243,7 @@ private fun CounterList(itemsCount: Int, followeesCount: Int, followersCount: In
 @Composable
 private fun FollowButton(userId: String, isFollowingUser: Boolean) {
     val viewModel: UserViewModel = navViewModel()
-    val isLoggedIn by viewModel.isLoggedIn.collectAsState()
+    val isLoggedIn by viewModel.isLoggedIn.lifecycleAwareFlow().collectAsState(initial = false)
     val userRouting = LocalUserRouting.current
     val onButtonClicked = {
         when {

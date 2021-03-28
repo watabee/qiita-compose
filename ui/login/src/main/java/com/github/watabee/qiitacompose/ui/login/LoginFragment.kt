@@ -19,11 +19,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.github.watabee.qiitacompose.ui.common.AppDialogFragment
 import com.github.watabee.qiitacompose.ui.common.DialogEvent
 import com.github.watabee.qiitacompose.ui.common.setOnAppDialogFragmentEventListener
-import com.github.watabee.qiitacompose.ui.util.launchWhenResumed
 import com.github.watabee.qiitacompose.util.Env
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
@@ -85,17 +85,19 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         val loadingView: View = view.findViewById(R.id.loading_view)
         viewModel.uiState
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { loadingView.isVisible = it.isRequesting }
             .launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.outputEvent
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { event ->
                 when (event) {
                     LoginOutputEvent.SuccessLogin -> showSuccessLoginDialog()
                     is LoginOutputEvent.FailureLogin -> showFailureLoginDialog(event.code)
                 }
             }
-            .launchWhenResumed(viewLifecycleOwner)
+            .launchIn(viewLifecycleOwner.lifecycleScope)
 
         webView.loadUrl(makeAuthUrl(state))
     }

@@ -57,6 +57,7 @@ import com.github.watabee.qiitacompose.ui.items.ItemsRouting
 import com.github.watabee.qiitacompose.ui.items.ItemsScreen
 import com.github.watabee.qiitacompose.ui.theme.QiitaFontFamily
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
+import com.github.watabee.qiitacompose.ui.util.lifecycleAwareFlow
 import com.google.accompanist.coil.CoilImage
 import kotlinx.coroutines.launch
 
@@ -101,7 +102,7 @@ private fun AppDrawer(
     onLogoutButtonClicked: () -> Unit
 ) {
     val viewModel: HomeViewModel = navViewModel()
-    val isLoggedIn: Boolean by viewModel.isLoggedIn.collectAsState()
+    val isLoggedIn: Boolean by viewModel.isLoggedIn.lifecycleAwareFlow().collectAsState(initial = false)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -137,7 +138,8 @@ private fun DrawerHeader(
     val viewModel: HomeViewModel = navViewModel()
     Box(modifier = Modifier.padding(top = 16.dp)) {
         if (isLoggedIn) {
-            val authenticatedUserState: GetAuthenticatedUserState by viewModel.authenticatedUserState.collectAsState()
+            val authenticatedUserState by viewModel.authenticatedUserState.lifecycleAwareFlow()
+                .collectAsState(GetAuthenticatedUserState.Loading)
             UserInformation(
                 authenticatedUserState = authenticatedUserState,
                 onLogoutButtonClicked = onLogoutButtonClicked,

@@ -36,7 +36,7 @@ dependencies {
     implementation Deps.AndroidX.Compose.material
     implementation Deps.AndroidX.Compose.navigation
 
-    implementation Deps.AndroidX.Lifecycle.livedata
+    api Deps.AndroidX.Lifecycle.runtime
 
     implementation Deps.Google.material
 

@@ -52,10 +52,11 @@ deps.AndroidX.Test = [
     junit: "androidx.test.ext:junit-ktx:1.1.2",
 ]
 
+versions.lifecycle = "2.4.0-alpha01"
 deps.AndroidX.Lifecycle = [
-    livedata: "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0",
-    compiler: "androidx.lifecycle:lifecycle-compiler:2.3.0",
-    viewmodel: "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0",
+    runtime: "androidx.lifecycle:lifecycle-runtime-ktx:$versions.lifecycle",
+    compiler: "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle",
+    viewmodel: "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle",
 ]
 
 versions.compose = "1.0.0-beta02"
@@ -67,7 +68,6 @@ deps.AndroidX.Compose = [
     foundation: "androidx.compose.foundation:foundation:$versions.compose",
     foundationLayout: "androidx.compose.foundation:foundation-layout:$versions.compose",
     material: "androidx.compose.material:material:$versions.compose",
-    runtimeLiveData: "androidx.compose.runtime:runtime-livedata:$versions.compose",
     themeAdapter: "androidx.compose.material:compose-theme-adapter:$versions.compose",
     constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha03",
 
