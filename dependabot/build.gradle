@@ -124,7 +124,7 @@ deps.Accompanist = [
 
 deps.timber = "com.jakewharton.timber:timber:4.7.1"
 
-deps.desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.0.10"
+deps.desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
 
 deps.junit = "junit:junit:4.13.2"
 deps.truth = "com.google.truth:truth:1.1.2"
