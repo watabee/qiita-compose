@@ -116,9 +116,10 @@ deps.Coil = [
     coil: "io.coil-kt:coil:1.1.1",
 ]
 
+versions.accompanist = "0.7.0"
 deps.Accompanist = [
-    coil: "com.google.accompanist:accompanist-coil:0.6.2",
-    flowLayout: "com.google.accompanist:accompanist-flowlayout:0.6.3-SNAPSHOT",
+    coil: "com.google.accompanist:accompanist-coil:$versions.accompanist",
+    flowLayout: "com.google.accompanist:accompanist-flowlayout:$versions.accompanist",
 ]
 
 deps.timber = "com.jakewharton.timber:timber:4.7.1"
