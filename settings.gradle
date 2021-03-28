@@ -11,3 +11,4 @@ include ':ui:items'
 include ':ui:user'
 
 include ':test-util'
+include ':dependabot'

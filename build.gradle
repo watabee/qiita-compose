@@ -1,9 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-import dependencies.Deps
-import dependencies.Versions
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
+    apply from: rootProject.file("dependabot/build.gradle")
+
     repositories {
         google()
         jcenter()
@@ -17,6 +17,8 @@ buildscript {
 }
 
 allprojects {
+    apply from: rootProject.file("dependabot/build.gradle")
+
     repositories {
         google()
         mavenCentral()
