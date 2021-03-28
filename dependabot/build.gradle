@@ -54,7 +54,7 @@ deps.AndroidX.Test = [
 
 deps.AndroidX.Lifecycle = [
     livedata: "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0",
-    compiler: "androidx.lifecycle:lifecycle-compiler:2.3.0",
+    compiler: "androidx.lifecycle:lifecycle-compiler:2.3.1",
     viewmodel: "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0",
 ]
 
