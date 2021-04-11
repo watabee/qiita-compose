@@ -73,11 +73,11 @@ deps.AndroidX.Compose = [
 
     paging: "androidx.paging:paging-compose:1.0.0-alpha08",
     // Jetpack Compose Integration for ViewModel
-    navigation: "androidx.navigation:navigation-compose:1.0.0-alpha09",
     viewModel: "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha04",
+    navigation: "androidx.navigation:navigation-compose:1.0.0-alpha10",
 ]
 
-versions.navigation = "2.3.3"
+versions.navigation = "2.3.5"
 deps.AndroidX.Navigation = [
     fragment: "androidx.navigation:navigation-fragment-ktx:$versions.navigation",
     ui: "androidx.navigation:navigation-ui-ktx:$versions.navigation",
