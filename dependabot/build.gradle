@@ -59,7 +59,7 @@ deps.AndroidX.Lifecycle = [
     viewmodel: "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle",
 ]
 
-versions.compose = "1.0.0-beta02"
+versions.compose = "1.0.0-beta04"
 deps.AndroidX.Compose = [
     compiler: "androidx.compose.compiler:compiler:$versions.compose",
     runtime: "androidx.compose.runtime:runtime:$versions.compose",
