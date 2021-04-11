@@ -213,7 +213,7 @@ private fun UserInformation(
                 Spacer(modifier = Modifier.requiredHeight(16.dp))
 
                 AppOutlinedButton(
-                    onClick = { viewModel.dispatchAction(HomeViewModel.Action.GetAuthenticatedUser) }
+                    onClick = { viewModel.retryToGetAuthenticatedUser() }
                 ) {
                     Text(text = stringResource(id = R.string.common_retry), style = MaterialTheme.typography.button)
                 }
@@ -274,7 +274,7 @@ private fun LogoutConfirmationDialog(viewModel: HomeViewModel, onDismissRequest:
         confirmButton = {
             TextButton(
                 onClick = {
-                    viewModel.dispatchAction(HomeViewModel.Action.Logout)
+                    viewModel.logout()
                     onDismissRequest()
                 }
             ) {
