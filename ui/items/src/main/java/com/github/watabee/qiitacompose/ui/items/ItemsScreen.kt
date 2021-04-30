@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -20,7 +21,9 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.github.watabee.qiitacompose.api.response.Item
 import com.github.watabee.qiitacompose.ui.common.ErrorScreen
-import com.github.watabee.qiitacompose.ui.common.LoadingScreen
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 internal val LocalItemsRouting = compositionLocalOf<ItemsRouting> {
     error("CompositionLocal LocalNavHostController not present")
@@ -30,17 +33,25 @@ internal val LocalItemsRouting = compositionLocalOf<ItemsRouting> {
 fun ItemsScreen(itemsRouting: ItemsRouting) {
     val viewModel: ItemsViewModel = hiltNavGraphViewModel()
     val lazyPagingItems = viewModel.itemsFlow.collectAsLazyPagingItems()
+    val isRefreshing = lazyPagingItems.loadState.refresh is LoadState.Loading
+    val isError = lazyPagingItems.loadState.refresh is LoadState.Error
 
     CompositionLocalProvider(LocalItemsRouting provides itemsRouting) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            when (lazyPagingItems.loadState.refresh) {
-                LoadState.Loading -> {
-                    LoadingScreen()
+            SwipeRefresh(
+                state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
+                onRefresh = { lazyPagingItems.refresh() },
+                indicator = { state, refreshTrigger ->
+                    SwipeRefreshIndicator(
+                        state = state,
+                        refreshTriggerDistance = refreshTrigger,
+                        contentColor = MaterialTheme.colors.primary
+                    )
                 }
-                is LoadState.Error -> {
+            ) {
+                if (isError) {
                     ErrorScreen(onRetryButtonClicked = { lazyPagingItems.retry() })
-                }
-                is LoadState.NotLoading -> {
+                } else {
                     ItemsList(lazyPagingItems = lazyPagingItems)
                 }
             }
