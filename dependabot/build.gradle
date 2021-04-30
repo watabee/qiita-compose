@@ -21,7 +21,7 @@ def versions = [
 ext.Versions = versions
 
 deps.androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-alpha14"
-deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:5.10.2"
+deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:5.12.4"
 
 versions.kotlin = "1.4.32"
 deps.Kotlin = [
@@ -116,7 +116,7 @@ deps.Coil = [
     coil: "io.coil-kt:coil:1.1.1",
 ]
 
-versions.accompanist = "0.7.0"
+versions.accompanist = "0.8.1"
 deps.Accompanist = [
     coil: "com.google.accompanist:accompanist-coil:$versions.accompanist",
     flowLayout: "com.google.accompanist:accompanist-flowlayout:$versions.accompanist",
@@ -128,7 +128,7 @@ deps.desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
 
 deps.junit = "junit:junit:4.13.2"
 deps.truth = "com.google.truth:truth:1.1.2"
-deps.turbine = "app.cash.turbine:turbine:0.4.0"
+deps.turbine = "app.cash.turbine:turbine:0.4.1"
 deps.robolectric = "org.robolectric:robolectric:4.5.1"
 
 deps.Mockk = [
