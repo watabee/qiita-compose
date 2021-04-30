@@ -1,5 +1,6 @@
 package com.github.watabee.qiitacompose.ui.items
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -30,7 +31,7 @@ import com.github.watabee.qiitacompose.api.response.Item
 import com.github.watabee.qiitacompose.api.response.User
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
 import com.github.watabee.qiitacompose.ui.util.AppDateFormatter
-import com.google.accompanist.coil.CoilImage
+import com.google.accompanist.coil.rememberCoilPainter
 import java.util.Date
 
 @Composable
@@ -44,13 +45,15 @@ internal fun ItemListItem(item: Item) {
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     val itemsRouting = LocalItemsRouting.current
-                    CoilImage(
-                        data = item.user.profileImageUrl,
+                    Image(
+                        painter = rememberCoilPainter(
+                            request = item.user.profileImageUrl,
+                            requestBuilder = {
+                                transformations(CircleCropTransformation())
+                            }
+                        ),
                         contentDescription = null,
                         modifier = Modifier.requiredSize(20.dp),
-                        requestBuilder = {
-                            transformations(CircleCropTransformation())
-                        }
                     )
                     Spacer(modifier = Modifier.requiredWidth(8.dp))
                     TextButton(

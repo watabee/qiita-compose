@@ -2,6 +2,7 @@ package com.github.watabee.qiitacompose.ui.user
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -52,7 +53,7 @@ import com.github.watabee.qiitacompose.ui.common.LoadingScreen
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
 import com.github.watabee.qiitacompose.ui.theme.tagBackground
 import com.github.watabee.qiitacompose.ui.util.lifecycleAwareFlow
-import com.google.accompanist.coil.CoilImage
+import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.coroutines.flow.collect
 
@@ -114,13 +115,15 @@ private fun UserProfileScreen(user: User, isFollowingUser: Boolean, followingTag
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.requiredHeight(28.dp))
-        CoilImage(
-            data = user.profileImageUrl,
+        Image(
+            painter = rememberCoilPainter(
+                request = user.profileImageUrl,
+                requestBuilder = {
+                    transformations(CircleCropTransformation())
+                }
+            ),
             contentDescription = null,
             modifier = Modifier.requiredSize(72.dp),
-            requestBuilder = {
-                transformations(CircleCropTransformation())
-            }
         )
         Spacer(modifier = Modifier.requiredHeight(16.dp))
 

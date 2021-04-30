@@ -1,5 +1,6 @@
 package com.github.watabee.qiitacompose.ui.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -58,7 +59,7 @@ import com.github.watabee.qiitacompose.ui.items.ItemsScreen
 import com.github.watabee.qiitacompose.ui.theme.QiitaFontFamily
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
 import com.github.watabee.qiitacompose.ui.util.lifecycleAwareFlow
-import com.google.accompanist.coil.CoilImage
+import com.google.accompanist.coil.rememberCoilPainter
 import kotlinx.coroutines.launch
 
 @Composable
@@ -174,13 +175,15 @@ private fun UserInformation(
                         .padding(vertical = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    CoilImage(
-                        data = authenticatedUserState.user.profileImageUrl,
+                    Image(
+                        painter = rememberCoilPainter(
+                            request = authenticatedUserState.user.profileImageUrl,
+                            requestBuilder = {
+                                transformations(CircleCropTransformation())
+                            }
+                        ),
                         contentDescription = null,
                         modifier = Modifier.requiredSize(32.dp),
-                        requestBuilder = {
-                            transformations(CircleCropTransformation())
-                        }
                     )
                     Spacer(modifier = Modifier.requiredWidth(8.dp))
                     Text(text = authenticatedUserState.user.id, style = MaterialTheme.typography.subtitle2)
