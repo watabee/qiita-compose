@@ -20,7 +20,7 @@ def versions = [
 ]
 ext.Versions = versions
 
-deps.androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-alpha14"
+deps.androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-alpha15"
 deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:5.12.4"
 
 versions.kotlin = "1.4.32"
