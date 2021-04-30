@@ -132,5 +132,5 @@ deps.turbine = "app.cash.turbine:turbine:0.4.1"
 deps.robolectric = "org.robolectric:robolectric:4.5.1"
 
 deps.Mockk = [
-    mockk: "io.mockk:mockk:1.10.6",
+    mockk: "io.mockk:mockk:1.11.0",
 ]
