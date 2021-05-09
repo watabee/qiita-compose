@@ -94,9 +94,10 @@ deps.Google = [
     composeThemeAdapter: "com.google.android.material:compose-theme-adapter:$versions.compose",
 ]
 
+versions.okhttp = "4.9.1"
 deps.OkHttp = [
-    okhttp: "com.squareup.okhttp3:okhttp:4.9.1",
-    loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:4.9.1",
+    okhttp: "com.squareup.okhttp3:okhttp:$versions.okhttp",
+    loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:$versions.okhttp",
 ]
 
 versions.moshi = "1.12.0"
@@ -106,11 +107,12 @@ deps.Moshi = [
     adapters: "com.squareup.moshi:moshi-adapters:$versions.moshi",
 ]
 
+versions.hilt = "2.35.1"
 deps.Dagger = [:]
 deps.Dagger.Hilt = [
-    android: "com.google.dagger:hilt-android:2.35.1",
-    androidCompiler: "com.google.dagger:hilt-android-compiler:2.35.1",
-    androidGradlePlugin: "com.google.dagger:hilt-android-gradle-plugin:2.35.1",
+    android: "com.google.dagger:hilt-android:$versions.hilt",
+    androidCompiler: "com.google.dagger:hilt-android-compiler:$versions.hilt",
+    androidGradlePlugin: "com.google.dagger:hilt-android-gradle-plugin:$versions.hilt",
 ]
 
 deps.Coil = [
