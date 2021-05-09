@@ -116,7 +116,7 @@ deps.Dagger.Hilt = [
 ]
 
 deps.Coil = [
-    coil: "io.coil-kt:coil:1.1.1",
+    coil: "io.coil-kt:coil:1.2.1",
 ]
 
 versions.accompanist = "0.9.1"
