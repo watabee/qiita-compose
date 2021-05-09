@@ -113,10 +113,10 @@ deps.Dagger.Hilt = [
 ]
 
 deps.Coil = [
-    coil: "io.coil-kt:coil:1.1.1",
+    coil: "io.coil-kt:coil:1.2.1",
 ]
 
-versions.accompanist = "0.8.1"
+versions.accompanist = "0.9.1"
 deps.Accompanist = [
     coil: "com.google.accompanist:accompanist-coil:$versions.accompanist",
     flowLayout: "com.google.accompanist:accompanist-flowlayout:$versions.accompanist",
