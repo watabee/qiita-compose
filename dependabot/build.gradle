@@ -99,10 +99,11 @@ deps.OkHttp = [
     loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:4.9.1",
 ]
 
+versions.moshi = "1.12.0"
 deps.Moshi = [
-    moshi: "com.squareup.moshi:moshi:1.11.0",
-    codegen: "com.squareup.moshi:moshi-kotlin-codegen:1.12.0",
-    adapters: "com.squareup.moshi:moshi-adapters:1.11.0",
+    moshi: "com.squareup.moshi:moshi:$versions.moshi",
+    codegen: "com.squareup.moshi:moshi-kotlin-codegen:$versions.moshi",
+    adapters: "com.squareup.moshi:moshi-adapters:$versions.moshi",
 ]
 
 deps.Dagger = [:]
