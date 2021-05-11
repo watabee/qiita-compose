@@ -38,7 +38,7 @@ deps.Kotlin.Coroutines = [
 
 deps.AndroidX = [
     appcompat: "androidx.appcompat:appcompat:1.3.0-rc01",
-    activity: "androidx.activity:activity-ktx:1.2.2",
+    activity: "androidx.activity:activity-ktx:1.2.3",
     fragment: "androidx.fragment:fragment-ktx:1.3.3",
     core: "androidx.core:core-ktx:1.6.0-alpha03",
     dataStorePreferences: "androidx.datastore:datastore-preferences:1.0.0-beta01",
@@ -69,7 +69,7 @@ deps.AndroidX.Compose = [
     foundationLayout: "androidx.compose.foundation:foundation-layout:$versions.compose",
     material: "androidx.compose.material:material:$versions.compose",
     themeAdapter: "androidx.compose.material:compose-theme-adapter:$versions.compose",
-    constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha05",
+    constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha06",
 
     paging: "androidx.paging:paging-compose:1.0.0-alpha08",
     // Jetpack Compose Integration for ViewModel
@@ -86,7 +86,7 @@ deps.AndroidX.Navigation = [
 deps.AndroidX.Hilt = [
     viewmodel: "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03",
     compose: "androidx.hilt:hilt-navigation-compose:1.0.0-alpha01",
-    compiler: "androidx.hilt:hilt-compiler:1.0.0-beta01",
+    compiler: "androidx.hilt:hilt-compiler:1.0.0",
 ]
 
 deps.Google = [
