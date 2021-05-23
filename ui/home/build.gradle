@@ -48,9 +48,6 @@ dependencies {
     implementation Deps.Dagger.Hilt.android
     kapt Deps.Dagger.Hilt.androidCompiler
 
-    implementation Deps.AndroidX.Hilt.viewmodel
-    kapt Deps.AndroidX.Hilt.compiler
-
     implementation Deps.Google.material
 
     implementation Deps.timber

@@ -81,8 +81,6 @@ dependencies {
     implementation Deps.AndroidX.core
 
     implementation Deps.AndroidX.Lifecycle.viewmodel
-    implementation Deps.AndroidX.Hilt.viewmodel
-    kapt Deps.AndroidX.Hilt.compiler
 
     implementation Deps.AndroidX.Navigation.fragment
     implementation Deps.AndroidX.Navigation.ui
