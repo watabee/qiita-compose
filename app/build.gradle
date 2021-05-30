@@ -100,6 +100,7 @@ dependencies {
 
     implementation Deps.Coil.coil
     implementation Deps.Accompanist.coil
+    implementation Deps.Accompanist.insets
 
     implementation Deps.Dagger.Hilt.android
     kapt Deps.Dagger.Hilt.androidCompiler
