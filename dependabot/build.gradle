@@ -23,13 +23,13 @@ ext.Versions = versions
 deps.androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-beta03"
 deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:5.12.5"
 
-versions.kotlin = "1.4.32"
+versions.kotlin = "1.5.10"
 deps.Kotlin = [
     stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin",
     gradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
 ]
 
-versions.coroutines = "1.4.3"
+versions.coroutines = "1.5.0"
 deps.Kotlin.Coroutines = [
     core: "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines",
     android: "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines",
@@ -59,7 +59,13 @@ deps.AndroidX.Lifecycle = [
     viewmodel: "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle",
 ]
 
-versions.compose = "1.0.0-beta06"
+versions.navigation = "2.4.0-alpha02"
+deps.AndroidX.Navigation = [
+    fragment: "androidx.navigation:navigation-fragment-ktx:$versions.navigation",
+    ui: "androidx.navigation:navigation-ui-ktx:$versions.navigation",
+]
+
+versions.compose = "1.0.0-beta08"
 deps.AndroidX.Compose = [
     compiler: "androidx.compose.compiler:compiler:$versions.compose",
     runtime: "androidx.compose.runtime:runtime:$versions.compose",
@@ -69,22 +75,16 @@ deps.AndroidX.Compose = [
     foundationLayout: "androidx.compose.foundation:foundation-layout:$versions.compose",
     material: "androidx.compose.material:material:$versions.compose",
     themeAdapter: "androidx.compose.material:compose-theme-adapter:$versions.compose",
-    constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha06",
+    constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha07",
 
-    paging: "androidx.paging:paging-compose:1.0.0-alpha08",
+    paging: "androidx.paging:paging-compose:1.0.0-alpha10",
     // Jetpack Compose Integration for ViewModel
-    viewModel: "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha04",
-    navigation: "androidx.navigation:navigation-compose:1.0.0-alpha10",
-]
-
-versions.navigation = "2.3.5"
-deps.AndroidX.Navigation = [
-    fragment: "androidx.navigation:navigation-fragment-ktx:$versions.navigation",
-    ui: "androidx.navigation:navigation-ui-ktx:$versions.navigation",
+    viewModel: "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha06",
+    navigation: "androidx.navigation:navigation-compose:$versions.navigation",
 ]
 
 deps.AndroidX.Hilt = [
-    compose: "androidx.hilt:hilt-navigation-compose:1.0.0-alpha01",
+    compose: "androidx.hilt:hilt-navigation-compose:1.0.0-alpha02",
 ]
 
 deps.Google = [
@@ -114,10 +114,10 @@ deps.Dagger.Hilt = [
 ]
 
 deps.Coil = [
-    coil: "io.coil-kt:coil:1.2.1",
+    coil: "io.coil-kt:coil:1.2.2",
 ]
 
-versions.accompanist = "0.9.1"
+versions.accompanist = "0.11.1"
 deps.Accompanist = [
     coil: "com.google.accompanist:accompanist-coil:$versions.accompanist",
     flowLayout: "com.google.accompanist:accompanist-flowlayout:$versions.accompanist",

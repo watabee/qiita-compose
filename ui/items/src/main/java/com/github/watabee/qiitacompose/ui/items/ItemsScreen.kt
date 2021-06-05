@@ -14,7 +14,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -31,7 +31,7 @@ internal val LocalItemsRouting = compositionLocalOf<ItemsRouting> {
 
 @Composable
 fun ItemsScreen(itemsRouting: ItemsRouting) {
-    val viewModel: ItemsViewModel = hiltNavGraphViewModel()
+    val viewModel: ItemsViewModel = hiltViewModel()
     val lazyPagingItems = viewModel.itemsFlow.collectAsLazyPagingItems()
     val isRefreshing = lazyPagingItems.loadState.refresh is LoadState.Loading
     val isError = lazyPagingItems.loadState.refresh is LoadState.Error

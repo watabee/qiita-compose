@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.transform.CircleCropTransformation
 import com.github.watabee.qiitacompose.data.UserData
 import com.github.watabee.qiitacompose.ui.items.ItemsRouting
@@ -27,7 +27,7 @@ import com.google.accompanist.coil.rememberCoilPainter
 
 @Composable
 fun HomeScreen(scaffoldState: ScaffoldState = rememberScaffoldState(), homeRouting: HomeRouting, itemsRouting: ItemsRouting) {
-    val viewModel: HomeViewModel = hiltNavGraphViewModel()
+    val viewModel: HomeViewModel = hiltViewModel()
     val userData: UserData? by viewModel.userData.lifecycleAwareFlow().collectAsState(initial = null)
 
     HomeScreen(

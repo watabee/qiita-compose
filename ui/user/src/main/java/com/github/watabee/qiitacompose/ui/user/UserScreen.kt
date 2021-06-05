@@ -44,7 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.transform.CircleCropTransformation
 import com.github.watabee.qiitacompose.api.response.Tag
 import com.github.watabee.qiitacompose.api.response.User
@@ -64,7 +64,7 @@ private val LocalUserRouting = compositionLocalOf<UserRouting> {
 @Composable
 fun UserScreen(user: User, userRouting: UserRouting) {
     val context = LocalContext.current
-    val viewModel: UserViewModel = hiltNavGraphViewModel()
+    val viewModel: UserViewModel = hiltViewModel()
     val state by viewModel.state.lifecycleAwareFlow().collectAsState(UserViewModel.State(isLoading = true))
     val dispatchAction = viewModel.dispatchAction
     val event = viewModel.event
@@ -245,7 +245,7 @@ private fun CounterList(itemsCount: Int, followeesCount: Int, followersCount: In
 
 @Composable
 private fun FollowButton(userId: String, isFollowingUser: Boolean) {
-    val viewModel: UserViewModel = hiltNavGraphViewModel()
+    val viewModel: UserViewModel = hiltViewModel()
     val isLoggedIn by viewModel.isLoggedIn.lifecycleAwareFlow().collectAsState(initial = false)
     val userRouting = LocalUserRouting.current
     val onButtonClicked = {

@@ -3,10 +3,10 @@ package com.github.watabee.qiitacompose
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.github.watabee.qiitacompose.api.response.User
 import com.github.watabee.qiitacompose.ui.common.LocalNavHostController
@@ -45,7 +45,7 @@ fun NavGraph(startDestination: String = MainDestinations.HOME, openLoginScreen: 
 
 class AppRouter(navController: NavController, override val openLoginScreen: () -> Unit) : HomeRouting, ItemsRouting, UserRouting {
     override val openUserScreen: (user: User) -> Unit = { user ->
-        navController.currentBackStackEntry?.arguments?.putParcelable("user", user)
+        navController.currentBackStackEntry?.arguments = bundleOf("user" to user)
         navController.navigate(MainDestinations.USER)
     }
 }
