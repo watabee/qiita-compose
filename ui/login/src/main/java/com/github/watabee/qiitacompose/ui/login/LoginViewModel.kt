@@ -37,11 +37,20 @@ internal class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             requestAccessTokens.collectLatest { code ->
                 _uiState.value = LoginUiState(isRequesting = true)
-                when (val result = qiitaRepository.requestAccessTokens(code)) {
+                when (val requestAccessTokensResult = qiitaRepository.requestAccessTokens(code)) {
                     is QiitaApiResult.Success -> {
-                        _uiState.value = LoginUiState(isRequesting = false)
-                        userDataStore.updateAccessToken(result.response.response.token)
-                        _outputEvent.send(LoginOutputEvent.SuccessLogin)
+                        val accessToken = requestAccessTokensResult.response.response.token
+                        when (val fetchAuthenticatedUserResult = qiitaRepository.fetchAuthenticatedUser(accessToken)) {
+                            is QiitaApiResult.Success -> {
+                                userDataStore.updateUserData(accessToken, fetchAuthenticatedUserResult.response.response.profileImageUrl)
+                                _uiState.value = LoginUiState(isRequesting = false)
+                                _outputEvent.send(LoginOutputEvent.SuccessLogin)
+                            }
+                            is QiitaApiResult.Failure -> {
+                                _uiState.value = LoginUiState(isRequesting = false)
+                                _outputEvent.send(LoginOutputEvent.FailureLogin(code))
+                            }
+                        }
                     }
                     is QiitaApiResult.Failure -> {
                         _uiState.value = LoginUiState(isRequesting = false)

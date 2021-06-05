@@ -17,6 +17,8 @@ import com.github.watabee.qiitacompose.util.Env
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.rawType
+import okhttp3.Headers
+import okhttp3.Headers.Companion.toHeaders
 import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -42,7 +44,7 @@ interface QiitaRepository {
 
     suspend fun requestAccessTokens(code: String): QiitaApiResult<SuccessResponse<AccessTokens>, ErrorResponse>
 
-    suspend fun fetchAuthenticatedUser(): QiitaApiResult<SuccessResponse<AuthenticatedUser>, ErrorResponse>
+    suspend fun fetchAuthenticatedUser(accessToken: String): QiitaApiResult<SuccessResponse<AuthenticatedUser>, ErrorResponse>
 
     suspend fun isFollowingUser(userId: String): QiitaApiResult<SuccessResponse<Boolean>, ErrorResponse>
 
@@ -94,14 +96,14 @@ internal class QiitaRepositoryImpl @Inject constructor(
         return httpPost(httpUrl, requestBody)
     }
 
-    override suspend fun fetchAuthenticatedUser(): QiitaApiResult<SuccessResponse<AuthenticatedUser>, ErrorResponse> {
+    override suspend fun fetchAuthenticatedUser(accessToken: String): QiitaApiResult<SuccessResponse<AuthenticatedUser>, ErrorResponse> {
         val httpUrl = HttpUrl.Builder()
             .scheme("https")
             .host("qiita.com")
             .addPathSegments("api/v2/authenticated_user")
             .build()
 
-        return httpGet(httpUrl)
+        return httpGet(httpUrl, mapOf("Authorization" to "Bearer $accessToken").toHeaders())
     }
 
     override suspend fun isFollowingUser(userId: String): QiitaApiResult<SuccessResponse<Boolean>, ErrorResponse> {
@@ -190,8 +192,16 @@ internal class QiitaRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend inline fun <reified T : Any> httpGet(httpUrl: HttpUrl): QiitaApiResult<T, ErrorResponse> {
-        val request = Request.Builder().url(httpUrl).get().build()
+    private suspend inline fun <reified T : Any> httpGet(httpUrl: HttpUrl, headers: Headers? = null): QiitaApiResult<T, ErrorResponse> {
+        val request = Request.Builder()
+            .also {
+                if (headers != null) {
+                    it.headers(headers)
+                }
+            }
+            .url(httpUrl)
+            .get()
+            .build()
 
         return try {
             parseResponse(okHttpClient.newCall(request).await())

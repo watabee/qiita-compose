@@ -2,12 +2,12 @@ package com.github.watabee.qiitacompose.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.github.watabee.qiitacompose.data.UserData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -18,9 +18,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface UserDataStore {
-    val accessTokenFlow: Flow<String?>
+    val userDataFlow: Flow<UserData?>
 
-    suspend fun updateAccessToken(accessToken: String?)
+    suspend fun updateUserData(accessToken: String, userImageUrl: String)
+
+    suspend fun clear()
 }
 
 @Singleton
@@ -29,9 +31,10 @@ internal class UserDataStoreImpl @Inject constructor(@ApplicationContext private
 
     private object PreferencesKeys {
         val ACCESS_TOKEN = stringPreferencesKey("access_token")
+        val USER_IMAGE_URL = stringPreferencesKey("user_image_url")
     }
 
-    override val accessTokenFlow: Flow<String?> = appContext.dataStore.data
+    override val userDataFlow: Flow<UserData?> = appContext.dataStore.data
         .catch { e ->
             if (e is IOException) {
                 emit(emptyPreferences())
@@ -39,16 +42,26 @@ internal class UserDataStoreImpl @Inject constructor(@ApplicationContext private
                 throw e
             }
         }
-        .map { preferences -> preferences[PreferencesKeys.ACCESS_TOKEN] }
+        .map { preferences ->
+            val accessToken = preferences[PreferencesKeys.ACCESS_TOKEN]
+            if (accessToken != null) {
+                UserData(accessToken = accessToken, imageUrl = preferences[PreferencesKeys.USER_IMAGE_URL])
+            } else {
+                null
+            }
+        }
         .distinctUntilChanged()
 
-    override suspend fun updateAccessToken(accessToken: String?) {
+    override suspend fun updateUserData(accessToken: String, userImageUrl: String) {
         appContext.dataStore.edit { preferences ->
-            if (accessToken != null) {
-                preferences[PreferencesKeys.ACCESS_TOKEN] = accessToken
-            } else {
-                preferences.remove(PreferencesKeys.ACCESS_TOKEN)
-            }
+            preferences[PreferencesKeys.ACCESS_TOKEN] = accessToken
+            preferences[PreferencesKeys.USER_IMAGE_URL] = userImageUrl
+        }
+    }
+
+    override suspend fun clear() {
+        appContext.dataStore.edit { preferences ->
+            preferences.clear()
         }
     }
 }

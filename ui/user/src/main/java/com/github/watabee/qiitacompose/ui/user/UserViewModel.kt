@@ -55,8 +55,8 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    val isLoggedIn: StateFlow<Boolean> = dataStore.accessTokenFlow
-        .map { !it.isNullOrBlank() }
+    val isLoggedIn: StateFlow<Boolean> = dataStore.userDataFlow
+        .map { !it?.accessToken.isNullOrBlank() }
         .stateIn(viewModelScope, started = SharingStarted.Eagerly, initialValue = false)
 
     init {

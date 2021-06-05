@@ -14,23 +14,24 @@ internal class AccessTokenInterceptor @Inject constructor(userDataStore: UserDat
     private var accessToken: String? = null
 
     init {
-        userDataStore.accessTokenFlow
-            .onEach { accessToken = it }
+        userDataStore.userDataFlow
+            .onEach { accessToken = it?.accessToken }
             .launchIn(scope)
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val accessToken = accessToken
+        val request = chain.request()
+        val hasAuthorizationHeader = !request.header("Authorization").isNullOrEmpty()
 
-        val request = if (!accessToken.isNullOrBlank()) {
-            chain.request()
-                .newBuilder()
+        val newRequest = if (hasAuthorizationHeader || accessToken.isNullOrBlank()) {
+            request
+        } else {
+            request.newBuilder()
                 .addHeader("Authorization", "Bearer $accessToken")
                 .build()
-        } else {
-            chain.request()
         }
 
-        return chain.proceed(request)
+        return chain.proceed(newRequest)
     }
 }
