@@ -41,6 +41,8 @@ dependencies {
     implementation Deps.Dagger.Hilt.android
     kapt Deps.Dagger.Hilt.androidCompiler
 
+    implementation Deps.Insetter.insetter
+
     implementation Deps.timber
 
     testImplementation project(':test-util')

@@ -28,6 +28,7 @@ import com.github.watabee.qiitacompose.util.Env
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.util.UUID
@@ -63,6 +64,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         val webView: WebView = view.findViewById(R.id.web_view)
         val progressIndicator: LinearProgressIndicator = view.findViewById(R.id.progress_indicator)
+
+        view.applyInsetter {
+            type(statusBars = true) {
+                margin()
+            }
+
+            type(navigationBars = true, ime = true) {
+                padding(animated = true)
+            }
+        }
 
         @SuppressLint("SetJavaScriptEnabled")
         webView.settings.javaScriptEnabled = true

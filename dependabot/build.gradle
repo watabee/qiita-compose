@@ -125,6 +125,10 @@ deps.Accompanist = [
     insets: "com.google.accompanist:accompanist-insets:$versions.accompanist",
 ]
 
+deps.Insetter = [
+    insetter: "dev.chrisbanes.insetter:insetter:0.6.0",
+]
+
 deps.timber = "com.jakewharton.timber:timber:4.7.1"
 
 deps.desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
