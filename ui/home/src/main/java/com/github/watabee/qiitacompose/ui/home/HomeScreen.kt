@@ -19,31 +19,29 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.transform.CircleCropTransformation
 import com.github.watabee.qiitacompose.data.UserData
-import com.github.watabee.qiitacompose.ui.items.ItemsRouting
 import com.github.watabee.qiitacompose.ui.items.ItemsScreen
+import com.github.watabee.qiitacompose.ui.navigation.AppRouting
 import com.github.watabee.qiitacompose.ui.theme.QiitaFontFamily
 import com.github.watabee.qiitacompose.ui.util.lifecycleAwareFlow
 import com.google.accompanist.coil.rememberCoilPainter
 
 @Composable
-fun HomeScreen(scaffoldState: ScaffoldState = rememberScaffoldState(), homeRouting: HomeRouting, itemsRouting: ItemsRouting) {
+fun HomeScreen(scaffoldState: ScaffoldState = rememberScaffoldState(), appRouting: AppRouting) {
     val viewModel: HomeViewModel = hiltViewModel()
     val userData: UserData? by viewModel.userData.lifecycleAwareFlow().collectAsState(initial = null)
 
     HomeScreen(
         scaffoldState = scaffoldState,
-        itemsRouting = itemsRouting,
         userData = userData,
-        openLoginScreen = homeRouting.openLoginScreen
+        appRouting = appRouting
     )
 }
 
 @Composable
 private fun HomeScreen(
     scaffoldState: ScaffoldState,
-    itemsRouting: ItemsRouting,
     userData: UserData?,
-    openLoginScreen: () -> Unit
+    appRouting: AppRouting
 ) {
     Scaffold(
         scaffoldState = scaffoldState,
@@ -76,7 +74,7 @@ private fun HomeScreen(
                             }
                         }
                     } else {
-                        IconButton(onClick = openLoginScreen) {
+                        IconButton(onClick = appRouting.openLoginScreen) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_blank_user),
                                 contentDescription = null,
@@ -88,7 +86,7 @@ private fun HomeScreen(
             )
         },
         content = {
-            ItemsScreen(itemsRouting)
+            ItemsScreen(appRouting.openUserScreen)
         }
     )
 }

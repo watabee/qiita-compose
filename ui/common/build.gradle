@@ -27,6 +27,7 @@ android {
 
 dependencies {
     api project(':base-android')
+    implementation project(':data')
 
     implementation Deps.AndroidX.appcompat
     implementation Deps.AndroidX.activity

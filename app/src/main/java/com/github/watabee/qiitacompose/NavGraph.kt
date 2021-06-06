@@ -10,10 +10,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.github.watabee.qiitacompose.api.response.User
 import com.github.watabee.qiitacompose.ui.common.LocalNavHostController
-import com.github.watabee.qiitacompose.ui.home.HomeRouting
 import com.github.watabee.qiitacompose.ui.home.HomeScreen
-import com.github.watabee.qiitacompose.ui.items.ItemsRouting
-import com.github.watabee.qiitacompose.ui.user.UserRouting
+import com.github.watabee.qiitacompose.ui.navigation.AppRouting
 import com.github.watabee.qiitacompose.ui.user.UserScreen
 
 object MainDestinations {
@@ -24,26 +22,26 @@ object MainDestinations {
 @Composable
 fun NavGraph(startDestination: String = MainDestinations.HOME, openLoginScreen: () -> Unit) {
     val navController = rememberNavController()
-    val appRouter = remember(navController) { AppRouter(navController, openLoginScreen) }
+    val appRouter = remember(navController, openLoginScreen) { AppRouter(navController, openLoginScreen) }
 
     CompositionLocalProvider(
         LocalNavHostController provides navController
     ) {
         NavHost(navController = navController, startDestination = startDestination) {
             composable(MainDestinations.HOME) {
-                HomeScreen(homeRouting = appRouter, itemsRouting = appRouter)
+                HomeScreen(appRouting = appRouter)
             }
             composable(MainDestinations.USER) {
                 UserScreen(
                     user = navController.previousBackStackEntry?.arguments?.getParcelable("user")!!,
-                    userRouting = appRouter
+                    appRouting = appRouter
                 )
             }
         }
     }
 }
 
-class AppRouter(navController: NavController, override val openLoginScreen: () -> Unit) : HomeRouting, ItemsRouting, UserRouting {
+class AppRouter(navController: NavController, override val openLoginScreen: () -> Unit) : AppRouting {
     override val openUserScreen: (user: User) -> Unit = { user ->
         navController.currentBackStackEntry?.arguments = bundleOf("user" to user)
         navController.navigate(MainDestinations.USER)

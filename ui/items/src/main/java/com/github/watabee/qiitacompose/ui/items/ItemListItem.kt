@@ -35,7 +35,7 @@ import com.google.accompanist.coil.rememberCoilPainter
 import java.util.Date
 
 @Composable
-internal fun ItemListItem(item: Item) {
+internal fun ItemListItem(item: Item, openUserScreen: (User) -> Unit) {
     Column {
         Column(
             modifier = Modifier
@@ -44,7 +44,6 @@ internal fun ItemListItem(item: Item) {
         ) {
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    val itemsRouting = LocalItemsRouting.current
                     Image(
                         painter = rememberCoilPainter(
                             request = item.user.profileImageUrl,
@@ -57,7 +56,7 @@ internal fun ItemListItem(item: Item) {
                     )
                     Spacer(modifier = Modifier.requiredWidth(8.dp))
                     TextButton(
-                        onClick = { itemsRouting.openUserScreen(item.user) },
+                        onClick = { openUserScreen(item.user) },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = Color.Transparent,
                             contentColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.high)
@@ -146,7 +145,8 @@ private fun PreviewItemListItem() {
                     Item.Tag("JavaScript"),
                     Item.Tag("JavaScript")
                 )
-            )
+            ),
+            openUserScreen = {}
         )
     }
 }

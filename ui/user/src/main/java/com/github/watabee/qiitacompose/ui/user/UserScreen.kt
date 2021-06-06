@@ -30,7 +30,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,6 +49,7 @@ import com.github.watabee.qiitacompose.api.response.Tag
 import com.github.watabee.qiitacompose.api.response.User
 import com.github.watabee.qiitacompose.ui.common.ErrorScreen
 import com.github.watabee.qiitacompose.ui.common.LoadingScreen
+import com.github.watabee.qiitacompose.ui.navigation.AppRouting
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
 import com.github.watabee.qiitacompose.ui.theme.tagBackground
 import com.github.watabee.qiitacompose.ui.util.lifecycleAwareFlow
@@ -58,12 +58,8 @@ import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.insets.navigationBarsPadding
 import kotlinx.coroutines.flow.collect
 
-private val LocalUserRouting = compositionLocalOf<UserRouting> {
-    error("CompositionLocal LocalUserRouting not present")
-}
-
 @Composable
-fun UserScreen(user: User, userRouting: UserRouting) {
+fun UserScreen(user: User, appRouting: AppRouting) {
     val context = LocalContext.current
     val viewModel: UserViewModel = hiltViewModel()
     val state by viewModel.state.lifecycleAwareFlow().collectAsState(UserViewModel.State(isLoading = true))
@@ -80,17 +76,36 @@ fun UserScreen(user: User, userRouting: UserRouting) {
         }
     }
 
+    UserScreen(
+        user = user,
+        isLoading = state.isLoading,
+        isError = state.getUserInfoError,
+        isFollowingUser = state.isFollowingUser,
+        followingTags = state.followingTags,
+        retryToGetUserInfo = { userId -> dispatchAction(UserViewModel.Action.GetUserInfo(userId)) },
+        openLoginScreen = appRouting.openLoginScreen
+    )
+}
+
+@Composable
+private fun UserScreen(
+    user: User,
+    isLoading: Boolean,
+    isError: Boolean,
+    isFollowingUser: Boolean,
+    followingTags: List<Tag>,
+    retryToGetUserInfo: (userId: String) -> Unit,
+    openLoginScreen: () -> Unit
+) {
     when {
-        state.isLoading -> {
+        isLoading -> {
             LoadingScreen()
         }
-        state.getUserInfoError -> {
-            ErrorScreen(onRetryButtonClicked = { dispatchAction(UserViewModel.Action.GetUserInfo(user.id)) })
+        isError -> {
+            ErrorScreen(onRetryButtonClicked = { retryToGetUserInfo(user.id) })
         }
         else -> {
-            CompositionLocalProvider(LocalUserRouting provides userRouting) {
-                UserProfileScreen(user, state.isFollowingUser, state.followingTags)
-            }
+            UserProfileScreen(user, isFollowingUser, followingTags, openLoginScreen)
         }
     }
 }
@@ -107,7 +122,7 @@ private fun handleEvent(context: Context, event: UserViewModel.Event) {
 }
 
 @Composable
-private fun UserProfileScreen(user: User, isFollowingUser: Boolean, followingTags: List<Tag>) {
+private fun UserProfileScreen(user: User, isFollowingUser: Boolean, followingTags: List<Tag>, openLoginScreen: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -161,7 +176,7 @@ private fun UserProfileScreen(user: User, isFollowingUser: Boolean, followingTag
         }
 
         Spacer(modifier = Modifier.requiredHeight(24.dp))
-        FollowButton(userId = user.id, isFollowingUser = isFollowingUser)
+        FollowButton(userId = user.id, isFollowingUser = isFollowingUser, openLoginScreen = openLoginScreen)
 
         FollowingTags(followingTags = followingTags)
     }
@@ -246,13 +261,12 @@ private fun CounterList(itemsCount: Int, followeesCount: Int, followersCount: In
 }
 
 @Composable
-private fun FollowButton(userId: String, isFollowingUser: Boolean) {
+private fun FollowButton(userId: String, isFollowingUser: Boolean, openLoginScreen: () -> Unit) {
     val viewModel: UserViewModel = hiltViewModel()
     val isLoggedIn by viewModel.isLoggedIn.lifecycleAwareFlow().collectAsState(initial = false)
-    val userRouting = LocalUserRouting.current
     val onButtonClicked = {
         when {
-            !isLoggedIn -> userRouting.openLoginScreen()
+            !isLoggedIn -> openLoginScreen()
             isFollowingUser -> viewModel.dispatchAction(UserViewModel.Action.UnfollowUser(userId))
             else -> viewModel.dispatchAction(UserViewModel.Action.FollowUser(userId))
         }
@@ -334,6 +348,6 @@ private fun PreviewUserProfileScreen() {
     )
 
     QiitaTheme {
-        UserProfileScreen(user, isFollowingUser = true, followingTags = tags)
+        UserProfileScreen(user, isFollowingUser = true, followingTags = tags, openLoginScreen = {})
     }
 }
