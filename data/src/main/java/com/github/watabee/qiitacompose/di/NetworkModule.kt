@@ -1,7 +1,9 @@
 package com.github.watabee.qiitacompose.di
 
 import android.content.Context
+import com.github.watabee.qiitacompose.api.QiitaApiService
 import com.github.watabee.qiitacompose.api.interceptor.AccessTokenInterceptor
+import com.skydoves.sandwich.coroutines.CoroutinesResponseCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import dagger.Binds
@@ -14,6 +16,8 @@ import dagger.multibindings.IntoSet
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.File
 import java.util.Date
 import java.util.concurrent.TimeUnit
@@ -61,5 +65,19 @@ internal abstract class NetworkModule {
         @Singleton
         fun provideMoshi(): Moshi =
             Moshi.Builder().add(Date::class.java, Rfc3339DateJsonAdapter()).build()
+
+        @Provides
+        @Singleton
+        fun provideRetrofit(@Api okHttpClient: OkHttpClient, moshi: Moshi): Retrofit =
+            Retrofit.Builder()
+                .baseUrl("https://qiita.com")
+                .client(okHttpClient)
+                .addCallAdapterFactory(CoroutinesResponseCallAdapterFactory())
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
+                .build()
+
+        @Provides
+        @Singleton
+        fun provideQiitaApiService(retrofit: Retrofit): QiitaApiService = retrofit.create(QiitaApiService::class.java)
     }
 }

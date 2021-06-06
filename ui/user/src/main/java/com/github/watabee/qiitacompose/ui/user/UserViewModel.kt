@@ -3,8 +3,6 @@ package com.github.watabee.qiitacompose.ui.user
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.watabee.qiitacompose.api.QiitaApiResult
-import com.github.watabee.qiitacompose.api.response.SuccessResponse
-import com.github.watabee.qiitacompose.api.response.SuccessResponseWithPagination
 import com.github.watabee.qiitacompose.api.response.Tag
 import com.github.watabee.qiitacompose.datastore.UserDataStore
 import com.github.watabee.qiitacompose.repository.QiitaRepository
@@ -76,14 +74,14 @@ class UserViewModel @Inject constructor(
     private suspend fun getUserInfo(userId: String) {
         supervisorScope {
             _state.emit(State(isLoading = true))
-            val (isFollowingUserResult, fetchUserFollowingTagsResult) = awaitAll(
+            val (isFollowingUserResult, getUserFollowingTagsResult) = awaitAll(
                 async { qiitaRepository.isFollowingUser(userId) },
-                async { qiitaRepository.fetchUserFollowingTags(userId) }
+                async { qiitaRepository.getUserFollowingTags(userId) }
             )
             @Suppress("UNCHECKED_CAST")
-            if (isFollowingUserResult is QiitaApiResult.Success && fetchUserFollowingTagsResult is QiitaApiResult.Success) {
-                val isFollowingUser = (isFollowingUserResult.response as SuccessResponse<Boolean>).response
-                val followingTags = (fetchUserFollowingTagsResult.response as SuccessResponseWithPagination<List<Tag>>).response
+            if (isFollowingUserResult is QiitaApiResult.Success<*> && getUserFollowingTagsResult is QiitaApiResult.Success<*>) {
+                val isFollowingUser = isFollowingUserResult.response as Boolean
+                val followingTags = getUserFollowingTagsResult.response as List<Tag>
                 _state.emit(State(isFollowingUser = isFollowingUser, followingTags = followingTags))
             } else {
                 _state.emit(State(getUserInfoError = false))

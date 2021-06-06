@@ -27,9 +27,14 @@ dependencies {
     implementation Deps.OkHttp.okhttp
     debugImplementation Deps.OkHttp.loggingInterceptor
 
+    implementation Deps.Retrofit.retrofit
+    implementation Deps.Retrofit.moshi
+
     api Deps.Moshi.moshi
     kapt Deps.Moshi.codegen
     implementation Deps.Moshi.adapters
+
+    implementation Deps.sandwich
 
     implementation Deps.Coil.coil
 

@@ -1,44 +1,59 @@
 package com.github.watabee.qiitacompose.ui.login
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.cash.turbine.test
 import com.github.watabee.qiitacompose.api.QiitaApiResult
 import com.github.watabee.qiitacompose.api.response.AccessTokens
-import com.github.watabee.qiitacompose.api.response.SuccessResponse
+import com.github.watabee.qiitacompose.api.response.AuthenticatedUser
+import com.github.watabee.qiitacompose.api.response.Error
 import com.github.watabee.qiitacompose.datastore.UserDataStore
 import com.github.watabee.qiitacompose.repository.QiitaRepository
-import com.github.watabee.testutil.TestCoroutineRule
 import com.google.common.truth.Truth
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class, ExperimentalCoroutinesApi::class)
-@RunWith(AndroidJUnit4::class)
 class LoginViewModelTest {
 
-    @get:Rule val testCoroutineRule = TestCoroutineRule()
+    private lateinit var testCoroutineDispatcher: TestCoroutineDispatcher
     @MockK private lateinit var userDataStore: UserDataStore
 
     @Before
     fun setup() {
+        testCoroutineDispatcher = TestCoroutineDispatcher()
+        Dispatchers.setMain(testCoroutineDispatcher)
         MockKAnnotations.init(this, relaxUnitFun = true)
     }
 
+    @After
+    fun cleanUp() {
+        Dispatchers.resetMain()
+        testCoroutineDispatcher.cleanupTestCoroutines()
+    }
+
     @Test
-    fun `when requestAccessTokens return success then outputEvent emits SuccessLogin`() = runBlockingTest {
+    fun `when getAccessTokens and getAuthenticatedUser return success then outputEvent emits SuccessLogin`() = runBlocking {
         val accessTokens = AccessTokens(clientId = "client_id", scopes = emptyList(), token = "token")
 
         val qiitaRepository: QiitaRepository = mockk {
-            coEvery { requestAccessTokens(any()) } returns QiitaApiResult.Success(SuccessResponse(response = accessTokens, rate = null))
+            coEvery { getAccessTokens(any()) } returns QiitaApiResult.Success(response = accessTokens, rate = null, pagination = null)
+            coEvery { getAuthenticatedUser(any()) } returns QiitaApiResult.Success(
+                response = authenticatedUser,
+                rate = null,
+                pagination = null
+            )
         }
 
         val viewModel = LoginViewModel(qiitaRepository, userDataStore)
@@ -49,12 +64,20 @@ class LoginViewModelTest {
                 Truth.assertThat(expectItem()).isSameInstanceAs(LoginOutputEvent.SuccessLogin)
                 cancelAndIgnoreRemainingEvents()
             }
+
+        coVerify(exactly = 1) { qiitaRepository.getAccessTokens("code") }
+        coVerify(exactly = 1) { qiitaRepository.getAuthenticatedUser(accessToken = "token") }
+        coVerify(exactly = 1) { userDataStore.updateUserData(accessToken = "token", userImageUrl = authenticatedUser.profileImageUrl) }
     }
 
     @Test
-    fun `when requestAccessTokens return failure then outputEvent emits FailureLogin`() = runBlockingTest {
+    fun `when getAccessTokens returns failure then outputEvent emits FailureLogin`() = runBlocking {
         val qiitaRepository: QiitaRepository = mockk {
-            coEvery { requestAccessTokens(any()) } returns QiitaApiResult.Failure.HttpFailure(code = 400, error = null)
+            coEvery { getAccessTokens(any()) } returns QiitaApiResult.Failure.HttpFailure(
+                statusCode = 403,
+                error = Error(message = "Forbidden", type = "forbidden"),
+                rate = null
+            )
         }
 
         val viewModel = LoginViewModel(qiitaRepository, userDataStore)
@@ -70,5 +93,16 @@ class LoginViewModelTest {
 
                 cancelAndIgnoreRemainingEvents()
             }
+
+        coVerify(exactly = 0) { userDataStore.updateUserData(accessToken = any(), userImageUrl = any()) }
+    }
+
+    companion object {
+        private val authenticatedUser = AuthenticatedUser(
+            description = null, facebookId = null, followersCount = 0, followeesCount = 0, githubLoginName = null, id = "watabee",
+            imageMonthlyUploadLimit = 0, imageMonthlyUploadRemaining = 0, itemsCount = 0, linkedinId = null, location = null,
+            name = null, organization = null, permanentId = 1, profileImageUrl = "https://xxx.xxx/watabee/image.jpeg",
+            teamOnly = false, twitterScreenName = null, websiteUrl = null
+        )
     }
 }

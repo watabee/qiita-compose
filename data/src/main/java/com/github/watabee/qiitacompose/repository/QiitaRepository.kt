@@ -1,263 +1,118 @@
 package com.github.watabee.qiitacompose.repository
 
-import androidx.annotation.IntRange
 import com.github.watabee.qiitacompose.api.QiitaApiResult
-import com.github.watabee.qiitacompose.api.await
+import com.github.watabee.qiitacompose.api.QiitaApiService
 import com.github.watabee.qiitacompose.api.response.AccessTokens
 import com.github.watabee.qiitacompose.api.response.AuthenticatedUser
-import com.github.watabee.qiitacompose.api.response.Error
-import com.github.watabee.qiitacompose.api.response.ErrorResponse
 import com.github.watabee.qiitacompose.api.response.Item
+import com.github.watabee.qiitacompose.api.response.Pagination
 import com.github.watabee.qiitacompose.api.response.Rate
-import com.github.watabee.qiitacompose.api.response.SuccessResponse
-import com.github.watabee.qiitacompose.api.response.SuccessResponseWithPagination
 import com.github.watabee.qiitacompose.api.response.Tag
-import com.github.watabee.qiitacompose.di.Api
 import com.github.watabee.qiitacompose.util.Env
+import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.ApiSuccessModelMapper
+import com.skydoves.sandwich.StatusCode
+import com.skydoves.sandwich.request
+import com.skydoves.sandwich.suspendOnError
+import com.skydoves.sandwich.suspendOnException
+import com.skydoves.sandwich.suspendOnSuccess
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
-import com.squareup.moshi.rawType
-import okhttp3.Headers
-import okhttp3.Headers.Companion.toHeaders
-import okhttp3.HttpUrl
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.Response
-import okhttp3.internal.EMPTY_REQUEST
-import okhttp3.internal.closeQuietly
-import java.io.IOException
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
-import kotlin.reflect.KType
-import kotlin.reflect.javaType
-import kotlin.reflect.typeOf
-import com.github.watabee.qiitacompose.api.request.AccessTokens as RequestAccessTokens
+import kotlin.coroutines.resume
 
 interface QiitaRepository {
-    suspend fun findItems(
-        @IntRange(from = 1, to = 100) page: Int,
-        @IntRange(from = 1, to = 100) perPage: Int,
-        query: String?
-    ): QiitaApiResult<SuccessResponseWithPagination<List<Item>>, ErrorResponse>
 
-    suspend fun requestAccessTokens(code: String): QiitaApiResult<SuccessResponse<AccessTokens>, ErrorResponse>
+    suspend fun findItems(page: Int, perPage: Int, query: String?): QiitaApiResult<List<Item>>
 
-    suspend fun fetchAuthenticatedUser(accessToken: String): QiitaApiResult<SuccessResponse<AuthenticatedUser>, ErrorResponse>
+    suspend fun getAccessTokens(code: String): QiitaApiResult<AccessTokens>
 
-    suspend fun isFollowingUser(userId: String): QiitaApiResult<SuccessResponse<Boolean>, ErrorResponse>
+    suspend fun getAuthenticatedUser(accessToken: String): QiitaApiResult<AuthenticatedUser>
 
-    suspend fun fetchUserFollowingTags(userId: String): QiitaApiResult<SuccessResponseWithPagination<List<Tag>>, ErrorResponse>
+    suspend fun isFollowingUser(userId: String): QiitaApiResult<Boolean>
 
-    suspend fun followUser(userId: String): QiitaApiResult<SuccessResponse<Unit>, ErrorResponse>
+    suspend fun getUserFollowingTags(userId: String): QiitaApiResult<List<Tag>>
 
-    suspend fun unfollowUser(userId: String): QiitaApiResult<SuccessResponse<Unit>, ErrorResponse>
+    suspend fun followUser(userId: String): QiitaApiResult<Unit>
+
+    suspend fun unfollowUser(userId: String): QiitaApiResult<Unit>
 }
 
 internal class QiitaRepositoryImpl @Inject constructor(
-    @Api private val okHttpClient: OkHttpClient,
     private val moshi: Moshi,
+    private val qiitaApiService: QiitaApiService,
     private val env: Env
 ) : QiitaRepository {
 
-    override suspend fun findItems(
-        @IntRange(from = 1, to = 100) page: Int,
-        @IntRange(from = 1, to = 100) perPage: Int,
-        query: String?
-    ): QiitaApiResult<SuccessResponseWithPagination<List<Item>>, ErrorResponse> {
-        val httpUrl = HttpUrl.Builder()
-            .scheme("https")
-            .host("qiita.com")
-            .addPathSegments("api/v2/items")
-            .addQueryParameter("page", page.toString())
-            .addQueryParameter("per_page", perPage.toString())
-            .apply {
-                if (!query.isNullOrBlank()) {
-                    addQueryParameter("query", query)
+    private suspend fun <T : Any> ApiResponse<T>.toApiResult(
+        successMapper: ApiSuccessModelMapper<T, QiitaApiResult.Success<T>> = QiitaApiResult.Success.Mapper()
+    ): QiitaApiResult<T> = flow {
+        suspendOnSuccess(successMapper) { emit(this) }
+            .suspendOnError(QiitaApiResult.Failure.HttpFailure.Mapper(moshi)) { emit(this) }
+            .suspendOnException { emit(QiitaApiResult.Failure.NetworkFailure(exception)) }
+    }.first()
+
+    override suspend fun findItems(page: Int, perPage: Int, query: String?): QiitaApiResult<List<Item>> {
+        return qiitaApiService.findItems(page, perPage, query).toApiResult()
+    }
+
+    override suspend fun getAccessTokens(code: String): QiitaApiResult<AccessTokens> {
+        val body = mapOf("client_id" to env.qiitaClientId, "client_secret" to env.qiitaClientSecret, "code" to code)
+        return qiitaApiService.requestAccessTokens(body).toApiResult()
+    }
+
+    override suspend fun getAuthenticatedUser(accessToken: String): QiitaApiResult<AuthenticatedUser> {
+        return qiitaApiService.fetchAuthenticatedUser("Bearer $accessToken").toApiResult()
+    }
+
+    override suspend fun isFollowingUser(userId: String): QiitaApiResult<Boolean> = suspendCancellableCoroutine { continuation ->
+        val call = qiitaApiService.isFollowingUser(userId).request { response: ApiResponse<Unit> ->
+            // If the user is followed -> status code: 204
+            // If the user is not followed -> status code: 404
+            val result = when (response) {
+                is ApiResponse.Success -> {
+                    QiitaApiResult.Success(
+                        response = true,
+                        rate = Rate.parseHeaders(response.headers),
+                        pagination = Pagination(response.headers)
+                    )
                 }
-            }
-            .build()
-
-        return httpGet(httpUrl)
-    }
-
-    override suspend fun requestAccessTokens(code: String): QiitaApiResult<SuccessResponse<AccessTokens>, ErrorResponse> {
-        val httpUrl = HttpUrl.Builder()
-            .scheme("https")
-            .host("qiita.com")
-            .addPathSegments("api/v2/access_tokens")
-            .build()
-
-        val accessTokensJson = moshi.adapter(RequestAccessTokens::class.java)
-            .toJson(RequestAccessTokens(env.qiitaClientId, env.qiitaClientSecret, code))
-        val requestBody = accessTokensJson.toRequestBody("application/json; charset=utf-8".toMediaType())
-
-        return httpPost(httpUrl, requestBody)
-    }
-
-    override suspend fun fetchAuthenticatedUser(accessToken: String): QiitaApiResult<SuccessResponse<AuthenticatedUser>, ErrorResponse> {
-        val httpUrl = HttpUrl.Builder()
-            .scheme("https")
-            .host("qiita.com")
-            .addPathSegments("api/v2/authenticated_user")
-            .build()
-
-        return httpGet(httpUrl, mapOf("Authorization" to "Bearer $accessToken").toHeaders())
-    }
-
-    override suspend fun isFollowingUser(userId: String): QiitaApiResult<SuccessResponse<Boolean>, ErrorResponse> {
-        val httpUrl = HttpUrl.Builder()
-            .scheme("https")
-            .host("qiita.com")
-            .addPathSegments("api/v2/users/$userId/following")
-            .build()
-
-        val request = Request.Builder().url(httpUrl).get().build()
-
-        return try {
-            val response = okHttpClient.newCall(request).await()
-            val source = response.body?.source()
-            try {
-                // Following user -> status code: 204
-                // Not following user -> status code: 404
-                if (response.isSuccessful || response.code == 404) {
-                    val rate = Rate.parseHeaders(response.headers)
-                    QiitaApiResult.Success(SuccessResponse(rate, response.code == 204))
-                } else {
-                    val error = moshi.adapter(Error::class.java).fromJson(source)!!
-                    val rate = Rate.parseHeaders(response.headers)
-                    QiitaApiResult.Failure.HttpFailure(response.code, ErrorResponse(rate, error))
-                }
-            } finally {
-                source?.closeQuietly()
-            }
-        } catch (e: IOException) {
-            QiitaApiResult.Failure.NetworkFailure(e)
-        } catch (e: Throwable) {
-            QiitaApiResult.Failure.UnknownFailure(e)
-        }
-    }
-
-    override suspend fun fetchUserFollowingTags(userId: String): QiitaApiResult<SuccessResponseWithPagination<List<Tag>>, ErrorResponse> {
-        val httpUrl = HttpUrl.Builder()
-            .scheme("https")
-            .host("qiita.com")
-            .addPathSegments("api/v2/users/$userId/following_tags")
-            .build()
-
-        return httpGet(httpUrl)
-    }
-
-    override suspend fun followUser(userId: String): QiitaApiResult<SuccessResponse<Unit>, ErrorResponse> {
-        return followOrUnfollowUser(userId, follow = true)
-    }
-
-    override suspend fun unfollowUser(userId: String): QiitaApiResult<SuccessResponse<Unit>, ErrorResponse> {
-        return followOrUnfollowUser(userId, follow = false)
-    }
-
-    private suspend fun followOrUnfollowUser(userId: String, follow: Boolean): QiitaApiResult<SuccessResponse<Unit>, ErrorResponse> {
-        val httpUrl = HttpUrl.Builder()
-            .scheme("https")
-            .host("qiita.com")
-            .addPathSegments("api/v2/users/$userId/following")
-            .build()
-
-        val request = Request.Builder().url(httpUrl)
-            .apply {
-                if (follow) put(EMPTY_REQUEST) else delete()
-            }
-            .build()
-
-        return try {
-            val response = okHttpClient.newCall(request).await()
-            val source = response.body?.source()
-            try {
-                if (response.isSuccessful) {
-                    val rate = Rate.parseHeaders(response.headers)
-                    QiitaApiResult.Success(SuccessResponse(rate, Unit))
-                } else {
-                    val error = moshi.adapter(Error::class.java).fromJson(source)!!
-                    val rate = Rate.parseHeaders(response.headers)
-                    QiitaApiResult.Failure.HttpFailure(response.code, ErrorResponse(rate, error))
-                }
-            } finally {
-                source?.closeQuietly()
-            }
-        } catch (e: IOException) {
-            QiitaApiResult.Failure.NetworkFailure(e)
-        } catch (e: Throwable) {
-            QiitaApiResult.Failure.UnknownFailure(e)
-        }
-    }
-
-    private suspend inline fun <reified T : Any> httpGet(httpUrl: HttpUrl, headers: Headers? = null): QiitaApiResult<T, ErrorResponse> {
-        val request = Request.Builder()
-            .also {
-                if (headers != null) {
-                    it.headers(headers)
-                }
-            }
-            .url(httpUrl)
-            .get()
-            .build()
-
-        return try {
-            parseResponse(okHttpClient.newCall(request).await())
-        } catch (e: IOException) {
-            QiitaApiResult.Failure.NetworkFailure(e)
-        } catch (e: Throwable) {
-            QiitaApiResult.Failure.UnknownFailure(e)
-        }
-    }
-
-    private suspend inline fun <reified T : Any> httpPost(httpUrl: HttpUrl, requestBody: RequestBody): QiitaApiResult<T, ErrorResponse> {
-        val request = Request.Builder().url(httpUrl).post(requestBody).build()
-
-        return try {
-            parseResponse(okHttpClient.newCall(request).await())
-        } catch (e: IOException) {
-            QiitaApiResult.Failure.NetworkFailure(e)
-        } catch (e: Throwable) {
-            QiitaApiResult.Failure.UnknownFailure(e)
-        }
-    }
-
-    @OptIn(ExperimentalStdlibApi::class)
-    private inline fun <reified T : Any> parseResponse(response: Response): QiitaApiResult<T, ErrorResponse> {
-        val source = response.body?.source()
-        try {
-            return if (response.isSuccessful) {
-                when {
-                    T::class == SuccessResponseWithPagination::class -> {
-                        val listType: KType = typeOf<T>().arguments[0].type!!
-                        val type = Types.newParameterizedType(
-                            listType.javaType.rawType,
-                            *listType.arguments.mapNotNull { it.type?.javaType }.toTypedArray()
+                is ApiResponse.Failure.Error -> {
+                    if (response.statusCode == StatusCode.NotFound) {
+                        QiitaApiResult.Success(
+                            response = false,
+                            rate = Rate.parseHeaders(response.headers),
+                            pagination = Pagination(response.headers)
                         )
-
-                        val rawResponse = moshi.adapter<List<Any>>(type).fromJson(source)!!
-                        val responseWithPagination = SuccessResponseWithPagination.create(response.headers, rawResponse)
-                        QiitaApiResult.Success(responseWithPagination as T)
-                    }
-                    T::class == SuccessResponse::class -> {
-                        val type = typeOf<T>().arguments[0].type?.javaType?.rawType
-                        val rawResponse = moshi.adapter(type).fromJson(source)!!
-                        val rate = Rate.parseHeaders(response.headers)
-                        QiitaApiResult.Success(SuccessResponse(rate, rawResponse) as T)
-                    }
-                    else -> {
-                        QiitaApiResult.Success(moshi.adapter(T::class.java).fromJson(source)!!)
+                    } else {
+                        QiitaApiResult.Failure.HttpFailure.Mapper(moshi).map(response)
                     }
                 }
-            } else {
-                val error = moshi.adapter(Error::class.java).fromJson(source)!!
-                val rate = Rate.parseHeaders(response.headers)
-                QiitaApiResult.Failure.HttpFailure(response.code, ErrorResponse(rate, error))
+                is ApiResponse.Failure.Exception -> {
+                    QiitaApiResult.Failure.NetworkFailure(response.exception)
+                }
             }
-        } finally {
-            source?.closeQuietly()
+            if (!continuation.isCancelled) {
+                continuation.resume(result)
+            }
         }
+
+        continuation.invokeOnCancellation {
+            kotlin.runCatching { call.cancel() }
+        }
+    }
+
+    override suspend fun getUserFollowingTags(userId: String): QiitaApiResult<List<Tag>> {
+        return qiitaApiService.fetchFollowingTags(userId).toApiResult()
+    }
+
+    override suspend fun followUser(userId: String): QiitaApiResult<Unit> {
+        return qiitaApiService.followUser(userId).toApiResult(successMapper = QiitaApiResult.Success.EmptyMapper)
+    }
+
+    override suspend fun unfollowUser(userId: String): QiitaApiResult<Unit> {
+        return qiitaApiService.unfollowUser(userId).toApiResult(successMapper = QiitaApiResult.Success.EmptyMapper)
     }
 }

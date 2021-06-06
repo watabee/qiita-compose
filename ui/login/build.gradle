@@ -45,11 +45,9 @@ dependencies {
 
     implementation Deps.timber
 
-    testImplementation project(':test-util')
+    testImplementation Deps.Kotlin.Coroutines.test
     testImplementation Deps.junit
     testImplementation Deps.truth
-    testImplementation Deps.AndroidX.Test.junit
     testImplementation Deps.turbine
-    testImplementation Deps.robolectric
     testImplementation Deps.Mockk.mockk
 }

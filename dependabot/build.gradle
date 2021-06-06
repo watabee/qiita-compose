@@ -98,6 +98,11 @@ deps.OkHttp = [
     loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:$versions.okhttp",
 ]
 
+deps.Retrofit = [
+    retrofit: "com.squareup.retrofit2:retrofit:2.9.0",
+    moshi: "com.squareup.retrofit2:converter-moshi:2.9.0",
+]
+
 versions.moshi = "1.12.0"
 deps.Moshi = [
     moshi: "com.squareup.moshi:moshi:$versions.moshi",
@@ -128,6 +133,8 @@ deps.Accompanist = [
 deps.Insetter = [
     insetter: "dev.chrisbanes.insetter:insetter:0.6.0",
 ]
+
+deps.sandwich = "com.github.skydoves:sandwich:1.1.0"
 
 deps.timber = "com.jakewharton.timber:timber:4.7.1"
 
