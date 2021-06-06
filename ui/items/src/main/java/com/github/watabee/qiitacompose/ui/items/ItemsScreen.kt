@@ -21,6 +21,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.github.watabee.qiitacompose.api.response.Item
 import com.github.watabee.qiitacompose.ui.common.ErrorScreen
+import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -61,7 +62,7 @@ fun ItemsScreen(itemsRouting: ItemsRouting) {
 
 @Composable
 private fun ItemsList(lazyPagingItems: LazyPagingItems<Item>) {
-    LazyColumn {
+    LazyColumn(modifier = Modifier.navigationBarsPadding()) {
         items(lazyPagingItems) {
             it?.let { item -> ItemListItem(item = item) }
         }

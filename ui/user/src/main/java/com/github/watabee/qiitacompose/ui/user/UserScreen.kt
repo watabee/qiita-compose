@@ -55,6 +55,7 @@ import com.github.watabee.qiitacompose.ui.theme.tagBackground
 import com.github.watabee.qiitacompose.ui.util.lifecycleAwareFlow
 import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.flowlayout.FlowRow
+import com.google.accompanist.insets.navigationBarsPadding
 import kotlinx.coroutines.flow.collect
 
 private val LocalUserRouting = compositionLocalOf<UserRouting> {
@@ -111,6 +112,7 @@ private fun UserProfileScreen(user: User, isFollowingUser: Boolean, followingTag
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
+            .navigationBarsPadding()
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
