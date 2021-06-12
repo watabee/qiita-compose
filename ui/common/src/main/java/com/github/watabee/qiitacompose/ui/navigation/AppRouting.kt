@@ -6,4 +6,6 @@ interface AppRouting {
     val openLoginScreen: () -> Unit
 
     val openUserScreen: (user: User) -> Unit
+
+    val openMyPageScreen: () -> Unit
 }

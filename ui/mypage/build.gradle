@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -26,24 +27,36 @@ android {
 }
 
 dependencies {
-    api project(':base-android')
     implementation project(':data')
+    implementation project(':ui:common')
 
     implementation Deps.AndroidX.appcompat
     implementation Deps.AndroidX.activity
     implementation Deps.AndroidX.fragment
     implementation Deps.AndroidX.core
 
+    // Compose
+    implementation Deps.AndroidX.Compose.runtime
+    implementation Deps.AndroidX.Compose.ui
+    implementation Deps.AndroidX.Compose.foundation
+    implementation Deps.AndroidX.Compose.foundationLayout
     implementation Deps.AndroidX.Compose.material
-    implementation Deps.AndroidX.Compose.navigation
     implementation Deps.AndroidX.Compose.uiTooling
+    implementation Deps.Google.composeThemeAdapter
+    implementation Deps.AndroidX.Compose.paging
+    implementation Deps.AndroidX.Compose.viewModel
     implementation Deps.AndroidX.Compose.constraintLayout
 
-    api Deps.AndroidX.Lifecycle.runtime
+    implementation Deps.Coil.coil
+    implementation Deps.Accompanist.coil
+    implementation Deps.Accompanist.insets
+
+    implementation Deps.Accompanist.flowLayout
+
+    implementation Deps.Dagger.Hilt.android
+    kapt Deps.Dagger.Hilt.androidCompiler
 
     implementation Deps.Google.material
-
-    api Deps.AndroidX.Hilt.compose
 
     implementation Deps.timber
 }

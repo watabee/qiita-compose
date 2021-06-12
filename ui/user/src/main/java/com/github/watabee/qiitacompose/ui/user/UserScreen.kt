@@ -21,7 +21,6 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
@@ -33,22 +32,21 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.transform.CircleCropTransformation
 import com.github.watabee.qiitacompose.api.response.Tag
 import com.github.watabee.qiitacompose.api.response.User
 import com.github.watabee.qiitacompose.ui.common.ErrorScreen
 import com.github.watabee.qiitacompose.ui.common.LoadingScreen
+import com.github.watabee.qiitacompose.ui.common.SnsIconButtons
+import com.github.watabee.qiitacompose.ui.common.UserCountTexts
 import com.github.watabee.qiitacompose.ui.navigation.AppRouting
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
 import com.github.watabee.qiitacompose.ui.theme.tagBackground
@@ -152,7 +150,7 @@ private fun UserProfileScreen(user: User, isFollowingUser: Boolean, followingTag
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(text = "@${user.id}", style = MaterialTheme.typography.body1)
         }
-        SnsIcons(
+        SnsIconButtons(
             githubLoginName = user.githubLoginName,
             twitterScreenName = user.twitterScreenName,
             facebookId = user.facebookId,
@@ -161,7 +159,7 @@ private fun UserProfileScreen(user: User, isFollowingUser: Boolean, followingTag
         Spacer(modifier = Modifier.requiredHeight(16.dp))
         Divider(modifier = Modifier.padding(horizontal = 24.dp))
         Spacer(modifier = Modifier.requiredHeight(8.dp))
-        CounterList(itemsCount = user.itemsCount, followeesCount = user.followeesCount, followersCount = user.followersCount)
+        UserCountTexts(itemsCount = user.itemsCount, followeesCount = user.followeesCount, followersCount = user.followersCount)
 
         val description = user.description
         if (!description.isNullOrBlank()) {
@@ -179,84 +177,6 @@ private fun UserProfileScreen(user: User, isFollowingUser: Boolean, followingTag
         FollowButton(userId = user.id, isFollowingUser = isFollowingUser, openLoginScreen = openLoginScreen)
 
         FollowingTags(followingTags = followingTags)
-    }
-}
-
-@Composable
-private fun SnsIcons(githubLoginName: String?, twitterScreenName: String?, facebookId: String?, linkedinId: String?) {
-    if (githubLoginName.isNullOrBlank() && twitterScreenName.isNullOrBlank() && facebookId.isNullOrBlank() && linkedinId.isNullOrBlank()) {
-        return
-    }
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        if (!githubLoginName.isNullOrBlank()) {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(painter = painterResource(id = R.drawable.ic_user_github), contentDescription = null, tint = Color(0xFF333333))
-            }
-        }
-        if (!twitterScreenName.isNullOrBlank()) {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(painter = painterResource(id = R.drawable.ic_user_twitter), contentDescription = null, tint = Color(0xFF1DA1F2))
-            }
-        }
-        if (!facebookId.isNullOrBlank()) {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(painter = painterResource(id = R.drawable.ic_user_facebook), contentDescription = null, tint = Color(0xFF1778F2))
-            }
-        }
-        if (!linkedinId.isNullOrBlank()) {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(painter = painterResource(id = R.drawable.ic_user_linkedin), contentDescription = null, tint = Color(0xFF0077B5))
-            }
-        }
-    }
-}
-
-@Composable
-private fun CounterList(itemsCount: Int, followeesCount: Int, followersCount: Int) {
-    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-        ConstraintLayout(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-        ) {
-            val (itemsText, followeesText, followersText) = createRefs()
-            Text(
-                text = stringResource(id = R.string.user_items_count, itemsCount),
-                textAlign = TextAlign.Center,
-                lineHeight = 18.sp,
-                modifier = Modifier.constrainAs(itemsText) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(followeesText.start)
-                },
-                style = MaterialTheme.typography.caption
-            )
-            Text(
-                text = stringResource(id = R.string.user_followees_count, followeesCount),
-                textAlign = TextAlign.Center,
-                lineHeight = 18.sp,
-                modifier = Modifier.constrainAs(followeesText) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                },
-                style = MaterialTheme.typography.caption
-            )
-            Text(
-                text = stringResource(id = R.string.user_followers_count, followersCount),
-                textAlign = TextAlign.Center,
-                lineHeight = 18.sp,
-                modifier = Modifier.constrainAs(followersText) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(followeesText.end)
-                    end.linkTo(parent.end)
-                },
-                style = MaterialTheme.typography.caption
-            )
-        }
     }
 }
 

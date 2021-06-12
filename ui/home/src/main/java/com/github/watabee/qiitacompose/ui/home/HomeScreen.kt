@@ -52,7 +52,7 @@ private fun HomeScreen(
                 },
                 actions = {
                     if (userData != null) {
-                        IconButton(onClick = { /* TODO */ }) {
+                        IconButton(onClick = { appRouting.openMyPageScreen() }) {
                             val imageUrl = userData.imageUrl
                             if (!imageUrl.isNullOrBlank()) {
                                 Image(

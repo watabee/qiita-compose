@@ -9,6 +9,7 @@ include ':ui:home'
 include ':ui:login'
 include ':ui:items'
 include ':ui:user'
+include ':ui:mypage'
 
 include ':test-util'
 include ':dependabot'

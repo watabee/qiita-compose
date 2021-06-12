@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="user_items_count">%d\n投稿数</string>
-    <string name="user_followees_count">%d\nフォロー</string>
-    <string name="user_followers_count">%d\nフォロワー</string>
-
     <string name="user_follow">フォロー</string>
     <string name="user_now_following">フォロー中</string>
     <string name="user_following_tags">フォロー中のタグ</string>

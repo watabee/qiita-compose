@@ -6,4 +6,8 @@
 
     <string name="common_connection_error_message">通信エラーが発生しました</string>
     <string name="common_retry">リトライ</string>
+
+    <string name="common_user_items_count">%d\n投稿数</string>
+    <string name="common_user_followees_count">%d\nフォロー</string>
+    <string name="common_user_followers_count">%d\nフォロワー</string>
 </resources>

@@ -11,12 +11,14 @@ import androidx.navigation.compose.rememberNavController
 import com.github.watabee.qiitacompose.api.response.User
 import com.github.watabee.qiitacompose.ui.common.LocalNavHostController
 import com.github.watabee.qiitacompose.ui.home.HomeScreen
+import com.github.watabee.qiitacompose.ui.mypage.MyPageScreen
 import com.github.watabee.qiitacompose.ui.navigation.AppRouting
 import com.github.watabee.qiitacompose.ui.user.UserScreen
 
 object MainDestinations {
     const val HOME = "home"
     const val USER = "user"
+    const val MYPAGE = "mypage"
 }
 
 @Composable
@@ -37,6 +39,9 @@ fun NavGraph(startDestination: String = MainDestinations.HOME, openLoginScreen: 
                     appRouting = appRouter
                 )
             }
+            composable(MainDestinations.MYPAGE) {
+                MyPageScreen { navController.popBackStack() }
+            }
         }
     }
 }
@@ -45,5 +50,9 @@ class AppRouter(navController: NavController, override val openLoginScreen: () -
     override val openUserScreen: (user: User) -> Unit = { user ->
         navController.currentBackStackEntry?.arguments = bundleOf("user" to user)
         navController.navigate(MainDestinations.USER)
+    }
+
+    override val openMyPageScreen: () -> Unit = {
+        navController.navigate(MainDestinations.MYPAGE)
     }
 }
