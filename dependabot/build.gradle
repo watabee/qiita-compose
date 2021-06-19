@@ -52,7 +52,7 @@ deps.AndroidX.Test = [
     junit: "androidx.test.ext:junit-ktx:1.1.2",
 ]
 
-versions.lifecycle = "2.4.0-alpha01"
+versions.lifecycle = "2.4.0-alpha02"
 deps.AndroidX.Lifecycle = [
     runtime: "androidx.lifecycle:lifecycle-runtime-ktx:$versions.lifecycle",
     compiler: "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle",
