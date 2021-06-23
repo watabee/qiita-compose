@@ -46,7 +46,7 @@ fun NavGraph(startDestination: String = MainDestinations.HOME, openLoginScreen: 
                 MyPageScreen { navController.popBackStack() }
             }
             composable(MainDestinations.SEARCH) {
-                SearchScreen()
+                SearchScreen { navController.popBackStack() }
             }
         }
     }
