@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.transform.CircleCropTransformation
@@ -51,36 +52,9 @@ private fun HomeScreen(
                     Text(text = "Qiita", fontFamily = QiitaFontFamily.codecCold, fontWeight = FontWeight.Bold)
                 },
                 actions = {
-                    if (userData != null) {
-                        IconButton(onClick = { appRouting.openMyPageScreen() }) {
-                            val imageUrl = userData.imageUrl
-                            if (!imageUrl.isNullOrBlank()) {
-                                Image(
-                                    painter = rememberCoilPainter(
-                                        request = imageUrl,
-                                        requestBuilder = {
-                                            transformations(CircleCropTransformation())
-                                        }
-                                    ),
-                                    contentDescription = null,
-                                    modifier = Modifier.size(32.dp)
-                                )
-                            } else {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_blank_user),
-                                    contentDescription = null,
-                                    modifier = Modifier.size(32.dp)
-                                )
-                            }
-                        }
-                    } else {
-                        IconButton(onClick = appRouting.openLoginScreen) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_blank_user),
-                                contentDescription = null,
-                                modifier = Modifier.size(32.dp)
-                            )
-                        }
+                    val onClickAction: () -> Unit = if (userData != null) appRouting.openMyPageScreen else appRouting.openLoginScreen
+                    IconButton(onClick = onClickAction) {
+                        UserIcon(imageUrl = userData?.imageUrl, iconSize = 24.dp)
                     }
                 }
             )
@@ -89,4 +63,26 @@ private fun HomeScreen(
             ItemsScreen(appRouting.openUserScreen)
         }
     )
+}
+
+@Composable
+private fun UserIcon(imageUrl: String?, iconSize: Dp) {
+    if (!imageUrl.isNullOrBlank()) {
+        Image(
+            painter = rememberCoilPainter(
+                request = imageUrl,
+                requestBuilder = {
+                    transformations(CircleCropTransformation())
+                }
+            ),
+            contentDescription = null,
+            modifier = Modifier.size(iconSize)
+        )
+    } else {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_blank_user),
+            contentDescription = null,
+            modifier = Modifier.size(iconSize)
+        )
+    }
 }
