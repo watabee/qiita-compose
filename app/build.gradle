@@ -69,6 +69,7 @@ dependencies {
     implementation project(':ui:user')
     implementation project(':ui:mypage')
     implementation project(':ui:items')
+    implementation project(':ui:search')
 
     implementation Deps.Kotlin.stdlib
     implementation Deps.Kotlin.Coroutines.core

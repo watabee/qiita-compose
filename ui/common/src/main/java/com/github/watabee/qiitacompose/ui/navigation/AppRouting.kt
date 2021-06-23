@@ -8,4 +8,6 @@ interface AppRouting {
     val openUserScreen: (user: User) -> Unit
 
     val openMyPageScreen: () -> Unit
+
+    val openSearchScreen: () -> Unit
 }

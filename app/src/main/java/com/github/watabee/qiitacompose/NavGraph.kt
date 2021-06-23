@@ -13,12 +13,14 @@ import com.github.watabee.qiitacompose.ui.common.LocalNavHostController
 import com.github.watabee.qiitacompose.ui.home.HomeScreen
 import com.github.watabee.qiitacompose.ui.mypage.MyPageScreen
 import com.github.watabee.qiitacompose.ui.navigation.AppRouting
+import com.github.watabee.qiitacompose.ui.search.SearchScreen
 import com.github.watabee.qiitacompose.ui.user.UserScreen
 
 object MainDestinations {
     const val HOME = "home"
     const val USER = "user"
     const val MYPAGE = "mypage"
+    const val SEARCH = "search"
 }
 
 @Composable
@@ -43,6 +45,9 @@ fun NavGraph(startDestination: String = MainDestinations.HOME, openLoginScreen: 
             composable(MainDestinations.MYPAGE) {
                 MyPageScreen { navController.popBackStack() }
             }
+            composable(MainDestinations.SEARCH) {
+                SearchScreen()
+            }
         }
     }
 }
@@ -55,5 +60,9 @@ class AppRouter(navController: NavController, override val openLoginScreen: () -
 
     override val openMyPageScreen: () -> Unit = {
         navController.navigate(MainDestinations.MYPAGE)
+    }
+
+    override val openSearchScreen: () -> Unit = {
+        navController.navigate(MainDestinations.SEARCH)
     }
 }

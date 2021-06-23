@@ -8,6 +8,7 @@ include ':ui:common'
 include ':ui:home'
 include ':ui:login'
 include ':ui:items'
+include ':ui:search'
 include ':ui:user'
 include ':ui:mypage'
 

@@ -8,6 +8,8 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -52,6 +54,10 @@ private fun HomeScreen(
                     Text(text = "Qiita", fontFamily = QiitaFontFamily.codecCold, fontWeight = FontWeight.Bold)
                 },
                 actions = {
+                    IconButton(onClick = { appRouting.openSearchScreen() }) {
+                        Icon(imageVector = Icons.Filled.Search, contentDescription = null)
+                    }
+
                     val onClickAction: () -> Unit = if (userData != null) appRouting.openMyPageScreen else appRouting.openLoginScreen
                     IconButton(onClick = onClickAction) {
                         UserIcon(imageUrl = userData?.imageUrl, iconSize = 24.dp)
