@@ -1,5 +1,6 @@
 package com.github.watabee.qiitacompose.ui.search
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,11 +11,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
@@ -28,7 +33,9 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,15 +53,35 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberImagePainter
+import com.github.watabee.qiitacompose.api.response.Tag
+import com.github.watabee.qiitacompose.ui.common.AppOutlinedButton
+import com.google.accompanist.flowlayout.FlowRow
+import com.google.accompanist.flowlayout.MainAxisAlignment
+import com.google.accompanist.insets.LocalWindowInsets
+import com.google.accompanist.insets.navigationBarsWithImePadding
 import timber.log.Timber
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchScreen(closeSearchScreen: () -> Unit) {
+    val viewModel: SearchViewModel = hiltViewModel()
+    val state by viewModel.state.collectAsState()
+    val isKeyboardVisible = LocalWindowInsets.current.ime.isVisible
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     var query by remember { mutableStateOf("") }
     var searchFocus by remember { mutableStateOf(true) }
 
+    LaunchedEffect(viewModel) {
+        viewModel.dispatchAction(SearchViewModel.Action.GetTags)
+    }
+
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .navigationBarsWithImePadding()
     ) {
         SearchBar(
             query = query,
@@ -62,9 +89,22 @@ fun SearchScreen(closeSearchScreen: () -> Unit) {
             searchFocus = searchFocus,
             onSearchFocusChanged = { searchFocus = it },
             onClearQuery = { query = "" },
-            onSearch = { Timber.e("onSearch: $it") },
+            onSearch = {
+                Timber.e("onSearch: $it")
+                keyboardController?.hide()
+            },
             onNavIconClicked = closeSearchScreen
         )
+
+        if (isKeyboardVisible) {
+            TagsList(
+                tags = state.tags,
+                onTagClicked = {
+                    Timber.e("onTagClicked: $it")
+                    keyboardController?.hide()
+                }
+            )
+        }
     }
 }
 
@@ -124,7 +164,6 @@ private fun SearchBar(
                         Text(text = stringResource(id = R.string.search_hint), style = MaterialTheme.typography.body1)
                     }
                 }
-                val keyboardController = LocalSoftwareKeyboardController.current
                 BasicTextField(
                     value = query,
                     onValueChange = onQueryChanged,
@@ -133,12 +172,7 @@ private fun SearchBar(
                         color = MaterialTheme.typography.body1.color.copy(alpha = ContentAlpha.high)
                     ),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                    keyboardActions = KeyboardActions(
-                        onSearch = {
-                            onSearch(query)
-                            keyboardController?.hide()
-                        }
-                    ),
+                    keyboardActions = KeyboardActions(onSearch = { onSearch(query) }),
                     cursorBrush = SolidColor(MaterialTheme.colors.primarySurface),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -156,6 +190,56 @@ private fun SearchBar(
                         tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled),
                         contentDescription = null
                     )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun TagsList(tags: List<Tag>, onTagClicked: (Tag) -> Unit) {
+    if (tags.isEmpty()) {
+        return
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)
+    ) {
+
+        Spacer(modifier = Modifier.requiredHeight(16.dp))
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+            Text(text = stringResource(id = R.string.search_tags_title), style = MaterialTheme.typography.subtitle2)
+        }
+        Spacer(modifier = Modifier.requiredHeight(8.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 16.dp)
+        ) {
+            FlowRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                mainAxisAlignment = MainAxisAlignment.SpaceAround,
+                mainAxisSpacing = 8.dp,
+                crossAxisSpacing = 8.dp
+            ) {
+                tags.forEach { tag ->
+                    AppOutlinedButton(onClick = { onTagClicked(tag) }) {
+                        Image(
+                            painter = rememberImagePainter(data = tag.iconUrl),
+                            modifier = Modifier.size(16.dp),
+                            contentDescription = null
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = tag.id,
+                            style = MaterialTheme.typography.caption,
+                            color = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                        )
+                    }
                 }
             }
         }
