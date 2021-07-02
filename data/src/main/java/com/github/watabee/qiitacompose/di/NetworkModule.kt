@@ -72,7 +72,7 @@ internal abstract class NetworkModule {
             Retrofit.Builder()
                 .baseUrl("https://qiita.com")
                 .client(okHttpClient)
-                .addCallAdapterFactory(CoroutinesResponseCallAdapterFactory())
+                .addCallAdapterFactory(CoroutinesResponseCallAdapterFactory.create())
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .build()
 
