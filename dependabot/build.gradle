@@ -65,7 +65,7 @@ deps.AndroidX.Navigation = [
     ui: "androidx.navigation:navigation-ui-ktx:$versions.navigation",
 ]
 
-versions.compose = "1.0.0-beta09"
+versions.compose = "1.0.0-rc01"
 deps.AndroidX.Compose = [
     compiler: "androidx.compose.compiler:compiler:$versions.compose",
     runtime: "androidx.compose.runtime:runtime:$versions.compose",
@@ -77,7 +77,7 @@ deps.AndroidX.Compose = [
     themeAdapter: "androidx.compose.material:compose-theme-adapter:$versions.compose",
     constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha08",
 
-    paging: "androidx.paging:paging-compose:1.0.0-alpha10",
+    paging: "androidx.paging:paging-compose:1.0.0-alpha11",
     // Jetpack Compose Integration for ViewModel
     viewModel: "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07",
     navigation: "androidx.navigation:navigation-compose:$versions.navigation",
@@ -122,7 +122,7 @@ deps.Coil = [
     coil: "io.coil-kt:coil:1.2.2",
 ]
 
-versions.accompanist = "0.12.0"
+versions.accompanist = "0.13.0"
 deps.Accompanist = [
     coil: "com.google.accompanist:accompanist-coil:$versions.accompanist",
     flowLayout: "com.google.accompanist:accompanist-flowlayout:$versions.accompanist",
