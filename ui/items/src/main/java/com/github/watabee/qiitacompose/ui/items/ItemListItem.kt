@@ -26,12 +26,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.github.watabee.qiitacompose.api.response.Item
 import com.github.watabee.qiitacompose.api.response.User
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
 import com.github.watabee.qiitacompose.ui.util.AppDateFormatter
-import com.google.accompanist.coil.rememberCoilPainter
 import java.util.Date
 
 @Composable
@@ -45,9 +45,9 @@ internal fun ItemListItem(item: Item, openUserScreen: (User) -> Unit) {
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
-                        painter = rememberCoilPainter(
-                            request = item.user.profileImageUrl,
-                            requestBuilder = {
+                        painter = rememberImagePainter(
+                            data = item.user.profileImageUrl,
+                            builder = {
                                 transformations(CircleCropTransformation())
                             }
                         ),

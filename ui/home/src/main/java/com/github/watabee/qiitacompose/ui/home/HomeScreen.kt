@@ -18,13 +18,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.github.watabee.qiitacompose.data.UserData
 import com.github.watabee.qiitacompose.ui.items.ItemsScreen
 import com.github.watabee.qiitacompose.ui.navigation.AppRouting
 import com.github.watabee.qiitacompose.ui.theme.QiitaFontFamily
 import com.github.watabee.qiitacompose.ui.util.lifecycleAwareFlow
-import com.google.accompanist.coil.rememberCoilPainter
 
 @Composable
 fun HomeScreen(scaffoldState: ScaffoldState = rememberScaffoldState(), appRouting: AppRouting) {
@@ -69,9 +69,9 @@ private fun HomeScreen(
 private fun UserIcon(imageUrl: String?, iconSize: Dp) {
     if (!imageUrl.isNullOrBlank()) {
         Image(
-            painter = rememberCoilPainter(
-                request = imageUrl,
-                requestBuilder = {
+            painter = rememberImagePainter(
+                data = imageUrl,
+                builder = {
                     transformations(CircleCropTransformation())
                 }
             ),

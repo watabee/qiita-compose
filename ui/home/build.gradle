@@ -42,8 +42,7 @@ dependencies {
     implementation Deps.AndroidX.Compose.paging
     implementation Deps.AndroidX.Compose.viewModel
 
-    implementation Deps.Coil.coil
-    implementation Deps.Accompanist.coil
+    implementation Deps.Coil.coilCompose
 
     implementation Deps.Dagger.Hilt.android
     kapt Deps.Dagger.Hilt.androidCompiler

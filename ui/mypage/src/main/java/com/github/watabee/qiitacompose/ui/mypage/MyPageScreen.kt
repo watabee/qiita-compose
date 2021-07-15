@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.github.watabee.qiitacompose.api.response.AuthenticatedUser
 import com.github.watabee.qiitacompose.ui.common.AppAlertDialog
@@ -38,7 +39,6 @@ import com.github.watabee.qiitacompose.ui.common.ErrorScreen
 import com.github.watabee.qiitacompose.ui.common.LoadingScreen
 import com.github.watabee.qiitacompose.ui.common.SnsIconButtons
 import com.github.watabee.qiitacompose.ui.common.UserCountTexts
-import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.insets.navigationBarsPadding
 import kotlinx.coroutines.flow.collect
 
@@ -56,7 +56,8 @@ fun MyPageScreen(closeMyPageScreen: () -> Unit) {
                 MyPageViewModel.Event.CompletedLogout -> {
                     closeMyPageScreenState()
                 }
-                MyPageViewModel.Event.EmptyAccessToken -> { /* TODO */ }
+                MyPageViewModel.Event.EmptyAccessToken -> { /* TODO */
+                }
             }
         }
     }
@@ -112,9 +113,9 @@ private fun MyPageScreen(user: AuthenticatedUser, onLogoutButtonClicked: () -> U
     ) {
         Spacer(modifier = Modifier.requiredHeight(28.dp))
         Image(
-            painter = rememberCoilPainter(
-                request = user.profileImageUrl,
-                requestBuilder = {
+            painter = rememberImagePainter(
+                data = user.profileImageUrl,
+                builder = {
                     transformations(CircleCropTransformation())
                 }
             ),

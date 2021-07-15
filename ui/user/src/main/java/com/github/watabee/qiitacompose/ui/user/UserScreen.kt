@@ -40,6 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.github.watabee.qiitacompose.api.response.Tag
 import com.github.watabee.qiitacompose.api.response.User
@@ -51,7 +52,6 @@ import com.github.watabee.qiitacompose.ui.navigation.AppRouting
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
 import com.github.watabee.qiitacompose.ui.theme.tagBackground
 import com.github.watabee.qiitacompose.ui.util.lifecycleAwareFlow
-import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.insets.navigationBarsPadding
 import kotlinx.coroutines.flow.collect
@@ -131,9 +131,9 @@ private fun UserProfileScreen(user: User, isFollowingUser: Boolean, followingTag
     ) {
         Spacer(modifier = Modifier.requiredHeight(28.dp))
         Image(
-            painter = rememberCoilPainter(
-                request = user.profileImageUrl,
-                requestBuilder = {
+            painter = rememberImagePainter(
+                data = user.profileImageUrl,
+                builder = {
                     transformations(CircleCropTransformation())
                 }
             ),

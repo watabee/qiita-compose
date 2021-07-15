@@ -46,8 +46,7 @@ dependencies {
     implementation Deps.AndroidX.Compose.paging
     implementation Deps.AndroidX.Compose.viewModel
 
-    implementation Deps.Coil.coil
-    implementation Deps.Accompanist.coil
+    implementation Deps.Coil.coilCompose
     implementation Deps.Accompanist.insets
 
     implementation Deps.Accompanist.swipeRefresh
