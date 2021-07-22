@@ -21,10 +21,17 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -57,7 +64,7 @@ import com.google.accompanist.insets.navigationBarsPadding
 import kotlinx.coroutines.flow.collect
 
 @Composable
-fun UserScreen(user: User, appRouting: AppRouting) {
+fun UserScreen(user: User, appRouting: AppRouting, closeUserScreen: () -> Unit) {
     val context = LocalContext.current
     val viewModel: UserViewModel = hiltViewModel()
     val state by viewModel.state.lifecycleAwareFlow().collectAsState(UserViewModel.State(isLoading = true))
@@ -75,13 +82,55 @@ fun UserScreen(user: User, appRouting: AppRouting) {
     }
 
     UserScreen(
+        scaffoldState = rememberScaffoldState(),
         user = user,
         isLoading = state.isLoading,
         isError = state.getUserInfoError,
         isFollowingUser = state.isFollowingUser,
         followingTags = state.followingTags,
         retryToGetUserInfo = { userId -> dispatchAction(UserViewModel.Action.GetUserInfo(userId)) },
-        openLoginScreen = appRouting.openLoginScreen
+        openLoginScreen = appRouting.openLoginScreen,
+        closeUserScreen = closeUserScreen
+    )
+}
+
+@Composable
+private fun UserScreen(
+    scaffoldState: ScaffoldState,
+    user: User,
+    isLoading: Boolean,
+    isError: Boolean,
+    isFollowingUser: Boolean,
+    followingTags: List<Tag>,
+    retryToGetUserInfo: (userId: String) -> Unit,
+    openLoginScreen: () -> Unit,
+    closeUserScreen: () -> Unit
+) {
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+            TopAppBar(
+                navigationIcon = {
+                    IconButton(onClick = closeUserScreen) {
+                        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
+                    }
+                },
+                title = {
+                    Text(text = user.name.orEmpty())
+                }
+            )
+        },
+        content = {
+            UserScreen(
+                user = user,
+                isLoading = isLoading,
+                isError = isError,
+                isFollowingUser = isFollowingUser,
+                followingTags = followingTags,
+                retryToGetUserInfo = retryToGetUserInfo,
+                openLoginScreen = openLoginScreen
+            )
+        }
     )
 }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="mypage_appbar_title">マイページ</string>
     <string name="mypage_logout">ログアウト</string>
 
     <string name="mypage_confirm_to_logout">ログアウトしますか？</string>

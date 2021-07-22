@@ -36,7 +36,8 @@ fun NavGraph(startDestination: String = MainDestinations.HOME, openLoginScreen: 
             composable(MainDestinations.USER) {
                 UserScreen(
                     user = navController.previousBackStackEntry?.arguments?.getParcelable("user")!!,
-                    appRouting = appRouter
+                    appRouting = appRouter,
+                    closeUserScreen = { navController.popBackStack() }
                 )
             }
             composable(MainDestinations.MYPAGE) {
