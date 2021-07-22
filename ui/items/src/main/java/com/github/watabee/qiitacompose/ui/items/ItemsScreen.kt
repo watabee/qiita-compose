@@ -56,7 +56,7 @@ fun ItemsScreen(openUserScreen: (User) -> Unit) {
 @Composable
 private fun ItemsList(lazyPagingItems: LazyPagingItems<Item>, openUserScreen: (User) -> Unit) {
     LazyColumn(modifier = Modifier.navigationBarsPadding()) {
-        items(lazyPagingItems) {
+        items(lazyPagingItems, key = { it.id }) {
             it?.let { item -> ItemListItem(item = item, openUserScreen = openUserScreen) }
         }
 
