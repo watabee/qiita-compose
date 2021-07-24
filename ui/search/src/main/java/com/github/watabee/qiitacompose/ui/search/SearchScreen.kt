@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -38,7 +39,8 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -54,28 +56,52 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberImagePainter
 import com.github.watabee.qiitacompose.api.response.Tag
+import com.github.watabee.qiitacompose.api.response.User
 import com.github.watabee.qiitacompose.ui.common.AppOutlinedButton
+import com.github.watabee.qiitacompose.ui.common.ErrorScreen
+import com.github.watabee.qiitacompose.ui.common.LoadingScreen
+import com.github.watabee.qiitacompose.ui.items.ItemsList
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.MainAxisAlignment
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.navigationBarsWithImePadding
-import timber.log.Timber
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun SearchScreen(closeSearchScreen: () -> Unit) {
+fun SearchScreen(
+    openUserScreen: (User) -> Unit,
+    closeSearchScreen: () -> Unit
+) {
     val viewModel: SearchViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
     val isKeyboardVisible = LocalWindowInsets.current.ime.isVisible
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    var query by remember { mutableStateOf("") }
-    var searchFocus by remember { mutableStateOf(true) }
+    var query by rememberSaveable { mutableStateOf("") }
+    var searchFocus by rememberSaveable { mutableStateOf(true) }
+
+    val lazyPagingItems = viewModel.itemsFlow.collectAsLazyPagingItems()
+    val isRefreshing = lazyPagingItems.loadState.refresh is LoadState.Loading
+    val isError = lazyPagingItems.loadState.refresh is LoadState.Error
+
+    val lazyListState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(viewModel) {
         viewModel.dispatchAction(SearchViewModel.Action.GetTags)
+    }
+
+    val search: (String) -> Unit = { query ->
+        keyboardController?.hide()
+        viewModel.dispatchAction(SearchViewModel.Action.SearchByQuery(query))
+        coroutineScope.launch {
+            lazyListState.scrollToItem(0)
+        }
     }
 
     Column(
@@ -89,21 +115,29 @@ fun SearchScreen(closeSearchScreen: () -> Unit) {
             searchFocus = searchFocus,
             onSearchFocusChanged = { searchFocus = it },
             onClearQuery = { query = "" },
-            onSearch = {
-                Timber.e("onSearch: $it")
-                keyboardController?.hide()
-            },
+            onSearch = search,
             onNavIconClicked = closeSearchScreen
         )
 
-        if (isKeyboardVisible) {
-            TagsList(
-                tags = state.tags,
-                onTagClicked = {
-                    Timber.e("onTagClicked: $it")
-                    keyboardController?.hide()
-                }
-            )
+        when {
+            isKeyboardVisible -> {
+                TagsList(
+                    tags = state.tags,
+                    onTagClicked = {
+                        query = it.id
+                        search(it.id)
+                    }
+                )
+            }
+            isRefreshing -> {
+                LoadingScreen()
+            }
+            isError -> {
+                ErrorScreen(onRetryButtonClicked = { lazyPagingItems.retry() })
+            }
+            else -> {
+                ItemsList(lazyPagingItems = lazyPagingItems, lazyListState = lazyListState, openUserScreen = openUserScreen)
+            }
         }
     }
 }

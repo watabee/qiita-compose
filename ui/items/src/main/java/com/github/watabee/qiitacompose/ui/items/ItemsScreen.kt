@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -47,15 +49,20 @@ fun ItemsScreen(openUserScreen: (User) -> Unit) {
             if (isError) {
                 ErrorScreen(onRetryButtonClicked = { lazyPagingItems.retry() })
             } else {
-                ItemsList(lazyPagingItems = lazyPagingItems, openUserScreen = openUserScreen)
+                ItemsList(modifier = Modifier.navigationBarsPadding(), lazyPagingItems = lazyPagingItems, openUserScreen = openUserScreen)
             }
         }
     }
 }
 
 @Composable
-private fun ItemsList(lazyPagingItems: LazyPagingItems<Item>, openUserScreen: (User) -> Unit) {
-    LazyColumn(modifier = Modifier.navigationBarsPadding()) {
+fun ItemsList(
+    lazyPagingItems: LazyPagingItems<Item>,
+    modifier: Modifier = Modifier,
+    lazyListState: LazyListState = rememberLazyListState(),
+    openUserScreen: (User) -> Unit
+) {
+    LazyColumn(modifier, lazyListState) {
         items(lazyPagingItems, key = { it.id }) {
             it?.let { item -> ItemListItem(item = item, openUserScreen = openUserScreen) }
         }
