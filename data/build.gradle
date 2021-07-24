@@ -11,6 +11,15 @@ android {
     defaultConfig {
         minSdkVersion Versions.androidMinSdkVersion
         targetSdkVersion Versions.androidTargetSdkVersion
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                    "room.schemaLocation": "$projectDir/schemas".toString(),
+                    "room.incremental"   : "true"
+                ]
+            }
+        }
     }
 
     compileOptions {
@@ -33,6 +42,10 @@ dependencies {
     api Deps.Moshi.moshi
     kapt Deps.Moshi.codegen
     implementation Deps.Moshi.adapters
+
+    implementation Deps.AndroidX.Room.runtime
+    implementation Deps.AndroidX.Room.ktx
+    kapt Deps.AndroidX.Room.compiler
 
     implementation Deps.sandwich
 
