@@ -93,7 +93,7 @@ fun SearchScreen(
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(viewModel) {
-        viewModel.dispatchAction(SearchViewModel.Action.GetTags)
+        viewModel.dispatchAction(SearchViewModel.Action.FindTags)
     }
 
     val search: (String) -> Unit = { query ->
