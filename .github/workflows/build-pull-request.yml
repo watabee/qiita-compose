@@ -1,6 +1,6 @@
 name: Build (Pull Request)
 
-on: pull_request
+on: pull_request_target
 
 jobs:
   build:
@@ -28,6 +28,9 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('checksum.txt') }}
+
+      - name: Create local.properties
+        run: echo "QIITA_CLIENT_ID=${{ secrets.QIITA_CLIENT_ID }}\nQIITA_CLIENT_SECRET=${{ secrets.QIITA_CLIENT_SECRET }}" > local.properties
 
       - name: Build debug
         run: ./gradlew assembleDebug
