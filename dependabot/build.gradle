@@ -65,6 +65,13 @@ deps.AndroidX.Navigation = [
     ui: "androidx.navigation:navigation-ui-ktx:$versions.navigation",
 ]
 
+versions.room = "2.4.0-alpha04"
+deps.AndroidX.Room = [
+    runtime: "androidx.room:room-runtime:$versions.room",
+    ktx: "androidx.room:room-ktx:$versions.room",
+    compiler: "androidx.room:room-compiler:$versions.room",
+]
+
 versions.compose = "1.0.0-rc02"
 deps.AndroidX.Compose = [
     compiler: "androidx.compose.compiler:compiler:$versions.compose",
