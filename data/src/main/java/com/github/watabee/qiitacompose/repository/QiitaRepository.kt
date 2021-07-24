@@ -2,6 +2,7 @@ package com.github.watabee.qiitacompose.repository
 
 import com.github.watabee.qiitacompose.api.QiitaApiResult
 import com.github.watabee.qiitacompose.api.QiitaApiService
+import com.github.watabee.qiitacompose.api.request.SortTag
 import com.github.watabee.qiitacompose.api.response.AccessTokens
 import com.github.watabee.qiitacompose.api.response.AuthenticatedUser
 import com.github.watabee.qiitacompose.api.response.Item
@@ -38,6 +39,8 @@ interface QiitaRepository {
     suspend fun followUser(userId: String): QiitaApiResult<Unit>
 
     suspend fun unfollowUser(userId: String): QiitaApiResult<Unit>
+
+    suspend fun findTags(page: Int, perPage: Int, sortTag: SortTag): QiitaApiResult<List<Tag>>
 }
 
 internal class QiitaRepositoryImpl @Inject constructor(
@@ -114,5 +117,9 @@ internal class QiitaRepositoryImpl @Inject constructor(
 
     override suspend fun unfollowUser(userId: String): QiitaApiResult<Unit> {
         return qiitaApiService.unfollowUser(userId).toApiResult(successMapper = QiitaApiResult.Success.EmptyMapper)
+    }
+
+    override suspend fun findTags(page: Int, perPage: Int, sortTag: SortTag): QiitaApiResult<List<Tag>> {
+        return qiitaApiService.findTags(page = page, perPage = perPage, sort = sortTag).toApiResult()
     }
 }

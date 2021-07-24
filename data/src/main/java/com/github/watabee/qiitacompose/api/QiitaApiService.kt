@@ -1,6 +1,7 @@
 package com.github.watabee.qiitacompose.api
 
 import androidx.annotation.IntRange
+import com.github.watabee.qiitacompose.api.request.SortTag
 import com.github.watabee.qiitacompose.api.response.AccessTokens
 import com.github.watabee.qiitacompose.api.response.AuthenticatedUser
 import com.github.watabee.qiitacompose.api.response.Item
@@ -44,4 +45,11 @@ internal interface QiitaApiService {
 
     @DELETE("/api/v2/users/{userId}/following")
     suspend fun unfollowUser(@Path("userId") userId: String): ApiResponse<Unit>
+
+    @GET("/api/v2/tags")
+    suspend fun findTags(
+        @IntRange(from = 1, to = 100) @Query("page") page: Int,
+        @IntRange(from = 1, to = 100) @Query("per_page") perPage: Int,
+        @Query("sort") sort: SortTag?
+    ): ApiResponse<List<Tag>>
 }
