@@ -29,6 +29,9 @@ jobs:
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('checksum.txt') }}
 
+      - name: Create local.properties
+        run: echo "QIITA_CLIENT_ID=${{ secrets.QIITA_CLIENT_ID }}\nQIITA_CLIENT_SECRET=${{ QIITA_CLIENT_SECRET }}" > local.properties
+
       - name: Build debug
         run: ./gradlew assembleDebug
 
