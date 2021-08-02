@@ -119,7 +119,7 @@ deps.Dagger.Hilt = [
 ]
 
 deps.Coil = [
-    coil: "io.coil-kt:coil:1.3.0",
+    coil: "io.coil-kt:coil:1.3.1",
     coilCompose: "io.coil-kt:coil-compose:1.3.0",
 ]
 
