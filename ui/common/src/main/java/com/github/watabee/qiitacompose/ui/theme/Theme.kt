@@ -1,5 +1,6 @@
 package com.github.watabee.qiitacompose.ui.theme
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
@@ -13,6 +14,7 @@ import com.github.watabee.qiitacompose.ui.common.R
 // TODO: Set dark color palette
 private val DarkColorPalette = darkColors()
 
+@SuppressLint("ConflictingOnColor")
 @Composable
 private fun lightColorPalette(): Colors {
     return lightColors(

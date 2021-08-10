@@ -20,8 +20,10 @@ internal object DebugNetworkModule {
 
     @Provides
     @IntoSet
-    fun provideOkHttpLoggingInterceptor(): Interceptor =
-        HttpLoggingInterceptor { message -> Timber.tag("OkHttp").w(message) }.apply {
+    fun provideOkHttpLoggingInterceptor(): Interceptor {
+        val logger: HttpLoggingInterceptor.Logger = HttpLoggingInterceptor.Logger { message -> Timber.tag("OkHttp").w(message) }
+        return HttpLoggingInterceptor(logger).apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
+    }
 }

@@ -5,26 +5,32 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import com.github.watabee.qiitacompose.api.QiitaApiResult
-import com.github.watabee.qiitacompose.api.request.SortTag
 import com.github.watabee.qiitacompose.api.response.Tag
+import com.github.watabee.qiitacompose.db.dao.TagDao
 import com.github.watabee.qiitacompose.repository.QiitaRepository
 import com.github.watabee.qiitacompose.ui.items.ItemKey
 import com.github.watabee.qiitacompose.ui.items.ItemsPagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val qiitaRepository: QiitaRepository) : ViewModel() {
+internal class SearchViewModel @Inject constructor(
+    private val qiitaRepository: QiitaRepository,
+    tagDao: TagDao,
+    private val findTagsUseCase: FindTagsUseCase
+) : ViewModel() {
 
-    private val _state = MutableStateFlow(State())
-    val state: StateFlow<State> = _state.asStateFlow()
+    val state: StateFlow<State> = tagDao.getAllTags()
+        .map { State(it) }
+        .stateIn(viewModelScope, started = SharingStarted.Eagerly, initialValue = State(emptyList()))
 
     private val queryFlow = MutableStateFlow<String?>(null)
     val itemsFlow = queryFlow.filterNotNull()
@@ -38,13 +44,9 @@ class SearchViewModel @Inject constructor(private val qiitaRepository: QiitaRepo
 
     fun dispatchAction(action: Action) {
         when (action) {
-            Action.GetTags -> {
+            Action.FindTags -> {
                 viewModelScope.launch {
-                    val tags = when (val result = qiitaRepository.findTags(page = 1, perPage = 20, sortTag = SortTag.COUNT)) {
-                        is QiitaApiResult.Success -> result.response
-                        is QiitaApiResult.Failure -> emptyList()
-                    }
-                    _state.value = State(tags)
+                    findTagsUseCase.execute()
                 }
             }
             is Action.SearchByQuery -> {
@@ -58,7 +60,7 @@ class SearchViewModel @Inject constructor(private val qiitaRepository: QiitaRepo
     )
 
     sealed interface Action {
-        object GetTags : Action
+        object FindTags : Action
 
         data class SearchByQuery(val query: String) : Action
     }

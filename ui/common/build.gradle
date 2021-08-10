@@ -23,6 +23,10 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion Versions.compose
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
