@@ -40,26 +40,26 @@ jobs:
       - name: Build debug
         run: ./gradlew assembleDebug
 
-      - name: Check
-        run: |
-          ./gradlew lintDebug
-
-      - name: Setup ruby
-        uses: actions/setup-ruby@v1
-        with:
-          ruby-version: 2.7
-
-      - name: Install bundler
-        run: |
-          GEM_BUNDLER_VERSION=$(grep -A1 -E -i -w '(BUNDLED WITH){1,1}' .ci/Gemfile.lock | grep -E -i -w "[0-9\.]{1,}" | xargs)
-          gem install bundler -v=$GEM_BUNDLER_VERSION --force
-
-      - name: Run danger for static analysis
-        env:
-          DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          bundle install --gemfile=.ci/Gemfile
-          bundle exec --gemfile=.ci/Gemfile danger --dangerfile=".ci/danger/static_analysis.danger"
+#      - name: Check
+#        run: |
+#          ./gradlew lintDebug
+#
+#      - name: Setup ruby
+#        uses: actions/setup-ruby@v1
+#        with:
+#          ruby-version: 2.7
+#
+#      - name: Install bundler
+#        run: |
+#          GEM_BUNDLER_VERSION=$(grep -A1 -E -i -w '(BUNDLED WITH){1,1}' .ci/Gemfile.lock | grep -E -i -w "[0-9\.]{1,}" | xargs)
+#          gem install bundler -v=$GEM_BUNDLER_VERSION --force
+#
+#      - name: Run danger for static analysis
+#        env:
+#          DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        run: |
+#          bundle install --gemfile=.ci/Gemfile
+#          bundle exec --gemfile=.ci/Gemfile danger --dangerfile=".ci/danger/static_analysis.danger"
 
       - name: Upload build outputs
         uses: actions/upload-artifact@v2
