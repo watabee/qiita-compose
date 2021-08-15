@@ -141,7 +141,7 @@ deps.Insetter = [
     insetter: "dev.chrisbanes.insetter:insetter:0.6.0",
 ]
 
-deps.sandwich = "com.github.skydoves:sandwich:1.2.0"
+deps.sandwich = "com.github.skydoves:sandwich:1.2.1"
 
 deps.timber = "com.jakewharton.timber:timber:5.0.1"
 
