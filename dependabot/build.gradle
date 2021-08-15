@@ -13,17 +13,17 @@ def versions = [
     androidMinSdkVersion: 24,
     androidTargetSdkVersion: 30,
 
-    buildToolsVersion: "30.0.3",
+    buildToolsVersion: "31.0.0",
 
     androidVersionCode: (versionMajor * 10000 + versionMinor * 100 + versionPatch) * 100 + versionOffset,
     androidVersionName: "$versionMajor.$versionMinor.$versionPatch"
 ]
 ext.Versions = versions
 
-deps.androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-rc01"
+deps.androidGradlePlugin = "com.android.tools.build:gradle:7.0.0"
 deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:5.14.2"
 
-versions.kotlin = "1.5.10"
+versions.kotlin = "1.5.21"
 deps.Kotlin = [
     stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin",
     gradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
@@ -38,10 +38,10 @@ deps.Kotlin.Coroutines = [
 
 deps.AndroidX = [
     appcompat: "androidx.appcompat:appcompat:1.3.1",
-    activity: "androidx.activity:activity-ktx:1.2.4",
+    activity: "androidx.activity:activity-ktx:1.3.1",
     fragment: "androidx.fragment:fragment-ktx:1.3.6",
     core: "androidx.core:core-ktx:1.6.0",
-    dataStorePreferences: "androidx.datastore:datastore-preferences:1.0.0-rc02",
+    dataStorePreferences: "androidx.datastore:datastore-preferences:1.0.0",
 ]
 
 deps.AndroidX.Test = [
@@ -52,7 +52,7 @@ deps.AndroidX.Test = [
     junit: "androidx.test.ext:junit-ktx:1.1.3",
 ]
 
-versions.lifecycle = "2.4.0-alpha02"
+versions.lifecycle = "2.4.0-alpha03"
 deps.AndroidX.Lifecycle = [
     runtime: "androidx.lifecycle:lifecycle-runtime-ktx:$versions.lifecycle",
     compiler: "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle",
@@ -72,7 +72,7 @@ deps.AndroidX.Room = [
     compiler: "androidx.room:room-compiler:$versions.room",
 ]
 
-versions.compose = "1.0.0-rc02"
+versions.compose = "1.0.1"
 deps.AndroidX.Compose = [
     compiler: "androidx.compose.compiler:compiler:$versions.compose",
     runtime: "androidx.compose.runtime:runtime:$versions.compose",
@@ -82,7 +82,7 @@ deps.AndroidX.Compose = [
     foundationLayout: "androidx.compose.foundation:foundation-layout:$versions.compose",
     material: "androidx.compose.material:material:$versions.compose",
     themeAdapter: "androidx.compose.material:compose-theme-adapter:$versions.compose",
-    constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta01",
+    constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02",
 
     paging: "androidx.paging:paging-compose:1.0.0-alpha12",
     // Jetpack Compose Integration for ViewModel
@@ -117,7 +117,7 @@ deps.Moshi = [
     adapters: "com.squareup.moshi:moshi-adapters:$versions.moshi",
 ]
 
-versions.hilt = "2.37"
+versions.hilt = "2.38.1"
 deps.Dagger = [:]
 deps.Dagger.Hilt = [
     android: "com.google.dagger:hilt-android:$versions.hilt",
@@ -126,11 +126,11 @@ deps.Dagger.Hilt = [
 ]
 
 deps.Coil = [
-    coil: "io.coil-kt:coil:1.3.0",
-    coilCompose: "io.coil-kt:coil-compose:1.3.0",
+    coil: "io.coil-kt:coil:1.3.2",
+    coilCompose: "io.coil-kt:coil-compose:1.3.2",
 ]
 
-versions.accompanist = "0.14.0"
+versions.accompanist = "0.16.1"
 deps.Accompanist = [
     flowLayout: "com.google.accompanist:accompanist-flowlayout:$versions.accompanist",
     swipeRefresh: "com.google.accompanist:accompanist-swiperefresh:$versions.accompanist",
@@ -143,7 +143,7 @@ deps.Insetter = [
 
 deps.sandwich = "com.github.skydoves:sandwich:1.2.0"
 
-deps.timber = "com.jakewharton.timber:timber:4.7.1"
+deps.timber = "com.jakewharton.timber:timber:5.0.1"
 
 deps.desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
 
