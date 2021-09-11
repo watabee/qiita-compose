@@ -9,7 +9,7 @@ def versionOffset = 0
 def versions = [
     ktlint: "0.40.0",
 
-    androidCompileSdkVersion: 30,
+    androidCompileSdkVersion: 31,
     androidMinSdkVersion: 24,
     androidTargetSdkVersion: 30,
 
@@ -59,7 +59,7 @@ deps.AndroidX.Lifecycle = [
     viewmodel: "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle",
 ]
 
-versions.navigation = "2.4.0-alpha04"
+versions.navigation = "2.4.0-alpha08"
 deps.AndroidX.Navigation = [
     fragment: "androidx.navigation:navigation-fragment-ktx:$versions.navigation",
     ui: "androidx.navigation:navigation-ui-ktx:$versions.navigation",
