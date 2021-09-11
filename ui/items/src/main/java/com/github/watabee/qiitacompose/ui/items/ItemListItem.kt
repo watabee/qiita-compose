@@ -20,6 +20,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,10 +33,12 @@ import com.github.watabee.qiitacompose.api.response.Item
 import com.github.watabee.qiitacompose.api.response.User
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
 import com.github.watabee.qiitacompose.ui.util.AppDateFormatter
+import kotlinx.coroutines.launch
 import java.util.Date
 
 @Composable
-internal fun ItemListItem(item: Item, openUserScreen: (User) -> Unit) {
+internal fun ItemListItem(item: Item, openUserScreen: suspend (User) -> Unit) {
+    val scope = rememberCoroutineScope()
     Column {
         Column(
             modifier = Modifier
@@ -56,7 +59,9 @@ internal fun ItemListItem(item: Item, openUserScreen: (User) -> Unit) {
                     )
                     Spacer(modifier = Modifier.requiredWidth(8.dp))
                     TextButton(
-                        onClick = { openUserScreen(item.user) },
+                        onClick = {
+                            scope.launch { openUserScreen(item.user) }
+                        },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = Color.Transparent,
                             contentColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.high)

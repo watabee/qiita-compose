@@ -28,7 +28,7 @@ import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
-fun ItemsScreen(openUserScreen: (User) -> Unit) {
+fun ItemsScreen(openUserScreen: suspend (User) -> Unit) {
     val viewModel: ItemsViewModel = hiltViewModel()
     val lazyPagingItems = viewModel.itemsFlow.collectAsLazyPagingItems()
     val isRefreshing = lazyPagingItems.loadState.refresh is LoadState.Loading
@@ -60,7 +60,7 @@ fun ItemsList(
     lazyPagingItems: LazyPagingItems<Item>,
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
-    openUserScreen: (User) -> Unit
+    openUserScreen: suspend (User) -> Unit
 ) {
     LazyColumn(modifier, lazyListState) {
         items(lazyPagingItems, key = { it.id }) {

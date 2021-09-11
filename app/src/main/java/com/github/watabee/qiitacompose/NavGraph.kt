@@ -3,12 +3,12 @@ package com.github.watabee.qiitacompose
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
-import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.github.watabee.qiitacompose.api.response.User
+import com.github.watabee.qiitacompose.repository.UserRepository
 import com.github.watabee.qiitacompose.ui.common.LocalNavHostController
 import com.github.watabee.qiitacompose.ui.home.HomeScreen
 import com.github.watabee.qiitacompose.ui.mypage.MyPageScreen
@@ -18,15 +18,17 @@ import com.github.watabee.qiitacompose.ui.user.UserScreen
 
 object MainDestinations {
     const val HOME = "home"
-    const val USER = "user"
+    const val USER = "user/{userId}"
     const val MYPAGE = "mypage"
     const val SEARCH = "search"
 }
 
 @Composable
-fun NavGraph(startDestination: String = MainDestinations.HOME, openLoginScreen: () -> Unit) {
+fun NavGraph(startDestination: String = MainDestinations.HOME, userRepository: UserRepository, openLoginScreen: () -> Unit) {
     val navController = rememberNavController()
-    val appRouter = remember(navController, openLoginScreen) { AppRouter(navController, openLoginScreen) }
+    val appRouter = remember(navController, userRepository, openLoginScreen) {
+        AppRouter(navController, userRepository, openLoginScreen)
+    }
 
     CompositionLocalProvider(
         LocalNavHostController provides navController
@@ -35,9 +37,9 @@ fun NavGraph(startDestination: String = MainDestinations.HOME, openLoginScreen: 
             composable(MainDestinations.HOME) {
                 HomeScreen(appRouting = appRouter)
             }
-            composable(MainDestinations.USER) {
+            composable(MainDestinations.USER) { backStackEntry ->
                 UserScreen(
-                    user = navController.previousBackStackEntry?.arguments?.getParcelable("user")!!,
+                    userId = backStackEntry.arguments?.getString("userId")!!,
                     appRouting = appRouter,
                     closeUserScreen = { navController.popBackStack() }
                 )
@@ -52,10 +54,14 @@ fun NavGraph(startDestination: String = MainDestinations.HOME, openLoginScreen: 
     }
 }
 
-class AppRouter(navController: NavController, override val openLoginScreen: () -> Unit) : AppRouting {
-    override val openUserScreen: (user: User) -> Unit = { user ->
-        navController.currentBackStackEntry?.arguments = bundleOf("user" to user)
-        navController.navigate(MainDestinations.USER)
+class AppRouter(
+    navController: NavController,
+    private val userRepository: UserRepository,
+    override val openLoginScreen: () -> Unit
+) : AppRouting {
+    override val openUserScreen: suspend (user: User) -> Unit = { user ->
+        userRepository.insertOrUpdate(user)
+        navController.navigate("user/${user.id}")
     }
 
     override val openMyPageScreen: () -> Unit = {

@@ -5,7 +5,7 @@ import com.github.watabee.qiitacompose.api.response.User
 interface AppRouting {
     val openLoginScreen: () -> Unit
 
-    val openUserScreen: (user: User) -> Unit
+    val openUserScreen: suspend (user: User) -> Unit
 
     val openMyPageScreen: () -> Unit
 

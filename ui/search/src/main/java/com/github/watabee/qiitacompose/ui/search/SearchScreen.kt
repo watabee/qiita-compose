@@ -74,7 +74,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchScreen(
-    openUserScreen: (User) -> Unit,
+    openUserScreen: suspend (User) -> Unit,
     closeSearchScreen: () -> Unit
 ) {
     val viewModel: SearchViewModel = hiltViewModel()
