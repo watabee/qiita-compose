@@ -9,5 +9,5 @@ data class Tag(
     val id: String,
     @Json(name = "items_count") val itemsCount: Int,
     @Json(name = "followers_count") val followersCount: Int,
-    @Json(name = "icon_url") val iconUrl: String
+    @Json(name = "icon_url") val iconUrl: String?
 )
