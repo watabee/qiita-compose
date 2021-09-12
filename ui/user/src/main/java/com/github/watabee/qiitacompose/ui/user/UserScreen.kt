@@ -64,15 +64,15 @@ import com.google.accompanist.insets.navigationBarsPadding
 import kotlinx.coroutines.flow.collect
 
 @Composable
-fun UserScreen(user: User, appRouting: AppRouting, closeUserScreen: () -> Unit) {
+fun UserScreen(userId: String, appRouting: AppRouting, closeUserScreen: () -> Unit) {
     val context = LocalContext.current
     val viewModel: UserViewModel = hiltViewModel()
-    val state by viewModel.state.lifecycleAwareFlow().collectAsState(UserViewModel.State(isLoading = true))
+    val state by viewModel.state.collectAsState(UserViewModel.State(isLoading = true))
     val dispatchAction = viewModel.dispatchAction
     val event = viewModel.event
 
-    LaunchedEffect(user.id) {
-        dispatchAction(UserViewModel.Action.GetUserInfo(user.id))
+    LaunchedEffect(userId, dispatchAction) {
+        dispatchAction(UserViewModel.Action.GetUserInfo(userId))
     }
 
     LaunchedEffect(event) {
@@ -83,12 +83,12 @@ fun UserScreen(user: User, appRouting: AppRouting, closeUserScreen: () -> Unit) 
 
     UserScreen(
         scaffoldState = rememberScaffoldState(),
-        user = user,
+        user = state.user,
         isLoading = state.isLoading,
         isError = state.getUserInfoError,
         isFollowingUser = state.isFollowingUser,
         followingTags = state.followingTags,
-        retryToGetUserInfo = { userId -> dispatchAction(UserViewModel.Action.GetUserInfo(userId)) },
+        retryToGetUserInfo = { dispatchAction(UserViewModel.Action.GetUserInfo(userId)) },
         openLoginScreen = appRouting.openLoginScreen,
         closeUserScreen = closeUserScreen
     )
@@ -97,12 +97,12 @@ fun UserScreen(user: User, appRouting: AppRouting, closeUserScreen: () -> Unit) 
 @Composable
 private fun UserScreen(
     scaffoldState: ScaffoldState,
-    user: User,
+    user: User?,
     isLoading: Boolean,
     isError: Boolean,
     isFollowingUser: Boolean,
     followingTags: List<Tag>,
-    retryToGetUserInfo: (userId: String) -> Unit,
+    retryToGetUserInfo: () -> Unit,
     openLoginScreen: () -> Unit,
     closeUserScreen: () -> Unit
 ) {
@@ -116,7 +116,7 @@ private fun UserScreen(
                     }
                 },
                 title = {
-                    Text(text = user.name.orEmpty())
+                    Text(text = user?.name.orEmpty())
                 }
             )
         },
@@ -136,12 +136,12 @@ private fun UserScreen(
 
 @Composable
 private fun UserScreen(
-    user: User,
+    user: User?,
     isLoading: Boolean,
     isError: Boolean,
     isFollowingUser: Boolean,
     followingTags: List<Tag>,
-    retryToGetUserInfo: (userId: String) -> Unit,
+    retryToGetUserInfo: () -> Unit,
     openLoginScreen: () -> Unit
 ) {
     when {
@@ -149,9 +149,9 @@ private fun UserScreen(
             LoadingScreen()
         }
         isError -> {
-            ErrorScreen(onRetryButtonClicked = { retryToGetUserInfo(user.id) })
+            ErrorScreen(onRetryButtonClicked = { retryToGetUserInfo() })
         }
-        else -> {
+        user != null -> {
             UserProfileScreen(user, isFollowingUser, followingTags, openLoginScreen)
         }
     }

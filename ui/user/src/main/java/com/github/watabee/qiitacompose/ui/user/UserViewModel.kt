@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.watabee.qiitacompose.api.QiitaApiResult
 import com.github.watabee.qiitacompose.api.response.Tag
+import com.github.watabee.qiitacompose.api.response.User
 import com.github.watabee.qiitacompose.datastore.UserDataStore
 import com.github.watabee.qiitacompose.repository.QiitaRepository
+import com.github.watabee.qiitacompose.repository.UserRepository
 import com.github.watabee.qiitacompose.util.throttleFirst
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -30,6 +32,7 @@ import javax.inject.Inject
 @HiltViewModel
 class UserViewModel @Inject constructor(
     private val qiitaRepository: QiitaRepository,
+    private val userRepository: UserRepository,
     dataStore: UserDataStore
 ) : ViewModel() {
 
@@ -74,17 +77,18 @@ class UserViewModel @Inject constructor(
     private suspend fun getUserInfo(userId: String) {
         supervisorScope {
             _state.emit(State(isLoading = true))
-            val (isFollowingUserResult, getUserFollowingTagsResult) = awaitAll(
+            val (user, isFollowingUserResult, getUserFollowingTagsResult) = awaitAll(
+                async { userRepository.findById(userId) },
                 async { qiitaRepository.isFollowingUser(userId) },
                 async { qiitaRepository.getUserFollowingTags(userId) }
             )
             @Suppress("UNCHECKED_CAST")
-            if (isFollowingUserResult is QiitaApiResult.Success<*> && getUserFollowingTagsResult is QiitaApiResult.Success<*>) {
-                val isFollowingUser = isFollowingUserResult.response as Boolean
+            if (user is User && getUserFollowingTagsResult is QiitaApiResult.Success<*>) {
+                val isFollowingUser = (isFollowingUserResult as? QiitaApiResult.Success<*>)?.response as? Boolean ?: false
                 val followingTags = getUserFollowingTagsResult.response as List<Tag>
-                _state.emit(State(isFollowingUser = isFollowingUser, followingTags = followingTags))
+                _state.emit(State(user = user, isFollowingUser = isFollowingUser, followingTags = followingTags))
             } else {
-                _state.emit(State(getUserInfoError = false))
+                _state.emit(State(getUserInfoError = true))
             }
         }
     }
@@ -114,6 +118,7 @@ class UserViewModel @Inject constructor(
     data class State(
         val isLoading: Boolean = false,
         val getUserInfoError: Boolean = false,
+        val user: User? = null,
         val isFollowingUser: Boolean = false,
         val followingTags: List<Tag> = emptyList()
     )

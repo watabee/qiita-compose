@@ -3,6 +3,7 @@ package com.github.watabee.qiitacompose.di
 import android.content.Context
 import com.github.watabee.qiitacompose.db.AppDatabase
 import com.github.watabee.qiitacompose.db.dao.TagDao
+import com.github.watabee.qiitacompose.db.dao.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,5 +22,10 @@ internal object DbModule {
     @Provides
     fun provideTagDao(database: AppDatabase): TagDao {
         return database.tagDao()
+    }
+
+    @Provides
+    fun provideUserDao(database: AppDatabase): UserDao {
+        return database.userDao()
     }
 }
