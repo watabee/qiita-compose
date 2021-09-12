@@ -38,7 +38,6 @@ dependencies {
     implementation Deps.AndroidX.Compose.foundationLayout
     implementation Deps.AndroidX.Compose.material
     implementation Deps.AndroidX.Compose.uiTooling
-    implementation Deps.Google.composeThemeAdapter
     implementation Deps.AndroidX.Compose.paging
     implementation Deps.AndroidX.Compose.viewModel
 

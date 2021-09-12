@@ -96,7 +96,6 @@ deps.AndroidX.Hilt = [
 
 deps.Google = [
     material: "com.google.android.material:material:1.4.0",
-    composeThemeAdapter: "com.google.android.material:compose-theme-adapter:$versions.compose",
 ]
 
 versions.okhttp = "4.9.1"
