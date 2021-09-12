@@ -23,7 +23,7 @@ ext.Versions = versions
 deps.androidGradlePlugin = "com.android.tools.build:gradle:7.0.2"
 deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:5.14.2"
 
-versions.kotlin = "1.5.21"
+versions.kotlin = "1.5.30"
 deps.Kotlin = [
     stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin",
     gradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
