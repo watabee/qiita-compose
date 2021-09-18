@@ -57,7 +57,12 @@ versions.lifecycle = "2.4.0-beta01"
 deps.AndroidX.Lifecycle = [
     runtime: "androidx.lifecycle:lifecycle-runtime-ktx:$versions.lifecycle",
     compiler: "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle",
-    viewmodel: "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle",
+]
+
+deps.AndroidX.Lifecycle.ViewModel = [
+    ktx: "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle",
+    // Jetpack Compose Integration for ViewModel
+    compose: "androidx.lifecycle:lifecycle-viewmodel-compose:$versions.lifecycle",
 ]
 
 versions.navigation = "2.4.0-alpha09"
@@ -86,8 +91,6 @@ deps.AndroidX.Compose = [
     constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02",
 
     paging: "androidx.paging:paging-compose:1.0.0-alpha12",
-    // Jetpack Compose Integration for ViewModel
-    viewModel: "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07",
     navigation: "androidx.navigation:navigation-compose:$versions.navigation",
 ]
 
