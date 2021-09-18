@@ -34,7 +34,7 @@ dependencies {
     implementation Deps.AndroidX.fragment
     implementation Deps.AndroidX.core
 
-    implementation Deps.AndroidX.Lifecycle.viewmodel
+    implementation Deps.AndroidX.Lifecycle.ViewModel.ktx
 
     implementation Deps.Google.material
 

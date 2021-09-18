@@ -3,7 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
-    id 'com.google.secrets_gradle_plugin' version '0.6.1'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -80,7 +80,7 @@ dependencies {
     implementation Deps.AndroidX.fragment
     implementation Deps.AndroidX.core
 
-    implementation Deps.AndroidX.Lifecycle.viewmodel
+    implementation Deps.AndroidX.Lifecycle.ViewModel.ktx
 
     implementation Deps.AndroidX.Navigation.fragment
     implementation Deps.AndroidX.Navigation.ui
@@ -94,7 +94,7 @@ dependencies {
     implementation Deps.AndroidX.Compose.foundationLayout
     implementation Deps.AndroidX.Compose.material
     implementation Deps.AndroidX.Compose.uiTooling
-    implementation Deps.AndroidX.Compose.viewModel
+    implementation Deps.AndroidX.Lifecycle.ViewModel.compose
     implementation Deps.AndroidX.Compose.navigation
 
     implementation Deps.Coil.coil

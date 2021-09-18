@@ -43,7 +43,7 @@ dependencies {
     implementation Deps.AndroidX.Compose.material
     implementation Deps.AndroidX.Compose.uiTooling
     implementation Deps.AndroidX.Compose.paging
-    implementation Deps.AndroidX.Compose.viewModel
+    implementation Deps.AndroidX.Lifecycle.ViewModel.compose
     implementation Deps.AndroidX.Compose.constraintLayout
 
     implementation Deps.Coil.coilCompose
