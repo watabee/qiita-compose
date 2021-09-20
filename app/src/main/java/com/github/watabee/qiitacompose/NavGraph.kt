@@ -11,16 +11,21 @@ import com.github.watabee.qiitacompose.api.response.User
 import com.github.watabee.qiitacompose.repository.UserRepository
 import com.github.watabee.qiitacompose.ui.common.LocalNavHostController
 import com.github.watabee.qiitacompose.ui.home.HomeScreen
+import com.github.watabee.qiitacompose.ui.itemdetail.ItemDetailScreen
 import com.github.watabee.qiitacompose.ui.mypage.MyPageScreen
 import com.github.watabee.qiitacompose.ui.navigation.AppRouting
 import com.github.watabee.qiitacompose.ui.search.SearchScreen
 import com.github.watabee.qiitacompose.ui.user.UserScreen
+import java.net.URLDecoder
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 object MainDestinations {
     const val HOME = "home"
     const val USER = "user/{userId}"
     const val MYPAGE = "mypage"
     const val SEARCH = "search"
+    const val ITEM_DETAIL = "item/{url}"
 }
 
 @Composable
@@ -48,7 +53,14 @@ fun NavGraph(startDestination: String = MainDestinations.HOME, userRepository: U
                 MyPageScreen { navController.popBackStack() }
             }
             composable(MainDestinations.SEARCH) {
-                SearchScreen(openUserScreen = appRouter.openUserScreen) { navController.popBackStack() }
+                SearchScreen(
+                    openUserScreen = appRouter.openUserScreen,
+                    openItemDetailScreen = appRouter.openItemDetailScreen,
+                    closeSearchScreen = { navController.popBackStack() }
+                )
+            }
+            composable(MainDestinations.ITEM_DETAIL) { backStackEntry ->
+                ItemDetailScreen(url = URLDecoder.decode(backStackEntry.arguments?.getString("url")!!, StandardCharsets.UTF_8.toString()))
             }
         }
     }
@@ -70,5 +82,9 @@ class AppRouter(
 
     override val openSearchScreen: () -> Unit = {
         navController.navigate(MainDestinations.SEARCH)
+    }
+
+    override val openItemDetailScreen: (url: String) -> Unit = {
+        navController.navigate("item/${URLEncoder.encode(it, StandardCharsets.UTF_8.toString())}")
     }
 }
