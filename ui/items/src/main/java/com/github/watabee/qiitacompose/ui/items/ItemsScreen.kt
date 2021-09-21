@@ -28,7 +28,7 @@ import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
-fun ItemsScreen(openUserScreen: suspend (User) -> Unit) {
+fun ItemsScreen(openUserScreen: suspend (User) -> Unit, openItemDetailScreen: (String) -> Unit) {
     val viewModel: ItemsViewModel = hiltViewModel()
     val lazyPagingItems = viewModel.itemsFlow.collectAsLazyPagingItems()
     val isRefreshing = lazyPagingItems.loadState.refresh is LoadState.Loading
@@ -49,7 +49,12 @@ fun ItemsScreen(openUserScreen: suspend (User) -> Unit) {
             if (isError) {
                 ErrorScreen(onRetryButtonClicked = { lazyPagingItems.retry() })
             } else {
-                ItemsList(modifier = Modifier.navigationBarsPadding(), lazyPagingItems = lazyPagingItems, openUserScreen = openUserScreen)
+                ItemsList(
+                    modifier = Modifier.navigationBarsPadding(),
+                    lazyPagingItems = lazyPagingItems,
+                    openUserScreen = openUserScreen,
+                    openItemDetailScreen = openItemDetailScreen
+                )
             }
         }
     }
@@ -60,11 +65,12 @@ fun ItemsList(
     lazyPagingItems: LazyPagingItems<Item>,
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
-    openUserScreen: suspend (User) -> Unit
+    openUserScreen: suspend (User) -> Unit,
+    openItemDetailScreen: (String) -> Unit
 ) {
     LazyColumn(modifier, lazyListState) {
         items(lazyPagingItems, key = { it.id }) {
-            it?.let { item -> ItemListItem(item = item, openUserScreen = openUserScreen) }
+            it?.let { item -> ItemListItem(item = item, openUserScreen = openUserScreen, openItemDetailScreen) }
         }
 
         when (lazyPagingItems.loadState.append) {

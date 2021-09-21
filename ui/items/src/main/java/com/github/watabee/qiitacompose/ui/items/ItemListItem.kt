@@ -1,6 +1,7 @@
 package com.github.watabee.qiitacompose.ui.items
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -37,12 +38,13 @@ import kotlinx.coroutines.launch
 import java.util.Date
 
 @Composable
-internal fun ItemListItem(item: Item, openUserScreen: suspend (User) -> Unit) {
+internal fun ItemListItem(item: Item, openUserScreen: suspend (User) -> Unit, openItemDetailScreen: (String) -> Unit) {
     val scope = rememberCoroutineScope()
     Column {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable(onClick = { openItemDetailScreen(item.url) })
                 .padding(all = 16.dp)
         ) {
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
@@ -151,7 +153,8 @@ private fun PreviewItemListItem() {
                     Item.Tag("JavaScript")
                 )
             ),
-            openUserScreen = {}
+            openUserScreen = {},
+            openItemDetailScreen = {}
         )
     }
 }

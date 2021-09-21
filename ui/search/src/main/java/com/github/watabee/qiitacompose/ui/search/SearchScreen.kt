@@ -75,6 +75,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SearchScreen(
     openUserScreen: suspend (User) -> Unit,
+    openItemDetailScreen: (String) -> Unit,
     closeSearchScreen: () -> Unit
 ) {
     val viewModel: SearchViewModel = hiltViewModel()
@@ -136,7 +137,12 @@ fun SearchScreen(
                 ErrorScreen(onRetryButtonClicked = { lazyPagingItems.retry() })
             }
             else -> {
-                ItemsList(lazyPagingItems = lazyPagingItems, lazyListState = lazyListState, openUserScreen = openUserScreen)
+                ItemsList(
+                    lazyPagingItems = lazyPagingItems,
+                    lazyListState = lazyListState,
+                    openUserScreen = openUserScreen,
+                    openItemDetailScreen = openItemDetailScreen
+                )
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.github.watabee.qiitacompose.ui.common
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,6 +27,7 @@ fun ErrorScreen(onRetryButtonClicked: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(color = MaterialTheme.colors.background)
             .padding(horizontal = 16.dp)
             .wrapContentSize()
     ) {

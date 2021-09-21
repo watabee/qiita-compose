@@ -66,7 +66,7 @@ private fun HomeScreen(
             )
         },
         content = {
-            ItemsScreen(appRouting.openUserScreen)
+            ItemsScreen(appRouting.openUserScreen, appRouting.openItemDetailScreen)
         }
     )
 }

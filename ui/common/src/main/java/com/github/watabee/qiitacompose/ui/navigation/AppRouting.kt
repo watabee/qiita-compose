@@ -10,4 +10,6 @@ interface AppRouting {
     val openMyPageScreen: () -> Unit
 
     val openSearchScreen: () -> Unit
+
+    val openItemDetailScreen: (url: String) -> Unit
 }
