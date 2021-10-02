@@ -21,7 +21,7 @@ def versions = [
 ext.Versions = versions
 
 deps.androidGradlePlugin = "com.android.tools.build:gradle:7.0.2"
-deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:5.15.0"
+deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:5.15.2"
 deps.secretsGradlePlugin = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.0"
 
 versions.kotlin = "1.5.30"
@@ -120,7 +120,7 @@ deps.Moshi = [
     adapters: "com.squareup.moshi:moshi-adapters:$versions.moshi",
 ]
 
-versions.hilt = "2.38.1"
+versions.hilt = "2.39.1"
 deps.Dagger = [:]
 deps.Dagger.Hilt = [
     android: "com.google.dagger:hilt-android:$versions.hilt",
