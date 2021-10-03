@@ -24,7 +24,7 @@ deps.androidGradlePlugin = "com.android.tools.build:gradle:7.0.2"
 deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:5.15.2"
 deps.secretsGradlePlugin = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.0"
 
-versions.kotlin = "1.5.30"
+versions.kotlin = "1.5.31"
 deps.Kotlin = [
     stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin",
     gradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
@@ -53,7 +53,7 @@ deps.AndroidX.Test = [
     junit: "androidx.test.ext:junit-ktx:1.1.3",
 ]
 
-versions.lifecycle = "2.4.0-beta01"
+versions.lifecycle = "2.4.0-rc01"
 deps.AndroidX.Lifecycle = [
     runtime: "androidx.lifecycle:lifecycle-runtime-ktx:$versions.lifecycle",
     compiler: "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle",
@@ -65,20 +65,20 @@ deps.AndroidX.Lifecycle.ViewModel = [
     compose: "androidx.lifecycle:lifecycle-viewmodel-compose:$versions.lifecycle",
 ]
 
-versions.navigation = "2.4.0-alpha09"
+versions.navigation = "2.4.0-alpha10"
 deps.AndroidX.Navigation = [
     fragment: "androidx.navigation:navigation-fragment-ktx:$versions.navigation",
     ui: "androidx.navigation:navigation-ui-ktx:$versions.navigation",
 ]
 
-versions.room = "2.4.0-alpha04"
+versions.room = "2.4.0-alpha05"
 deps.AndroidX.Room = [
     runtime: "androidx.room:room-runtime:$versions.room",
     ktx: "androidx.room:room-ktx:$versions.room",
     compiler: "androidx.room:room-compiler:$versions.room",
 ]
 
-versions.compose = "1.1.0-alpha04"
+versions.compose = "1.1.0-alpha05"
 deps.AndroidX.Compose = [
     compiler: "androidx.compose.compiler:compiler:$versions.compose",
     runtime: "androidx.compose.runtime:runtime:$versions.compose",
@@ -90,7 +90,7 @@ deps.AndroidX.Compose = [
     themeAdapter: "androidx.compose.material:compose-theme-adapter:$versions.compose",
     constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc01",
 
-    paging: "androidx.paging:paging-compose:1.0.0-alpha12",
+    paging: "androidx.paging:paging-compose:1.0.0-alpha13",
     navigation: "androidx.navigation:navigation-compose:$versions.navigation",
 ]
 
@@ -133,7 +133,7 @@ deps.Coil = [
     coilCompose: "io.coil-kt:coil-compose:1.3.2",
 ]
 
-versions.accompanist = "0.18.0"
+versions.accompanist = "0.19.0"
 deps.Accompanist = [
     flowLayout: "com.google.accompanist:accompanist-flowlayout:$versions.accompanist",
     swipeRefresh: "com.google.accompanist:accompanist-swiperefresh:$versions.accompanist",
