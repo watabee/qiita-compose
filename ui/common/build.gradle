@@ -30,8 +30,8 @@ android {
 }
 
 dependencies {
-    api project(':base-android')
-    implementation project(':data')
+    api projects.baseAndroid
+    implementation projects.data
 
     implementation Deps.AndroidX.appcompat
     implementation Deps.AndroidX.activity

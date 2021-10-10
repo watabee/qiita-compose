@@ -27,9 +27,9 @@ android {
 }
 
 dependencies {
-    implementation project(':data')
-    implementation project(':ui:common')
-    implementation project(':ui:items')
+    implementation projects.data
+    implementation projects.ui.common
+    implementation projects.ui.items
 
     implementation Deps.AndroidX.core
 

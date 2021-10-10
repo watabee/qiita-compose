@@ -14,3 +14,5 @@ include ':ui:mypage'
 
 include ':test-util'
 include ':dependabot'
+
+enableFeaturePreview('TYPESAFE_PROJECT_ACCESSORS')

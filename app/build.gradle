@@ -62,14 +62,14 @@ android {
 }
 
 dependencies {
-    implementation project(':data')
-    implementation project(':ui:common')
-    implementation project(':ui:home')
-    implementation project(':ui:login')
-    implementation project(':ui:user')
-    implementation project(':ui:mypage')
-    implementation project(':ui:items')
-    implementation project(':ui:search')
+    implementation projects.data
+    implementation projects.ui.common
+    implementation projects.ui.home
+    implementation projects.ui.login
+    implementation projects.ui.user
+    implementation projects.ui.mypage
+    implementation projects.ui.items
+    implementation projects.ui.search
 
     implementation Deps.Kotlin.stdlib
     implementation Deps.Kotlin.Coroutines.core
