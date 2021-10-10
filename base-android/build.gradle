@@ -17,7 +17,7 @@ android {
 }
 
 dependencies {
-    api project(':base')
+    api projects.base
 
     implementation Deps.Kotlin.Coroutines.android
 

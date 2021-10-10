@@ -27,8 +27,8 @@ android {
 }
 
 dependencies {
-    implementation project(':data')
-    implementation project(':ui:common')
+    implementation projects.data
+    implementation projects.ui.common
 
     implementation Deps.AndroidX.appcompat
     implementation Deps.AndroidX.activity
