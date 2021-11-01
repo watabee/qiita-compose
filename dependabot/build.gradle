@@ -65,7 +65,7 @@ deps.AndroidX.Lifecycle.ViewModel = [
     compose: "androidx.lifecycle:lifecycle-viewmodel-compose:$versions.lifecycle",
 ]
 
-versions.navigation = "2.4.0-alpha10"
+versions.navigation = "2.4.0-beta01"
 deps.AndroidX.Navigation = [
     fragment: "androidx.navigation:navigation-fragment-ktx:$versions.navigation",
     ui: "androidx.navigation:navigation-ui-ktx:$versions.navigation",
