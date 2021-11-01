@@ -39,9 +39,9 @@ deps.Kotlin.Coroutines = [
 
 deps.AndroidX = [
     appcompat: "androidx.appcompat:appcompat:1.3.1",
-    activity: "androidx.activity:activity-ktx:1.3.1",
-    fragment: "androidx.fragment:fragment-ktx:1.3.6",
-    core: "androidx.core:core-ktx:1.6.0",
+    activity: "androidx.activity:activity-ktx:1.4.0",
+    fragment: "androidx.fragment:fragment-ktx:1.4.0-beta01",
+    core: "androidx.core:core-ktx:1.7.0",
     dataStorePreferences: "androidx.datastore:datastore-preferences:1.0.0",
 ]
 
@@ -53,7 +53,7 @@ deps.AndroidX.Test = [
     junit: "androidx.test.ext:junit-ktx:1.1.3",
 ]
 
-versions.lifecycle = "2.4.0-rc01"
+versions.lifecycle = "2.4.0"
 deps.AndroidX.Lifecycle = [
     runtime: "androidx.lifecycle:lifecycle-runtime-ktx:$versions.lifecycle",
     compiler: "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle",
@@ -65,7 +65,7 @@ deps.AndroidX.Lifecycle.ViewModel = [
     compose: "androidx.lifecycle:lifecycle-viewmodel-compose:$versions.lifecycle",
 ]
 
-versions.navigation = "2.4.0-alpha10"
+versions.navigation = "2.4.0-beta01"
 deps.AndroidX.Navigation = [
     fragment: "androidx.navigation:navigation-fragment-ktx:$versions.navigation",
     ui: "androidx.navigation:navigation-ui-ktx:$versions.navigation",
@@ -78,7 +78,7 @@ deps.AndroidX.Room = [
     compiler: "androidx.room:room-compiler:$versions.room",
 ]
 
-versions.compose = "1.1.0-alpha05"
+versions.compose = "1.1.0-beta01"
 deps.AndroidX.Compose = [
     compiler: "androidx.compose.compiler:compiler:$versions.compose",
     runtime: "androidx.compose.runtime:runtime:$versions.compose",
@@ -120,7 +120,7 @@ deps.Moshi = [
     adapters: "com.squareup.moshi:moshi-adapters:$versions.moshi",
 ]
 
-versions.hilt = "2.39.1"
+versions.hilt = "2.40"
 deps.Dagger = [:]
 deps.Dagger.Hilt = [
     android: "com.google.dagger:hilt-android:$versions.hilt",
@@ -134,7 +134,7 @@ deps.Coil = [
     coilCompose: "io.coil-kt:coil-compose:$versions.coil",
 ]
 
-versions.accompanist = "0.20.0"
+versions.accompanist = "0.21.0-beta"
 deps.Accompanist = [
     flowLayout: "com.google.accompanist:accompanist-flowlayout:$versions.accompanist",
     swipeRefresh: "com.google.accompanist:accompanist-swiperefresh:$versions.accompanist",
