@@ -142,7 +142,7 @@ deps.Accompanist = [
 ]
 
 deps.Insetter = [
-    insetter: "dev.chrisbanes.insetter:insetter:0.6.0",
+    insetter: "dev.chrisbanes.insetter:insetter:0.6.1",
 ]
 
 deps.sandwich = "com.github.skydoves:sandwich:1.2.1"
