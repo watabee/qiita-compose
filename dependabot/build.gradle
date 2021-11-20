@@ -38,9 +38,9 @@ deps.Kotlin.Coroutines = [
 ]
 
 deps.AndroidX = [
-    appcompat: "androidx.appcompat:appcompat:1.3.1",
+    appcompat: "androidx.appcompat:appcompat:1.4.0",
     activity: "androidx.activity:activity-ktx:1.4.0",
-    fragment: "androidx.fragment:fragment-ktx:1.4.0-rc01",
+    fragment: "androidx.fragment:fragment-ktx:1.4.0",
     core: "androidx.core:core-ktx:1.7.0",
     dataStorePreferences: "androidx.datastore:datastore-preferences:1.0.0",
 ]
@@ -71,14 +71,14 @@ deps.AndroidX.Navigation = [
     ui: "androidx.navigation:navigation-ui-ktx:$versions.navigation",
 ]
 
-versions.room = "2.4.0-beta01"
+versions.room = "2.4.0-beta02"
 deps.AndroidX.Room = [
     runtime: "androidx.room:room-runtime:$versions.room",
     ktx: "androidx.room:room-ktx:$versions.room",
     compiler: "androidx.room:room-compiler:$versions.room",
 ]
 
-versions.compose = "1.1.0-beta01"
+versions.compose = "1.1.0-beta03"
 deps.AndroidX.Compose = [
     compiler: "androidx.compose.compiler:compiler:$versions.compose",
     runtime: "androidx.compose.runtime:runtime:$versions.compose",
@@ -88,14 +88,14 @@ deps.AndroidX.Compose = [
     foundationLayout: "androidx.compose.foundation:foundation-layout:$versions.compose",
     material: "androidx.compose.material:material:$versions.compose",
     themeAdapter: "androidx.compose.material:compose-theme-adapter:$versions.compose",
-    constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc01",
+    constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc02",
 
     paging: "androidx.paging:paging-compose:1.0.0-alpha14",
     navigation: "androidx.navigation:navigation-compose:$versions.navigation",
 ]
 
 deps.AndroidX.Hilt = [
-    compose: "androidx.hilt:hilt-navigation-compose:1.0.0-alpha03",
+    compose: "androidx.hilt:hilt-navigation-compose:1.0.0-beta01",
 ]
 
 deps.Google = [
@@ -134,7 +134,7 @@ deps.Coil = [
     coilCompose: "io.coil-kt:coil-compose:$versions.coil",
 ]
 
-versions.accompanist = "0.21.0-beta"
+versions.accompanist = "0.21.2-beta"
 deps.Accompanist = [
     flowLayout: "com.google.accompanist:accompanist-flowlayout:$versions.accompanist",
     swipeRefresh: "com.google.accompanist:accompanist-swiperefresh:$versions.accompanist",
