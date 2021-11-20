@@ -88,7 +88,7 @@ deps.AndroidX.Compose = [
     foundationLayout: "androidx.compose.foundation:foundation-layout:$versions.compose",
     material: "androidx.compose.material:material:$versions.compose",
     themeAdapter: "androidx.compose.material:compose-theme-adapter:$versions.compose",
-    constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc01",
+    constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc02",
 
     paging: "androidx.paging:paging-compose:1.0.0-alpha14",
     navigation: "androidx.navigation:navigation-compose:$versions.navigation",
