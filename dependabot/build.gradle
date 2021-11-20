@@ -71,7 +71,7 @@ deps.AndroidX.Navigation = [
     ui: "androidx.navigation:navigation-ui-ktx:$versions.navigation",
 ]
 
-versions.room = "2.4.0-beta01"
+versions.room = "2.4.0-beta02"
 deps.AndroidX.Room = [
     runtime: "androidx.room:room-runtime:$versions.room",
     ktx: "androidx.room:room-ktx:$versions.room",
