@@ -102,7 +102,7 @@ deps.Google = [
     material: "com.google.android.material:material:1.4.0",
 ]
 
-versions.okhttp = "4.9.2"
+versions.okhttp = "4.9.3"
 deps.OkHttp = [
     okhttp: "com.squareup.okhttp3:okhttp:$versions.okhttp",
     loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:$versions.okhttp",
@@ -120,7 +120,7 @@ deps.Moshi = [
     adapters: "com.squareup.moshi:moshi-adapters:$versions.moshi",
 ]
 
-versions.hilt = "2.40.1"
+versions.hilt = "2.40.2"
 deps.Dagger = [:]
 deps.Dagger.Hilt = [
     android: "com.google.dagger:hilt-android:$versions.hilt",
