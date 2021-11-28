@@ -120,7 +120,7 @@ deps.Moshi = [
     adapters: "com.squareup.moshi:moshi-adapters:$versions.moshi",
 ]
 
-versions.hilt = "2.40.1"
+versions.hilt = "2.40.2"
 deps.Dagger = [:]
 deps.Dagger.Hilt = [
     android: "com.google.dagger:hilt-android:$versions.hilt",
@@ -154,7 +154,7 @@ deps.desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
 deps.junit = "junit:junit:4.13.2"
 deps.truth = "com.google.truth:truth:1.1.3"
 deps.turbine = "app.cash.turbine:turbine:0.7.0"
-deps.robolectric = "org.robolectric:robolectric:4.7.1"
+deps.robolectric = "org.robolectric:robolectric:4.7.2"
 
 deps.Mockk = [
     mockk: "io.mockk:mockk:1.12.1",
