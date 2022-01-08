@@ -24,13 +24,13 @@ deps.androidGradlePlugin = "com.android.tools.build:gradle:7.0.4"
 deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:6.1.2"
 deps.secretsGradlePlugin = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.0"
 
-versions.kotlin = "1.5.31"
+versions.kotlin = "1.6.10"
 deps.Kotlin = [
     stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin",
     gradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
 ]
 
-versions.coroutines = "1.5.2"
+versions.coroutines = "1.6.0"
 deps.Kotlin.Coroutines = [
     core: "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines",
     android: "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines",
