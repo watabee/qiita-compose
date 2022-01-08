@@ -121,7 +121,7 @@ deps.Moshi = [
     adapters: "com.squareup.moshi:moshi-adapters:$versions.moshi",
 ]
 
-versions.hilt = "2.40.2"
+versions.hilt = "2.40.5"
 deps.Dagger = [:]
 deps.Dagger.Hilt = [
     android: "com.google.dagger:hilt-android:$versions.hilt",
