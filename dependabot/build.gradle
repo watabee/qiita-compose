@@ -96,7 +96,7 @@ deps.AndroidX.Compose = [
 ]
 
 deps.AndroidX.Hilt = [
-    compose: "androidx.hilt:hilt-navigation-compose:1.0.0-beta01",
+    compose: "androidx.hilt:hilt-navigation-compose:1.0.0-rc01",
 ]
 
 deps.Google = [
