@@ -46,7 +46,7 @@ fun NavGraph(startDestination: String = MainDestinations.HOME, userRepository: U
                 UserScreen(
                     userId = backStackEntry.arguments?.getString("userId")!!,
                     appRouting = appRouter,
-                    closeUserScreen = { navController.popBackStack() }
+                    navigateUp = { navController.navigateUp() }
                 )
             }
             composable(MainDestinations.MYPAGE) {

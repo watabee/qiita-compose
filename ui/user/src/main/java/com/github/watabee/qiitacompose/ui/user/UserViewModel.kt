@@ -8,23 +8,19 @@ import com.github.watabee.qiitacompose.api.response.User
 import com.github.watabee.qiitacompose.datastore.UserDataStore
 import com.github.watabee.qiitacompose.repository.QiitaRepository
 import com.github.watabee.qiitacompose.repository.UserRepository
-import com.github.watabee.qiitacompose.util.throttleFirst
+import com.github.watabee.qiitacompose.ui.state.ToastMessage
+import com.github.watabee.qiitacompose.ui.state.ToastMessageId
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
@@ -36,96 +32,106 @@ class UserViewModel @Inject constructor(
     dataStore: UserDataStore
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(State(isLoading = true))
-    val state: StateFlow<State> = _state.asStateFlow()
+    private val isLoggedIn: StateFlow<Boolean> = dataStore.userDataFlow
+        .map { !it?.accessToken.isNullOrBlank() }
+        .stateIn(viewModelScope, started = SharingStarted.Eagerly, initialValue = false)
 
-    private val eventChannel = Channel<Event>(Channel.UNLIMITED)
-    val event: Flow<Event> = eventChannel.receiveAsFlow()
+    private val _state = MutableStateFlow(UserUiModel())
+    val state: StateFlow<UserUiModel> = combine(_state, isLoggedIn) { state, isLoggedIn ->
+        if (isLoggedIn) state else state.copy(followButtonState = UserUiModel.FollowButtonState.LOGIN_REQUIRED)
+    }.stateIn(viewModelScope, started = SharingStarted.Eagerly, initialValue = UserUiModel())
 
-    private val actionFollowOrUnfollowUser =
-        MutableSharedFlow<Action>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_LATEST)
+    private var actionJob: Job? = null
 
-    val dispatchAction: (Action) -> Unit = { action ->
-        when (action) {
-            is Action.GetUserInfo -> {
-                viewModelScope.launch { getUserInfo(action.userId) }
-            }
-            is Action.FollowUser, is Action.UnfollowUser -> {
-                actionFollowOrUnfollowUser.tryEmit(action)
+    fun dispatchAction(action: Action) {
+        if (actionJob?.isActive == true) {
+            return
+        }
+        actionJob = viewModelScope.launch {
+            when (action) {
+                is Action.GetUserInfo -> {
+                    getUserInfo(action.userId)
+                }
+                is Action.FollowUser -> {
+                    followUser(action.userId)
+                }
+                is Action.UnfollowUser -> {
+                    unfollowUser(action.userId)
+                }
             }
         }
     }
 
-    val isLoggedIn: StateFlow<Boolean> = dataStore.userDataFlow
-        .map { !it?.accessToken.isNullOrBlank() }
-        .stateIn(viewModelScope, started = SharingStarted.Eagerly, initialValue = false)
-
-    init {
-        actionFollowOrUnfollowUser.throttleFirst(1000L)
-            .onEach { action ->
-                when (action) {
-                    is Action.FollowUser -> followUser(action.userId)
-                    is Action.UnfollowUser -> unfollowUser(action.userId)
-                    else -> {
-                        // do nothing.
-                    }
-                }
-            }
-            .launchIn(viewModelScope)
+    fun toastMessageShown(toastMessageId: ToastMessageId) {
+        _state.update { userUiModel ->
+            userUiModel.copy(toastMessages = userUiModel.toastMessages.filterNot { it.id == toastMessageId })
+        }
     }
 
     private suspend fun getUserInfo(userId: String) {
-        supervisorScope {
-            _state.emit(State(isLoading = true))
-            val (user, isFollowingUserResult, getUserFollowingTagsResult) = awaitAll(
-                async { userRepository.findById(userId) },
-                async { qiitaRepository.isFollowingUser(userId) },
-                async { qiitaRepository.getUserFollowingTags(userId) }
-            )
-            @Suppress("UNCHECKED_CAST")
-            if (user is User && getUserFollowingTagsResult is QiitaApiResult.Success<*>) {
-                val isFollowingUser = (isFollowingUserResult as? QiitaApiResult.Success<*>)?.response as? Boolean ?: false
-                val followingTags = getUserFollowingTagsResult.response as List<Tag>
-                _state.emit(State(user = user, isFollowingUser = isFollowingUser, followingTags = followingTags))
-            } else {
-                _state.emit(State(getUserInfoError = true))
+        try {
+            supervisorScope {
+                _state.emit(UserUiModel(isLoading = true))
+                val (user, isFollowingUserResult, getUserFollowingTagsResult) = awaitAll(
+                    async { userRepository.findById(userId) },
+                    async { qiitaRepository.isFollowingUser(userId) },
+                    async { qiitaRepository.getUserFollowingTags(userId) }
+                )
+                @Suppress("UNCHECKED_CAST")
+                if (user is User && getUserFollowingTagsResult is QiitaApiResult.Success<*>) {
+                    val isFollowingUser = (isFollowingUserResult as? QiitaApiResult.Success<*>)?.response as? Boolean ?: false
+                    val followingTags = getUserFollowingTagsResult.response as List<Tag>
+                    val followButtonState =
+                        if (isFollowingUser) UserUiModel.FollowButtonState.FOLLOWING else UserUiModel.FollowButtonState.UNFOLLOWING
+                    _state.update {
+                        UserUiModel(user = user, followButtonState = followButtonState, followingTags = followingTags)
+                    }
+                } else {
+                    _state.update { it.copy(isLoading = false, getUserInfoError = true) }
+                }
             }
+        } catch (e: Throwable) {
+            _state.update { it.copy(isLoading = false, getUserInfoError = true) }
         }
     }
 
     private suspend fun followUser(userId: String) {
+        _state.update { uiModel -> uiModel.copy(followButtonState = UserUiModel.FollowButtonState.PROCESSING) }
         when (qiitaRepository.followUser(userId)) {
             is QiitaApiResult.Success -> {
-                _state.emit(State(isFollowingUser = true, followingTags = _state.value.followingTags))
+                _state.update { uiModel ->
+                    val updatedUser = uiModel.user?.let { user -> user.copy(followersCount = user.followersCount + 1) }
+                    uiModel.copy(user = updatedUser, followButtonState = UserUiModel.FollowButtonState.FOLLOWING)
+                }
             }
             is QiitaApiResult.Failure -> {
-                eventChannel.send(Event.ShowFollowUserError)
+                _state.update { uiModel ->
+                    val newToastMessage = ToastMessage(messageResId = R.string.user_follow_user_error_message)
+                    uiModel.copy(
+                        toastMessages = uiModel.toastMessages + newToastMessage,
+                        followButtonState = UserUiModel.FollowButtonState.UNFOLLOWING
+                    )
+                }
             }
         }
     }
 
     private suspend fun unfollowUser(userId: String) {
+        _state.update { uiModel -> uiModel.copy(followButtonState = UserUiModel.FollowButtonState.PROCESSING) }
         when (qiitaRepository.unfollowUser(userId)) {
             is QiitaApiResult.Success -> {
-                _state.emit(State(isFollowingUser = false, followingTags = _state.value.followingTags))
+                _state.update { uiModel ->
+                    val updatedUser = uiModel.user?.let { user -> user.copy(followersCount = user.followersCount - 1) }
+                    uiModel.copy(user = updatedUser, followButtonState = UserUiModel.FollowButtonState.UNFOLLOWING)
+                }
             }
             is QiitaApiResult.Failure -> {
-                eventChannel.send(Event.ShowUnfollowUserError)
+                _state.update {
+                    val newToastMessage = ToastMessage(messageResId = R.string.user_unfollow_user_error_message)
+                    it.copy(toastMessages = it.toastMessages + newToastMessage, followButtonState = UserUiModel.FollowButtonState.FOLLOWING)
+                }
             }
         }
-    }
-
-    data class State(
-        val isLoading: Boolean = false,
-        val getUserInfoError: Boolean = false,
-        val user: User? = null,
-        val isFollowingUser: Boolean = false,
-        val followingTags: List<Tag> = emptyList()
-    )
-
-    sealed class Event {
-        object ShowFollowUserError : Event()
-        object ShowUnfollowUserError : Event()
     }
 
     sealed class Action {

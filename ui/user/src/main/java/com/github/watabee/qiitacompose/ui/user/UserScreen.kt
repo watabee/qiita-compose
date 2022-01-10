@@ -1,9 +1,8 @@
 package com.github.watabee.qiitacompose.ui.user
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +17,7 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
@@ -56,79 +56,85 @@ import com.github.watabee.qiitacompose.ui.common.LoadingScreen
 import com.github.watabee.qiitacompose.ui.common.SnsIconButtons
 import com.github.watabee.qiitacompose.ui.common.UserCountTexts
 import com.github.watabee.qiitacompose.ui.navigation.AppRouting
+import com.github.watabee.qiitacompose.ui.state.ToastMessageId
+import com.github.watabee.qiitacompose.ui.state.show
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
 import com.github.watabee.qiitacompose.ui.theme.tagBackground
-import com.github.watabee.qiitacompose.ui.util.lifecycleAwareFlow
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.insets.navigationBarsPadding
-import kotlinx.coroutines.flow.collect
 
 @Composable
-fun UserScreen(userId: String, appRouting: AppRouting, closeUserScreen: () -> Unit) {
-    val context = LocalContext.current
-    val viewModel: UserViewModel = hiltViewModel()
-    val state by viewModel.state.collectAsState(UserViewModel.State(isLoading = true))
-    val dispatchAction = viewModel.dispatchAction
-    val event = viewModel.event
-
-    LaunchedEffect(userId, dispatchAction) {
-        dispatchAction(UserViewModel.Action.GetUserInfo(userId))
-    }
-
-    LaunchedEffect(event) {
-        event.collect {
-            handleEvent(context, it)
-        }
-    }
+fun UserScreen(userId: String, appRouting: AppRouting, navigateUp: () -> Unit) {
 
     UserScreen(
-        scaffoldState = rememberScaffoldState(),
-        user = state.user,
-        isLoading = state.isLoading,
-        isError = state.getUserInfoError,
-        isFollowingUser = state.isFollowingUser,
-        followingTags = state.followingTags,
-        retryToGetUserInfo = { dispatchAction(UserViewModel.Action.GetUserInfo(userId)) },
+        userViewModel = hiltViewModel(),
+        userId = userId,
         openLoginScreen = appRouting.openLoginScreen,
-        closeUserScreen = closeUserScreen
+        navigateUp = navigateUp
     )
 }
 
 @Composable
-private fun UserScreen(
-    scaffoldState: ScaffoldState,
-    user: User?,
-    isLoading: Boolean,
-    isError: Boolean,
-    isFollowingUser: Boolean,
-    followingTags: List<Tag>,
+internal fun UserScreen(userViewModel: UserViewModel, userId: String, openLoginScreen: () -> Unit, navigateUp: () -> Unit) {
+    val userUiModel by userViewModel.state.collectAsState(UserUiModel(isLoading = true))
+
+    LaunchedEffect(userViewModel, userId) {
+        userViewModel.dispatchAction(UserViewModel.Action.GetUserInfo(userId))
+    }
+
+    UserScreen(
+        userUiModel = userUiModel,
+        retryToGetUserInfo = { userViewModel.dispatchAction(UserViewModel.Action.GetUserInfo(userId)) },
+        openLoginScreen = openLoginScreen,
+        followUser = { userViewModel.dispatchAction(UserViewModel.Action.FollowUser(it)) },
+        unfollowUser = { userViewModel.dispatchAction(UserViewModel.Action.UnfollowUser(it)) },
+        navigateUp = navigateUp,
+        onToastMessageShown = { userViewModel.toastMessageShown(it) }
+    )
+}
+
+@Composable
+internal fun UserScreen(
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
+    userUiModel: UserUiModel,
     retryToGetUserInfo: () -> Unit,
     openLoginScreen: () -> Unit,
-    closeUserScreen: () -> Unit
+    followUser: (String) -> Unit,
+    unfollowUser: (String) -> Unit,
+    navigateUp: () -> Unit,
+    onToastMessageShown: (ToastMessageId) -> Unit
 ) {
+    val context = LocalContext.current
+
+    val toastMessage = userUiModel.toastMessages.firstOrNull()
+    if (toastMessage != null) {
+        LaunchedEffect(toastMessage) {
+            toastMessage.show(context)
+            onToastMessageShown(toastMessage.id)
+        }
+    }
+
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
                 navigationIcon = {
-                    IconButton(onClick = closeUserScreen) {
+                    IconButton(onClick = navigateUp) {
                         Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
                     }
                 },
                 title = {
-                    Text(text = user?.name.orEmpty())
+                    Text(text = userUiModel.user?.name.orEmpty())
                 }
             )
         },
         content = {
             UserScreen(
-                user = user,
-                isLoading = isLoading,
-                isError = isError,
-                isFollowingUser = isFollowingUser,
-                followingTags = followingTags,
+                userUiModel = userUiModel,
                 retryToGetUserInfo = retryToGetUserInfo,
-                openLoginScreen = openLoginScreen
+                openLoginScreen = openLoginScreen,
+                followUser = followUser,
+                unfollowUser = unfollowUser
             )
         }
     )
@@ -136,40 +142,41 @@ private fun UserScreen(
 
 @Composable
 private fun UserScreen(
-    user: User?,
-    isLoading: Boolean,
-    isError: Boolean,
-    isFollowingUser: Boolean,
-    followingTags: List<Tag>,
+    userUiModel: UserUiModel,
     retryToGetUserInfo: () -> Unit,
-    openLoginScreen: () -> Unit
+    openLoginScreen: () -> Unit,
+    followUser: (String) -> Unit,
+    unfollowUser: (String) -> Unit
 ) {
     when {
-        isLoading -> {
+        userUiModel.isLoading -> {
             LoadingScreen()
         }
-        isError -> {
+        userUiModel.getUserInfoError -> {
             ErrorScreen(onRetryButtonClicked = { retryToGetUserInfo() })
         }
-        user != null -> {
-            UserProfileScreen(user, isFollowingUser, followingTags, openLoginScreen)
-        }
-    }
-}
-
-private fun handleEvent(context: Context, event: UserViewModel.Event) {
-    when (event) {
-        UserViewModel.Event.ShowFollowUserError -> {
-            Toast.makeText(context, context.getString(R.string.user_follow_user_error_message), Toast.LENGTH_SHORT).show()
-        }
-        UserViewModel.Event.ShowUnfollowUserError -> {
-            Toast.makeText(context, context.getString(R.string.user_unfollow_user_error_message), Toast.LENGTH_SHORT).show()
+        userUiModel.user != null -> {
+            UserProfileScreen(
+                userUiModel.user,
+                userUiModel.followButtonState,
+                userUiModel.followingTags,
+                openLoginScreen,
+                followUser,
+                unfollowUser
+            )
         }
     }
 }
 
 @Composable
-private fun UserProfileScreen(user: User, isFollowingUser: Boolean, followingTags: List<Tag>, openLoginScreen: () -> Unit) {
+private fun UserProfileScreen(
+    user: User,
+    followButtonState: UserUiModel.FollowButtonState,
+    followingTags: List<Tag>,
+    openLoginScreen: () -> Unit,
+    followUser: (String) -> Unit,
+    unfollowUser: (String) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -223,44 +230,69 @@ private fun UserProfileScreen(user: User, isFollowingUser: Boolean, followingTag
         }
 
         Spacer(modifier = Modifier.requiredHeight(24.dp))
-        FollowButton(userId = user.id, isFollowingUser = isFollowingUser, openLoginScreen = openLoginScreen)
+        FollowButton(
+            userId = user.id,
+            state = followButtonState,
+            openLoginScreen = openLoginScreen,
+            followUser = followUser,
+            unfollowUser = unfollowUser
+        )
 
         FollowingTags(followingTags = followingTags)
     }
 }
 
 @Composable
-private fun FollowButton(userId: String, isFollowingUser: Boolean, openLoginScreen: () -> Unit) {
-    val viewModel: UserViewModel = hiltViewModel()
-    val isLoggedIn by viewModel.isLoggedIn.lifecycleAwareFlow().collectAsState(initial = false)
-    val onButtonClicked = {
-        when {
-            !isLoggedIn -> openLoginScreen()
-            isFollowingUser -> viewModel.dispatchAction(UserViewModel.Action.UnfollowUser(userId))
-            else -> viewModel.dispatchAction(UserViewModel.Action.FollowUser(userId))
+private fun FollowButton(
+    userId: String,
+    state: UserUiModel.FollowButtonState,
+    openLoginScreen: () -> Unit,
+    followUser: (String) -> Unit,
+    unfollowUser: (String) -> Unit
+) {
+    when (state) {
+        UserUiModel.FollowButtonState.PROCESSING -> {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .requiredHeight(48.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
-    }
-
-    if (isFollowingUser) {
-        Button(
-            onClick = onButtonClicked,
-            modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.small.copy(all = CornerSize(0.dp))
-        ) {
-            Text(
-                text = stringResource(id = R.string.user_now_following),
-                style = MaterialTheme.typography.body2,
-                fontWeight = FontWeight.W700
-            )
+        UserUiModel.FollowButtonState.FOLLOWING -> {
+            Button(
+                onClick = { unfollowUser(userId) },
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.small.copy(all = CornerSize(0.dp))
+            ) {
+                Text(
+                    text = stringResource(id = R.string.user_now_following),
+                    style = MaterialTheme.typography.body2,
+                    fontWeight = FontWeight.W700
+                )
+            }
         }
-    } else {
-        OutlinedButton(
-            onClick = onButtonClicked,
-            modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.small.copy(all = CornerSize(0.dp)),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium))
-        ) {
-            Text(text = stringResource(id = R.string.user_follow), style = MaterialTheme.typography.body2, fontWeight = FontWeight.W700)
+        UserUiModel.FollowButtonState.UNFOLLOWING -> {
+            OutlinedButton(
+                onClick = { followUser(userId) },
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.small.copy(all = CornerSize(0.dp)),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium))
+            ) {
+                Text(text = stringResource(id = R.string.user_follow), style = MaterialTheme.typography.body2, fontWeight = FontWeight.W700)
+            }
+        }
+        UserUiModel.FollowButtonState.LOGIN_REQUIRED -> {
+            OutlinedButton(
+                onClick = openLoginScreen,
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.small.copy(all = CornerSize(0.dp)),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium))
+            ) {
+                Text(text = stringResource(id = R.string.user_follow), style = MaterialTheme.typography.body2, fontWeight = FontWeight.W700)
+            }
         }
     }
 }
@@ -317,6 +349,13 @@ private fun PreviewUserProfileScreen() {
     )
 
     QiitaTheme {
-        UserProfileScreen(user, isFollowingUser = true, followingTags = tags, openLoginScreen = {})
+        UserProfileScreen(
+            user,
+            followButtonState = UserUiModel.FollowButtonState.PROCESSING,
+            followingTags = tags,
+            openLoginScreen = {},
+            followUser = {},
+            unfollowUser = {}
+        )
     }
 }
