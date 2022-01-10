@@ -7,7 +7,7 @@ def versionPatch = 0
 def versionOffset = 0
 
 def versions = [
-    ktlint: "0.40.0",
+    ktlint: "0.43.2",
 
     androidCompileSdkVersion: 31,
     androidMinSdkVersion: 24,
