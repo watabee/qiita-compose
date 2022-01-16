@@ -57,4 +57,10 @@ dependencies {
     implementation Deps.Google.material
 
     implementation Deps.timber
+
+    testImplementation Deps.Kotlin.Coroutines.test
+    testImplementation Deps.junit
+    testImplementation Deps.truth
+    testImplementation Deps.turbine
+    testImplementation Deps.Mockk.mockk
 }
