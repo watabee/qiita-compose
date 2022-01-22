@@ -21,7 +21,7 @@ def versions = [
 ext.Versions = versions
 
 deps.androidGradlePlugin = "com.android.tools.build:gradle:7.0.4"
-deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:6.1.2"
+deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:6.2.0"
 deps.secretsGradlePlugin = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.0"
 
 versions.kotlin = "1.6.10"
@@ -38,7 +38,7 @@ deps.Kotlin.Coroutines = [
 ]
 
 deps.AndroidX = [
-    appcompat: "androidx.appcompat:appcompat:1.4.0",
+    appcompat: "androidx.appcompat:appcompat:1.4.1",
     activity: "androidx.activity:activity-ktx:1.4.0",
     fragment: "androidx.fragment:fragment-ktx:1.4.0",
     core: "androidx.core:core-ktx:1.7.0",
@@ -135,7 +135,7 @@ deps.Coil = [
     coilCompose: "io.coil-kt:coil-compose:$versions.coil",
 ]
 
-versions.accompanist = "0.22.0-rc"
+versions.accompanist = "0.24.1-SNAPSHOT"
 deps.Accompanist = [
     flowLayout: "com.google.accompanist:accompanist-flowlayout:$versions.accompanist",
     swipeRefresh: "com.google.accompanist:accompanist-swiperefresh:$versions.accompanist",
@@ -158,5 +158,5 @@ deps.turbine = "app.cash.turbine:turbine:0.7.0"
 deps.robolectric = "org.robolectric:robolectric:4.7.3"
 
 deps.Mockk = [
-    mockk: "io.mockk:mockk:1.12.1",
+    mockk: "io.mockk:mockk:1.12.2",
 ]
