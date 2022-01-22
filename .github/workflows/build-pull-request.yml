@@ -19,6 +19,16 @@ jobs:
         with:
           java-version: 11
 
+      - name: Setup ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+
+      - name: Install bundler
+        run: |
+          GEM_BUNDLER_VERSION=$(grep -A1 -E -i -w '(BUNDLED WITH){1,1}' .ci/Gemfile.lock | grep -E -i -w "[0-9\.]{1,}" | xargs)
+          gem install bundler -v=$GEM_BUNDLER_VERSION --force
+
       - name: Generate cache key
         run: ./checksum.sh checksum.txt
 
@@ -44,17 +54,8 @@ jobs:
           ./gradlew lintDebug
           ./gradlew testDebug
 
-      - name: Setup ruby
-        uses: actions/setup-ruby@v1
-        with:
-          ruby-version: 2.7
-
-      - name: Install bundler
-        run: |
-          GEM_BUNDLER_VERSION=$(grep -A1 -E -i -w '(BUNDLED WITH){1,1}' .ci/Gemfile.lock | grep -E -i -w "[0-9\.]{1,}" | xargs)
-          gem install bundler -v=$GEM_BUNDLER_VERSION --force
-
       - name: Run danger for static analysis
+        if: ${{ always() }}
         env:
           DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
