@@ -11,6 +11,6 @@ end
 # Android Junit
 
 Dir.glob("./**/test-results/**/*.xml").each do |file|
-  junit.parse fname
+  junit.parse file
   junit.report
 end
