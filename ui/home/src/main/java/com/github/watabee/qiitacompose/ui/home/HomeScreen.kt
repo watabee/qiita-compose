@@ -26,12 +26,11 @@ import com.github.watabee.qiitacompose.data.UserData
 import com.github.watabee.qiitacompose.ui.items.ItemsScreen
 import com.github.watabee.qiitacompose.ui.navigation.AppRouting
 import com.github.watabee.qiitacompose.ui.theme.QiitaFontFamily
-import com.github.watabee.qiitacompose.ui.util.lifecycleAwareFlow
 
 @Composable
 fun HomeScreen(scaffoldState: ScaffoldState = rememberScaffoldState(), appRouting: AppRouting) {
     val viewModel: HomeViewModel = hiltViewModel()
-    val userData: UserData? by viewModel.userData.lifecycleAwareFlow().collectAsState(initial = null)
+    val userData: UserData? by viewModel.userData.collectAsState(initial = null)
 
     HomeScreen(
         scaffoldState = scaffoldState,

@@ -61,7 +61,7 @@ class LoginViewModelTest {
 
         viewModel.outputEvent
             .test {
-                Truth.assertThat(expectItem()).isSameInstanceAs(LoginOutputEvent.SuccessLogin)
+                Truth.assertThat(awaitItem()).isSameInstanceAs(LoginOutputEvent.SuccessLogin)
                 cancelAndIgnoreRemainingEvents()
             }
 
@@ -85,7 +85,7 @@ class LoginViewModelTest {
 
         viewModel.outputEvent
             .test {
-                val expectItem = expectItem() as? LoginOutputEvent.FailureLogin
+                val expectItem = awaitItem() as? LoginOutputEvent.FailureLogin
                 with(expectItem) {
                     Truth.assertThat(this).isNotNull()
                     Truth.assertThat(this?.code).isEqualTo("code")
