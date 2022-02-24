@@ -79,7 +79,7 @@ deps.AndroidX.Room = [
 ]
 
 versions.compose = "1.1.0-rc01"
-versions.composeCompiler = "1.1.0-rc02"
+versions.composeCompiler = "1.2.0-alpha04"
 deps.AndroidX.Compose = [
     compiler: "androidx.compose.compiler:compiler:$versions.composeCompiler",
     runtime: "androidx.compose.runtime:runtime:$versions.compose",
