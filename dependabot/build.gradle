@@ -65,12 +65,6 @@ deps.AndroidX.Lifecycle.ViewModel = [
     compose: "androidx.lifecycle:lifecycle-viewmodel-compose:$versions.lifecycle",
 ]
 
-versions.navigation = "2.4.1"
-deps.AndroidX.Navigation = [
-    fragment: "androidx.navigation:navigation-fragment-ktx:$versions.navigation",
-    ui: "androidx.navigation:navigation-ui-ktx:$versions.navigation",
-]
-
 versions.room = "2.4.2"
 deps.AndroidX.Room = [
     runtime: "androidx.room:room-runtime:$versions.room",
@@ -92,7 +86,7 @@ deps.AndroidX.Compose = [
     constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.0",
 
     paging: "androidx.paging:paging-compose:1.0.0-alpha14",
-    navigation: "androidx.navigation:navigation-compose:$versions.navigation",
+    navigation: "androidx.navigation:navigation-compose:2.4.1",
 ]
 
 deps.AndroidX.Hilt = [
