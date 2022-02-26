@@ -15,9 +15,10 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
@@ -27,41 +28,49 @@ import kotlin.time.ExperimentalTime
 @OptIn(ExperimentalTime::class, ExperimentalCoroutinesApi::class)
 class LoginViewModelTest {
 
-    private lateinit var testCoroutineDispatcher: TestCoroutineDispatcher
     @MockK private lateinit var userDataStore: UserDataStore
 
     @Before
     fun setup() {
-        testCoroutineDispatcher = TestCoroutineDispatcher()
-        Dispatchers.setMain(testCoroutineDispatcher)
+        Dispatchers.setMain(UnconfinedTestDispatcher())
         MockKAnnotations.init(this, relaxUnitFun = true)
     }
 
     @After
     fun cleanUp() {
         Dispatchers.resetMain()
-        testCoroutineDispatcher.cleanupTestCoroutines()
     }
 
     @Test
-    fun `when getAccessTokens and getAuthenticatedUser return success then outputEvent emits SuccessLogin`() = runBlocking {
+    fun `when getAccessTokens and getAuthenticatedUser return success then uiState's events contain ShowSuccessLoginSnackbarEvent`() = runTest {
         val accessTokens = AccessTokens(clientId = "client_id", scopes = emptyList(), token = "token")
 
         val qiitaRepository: QiitaRepository = mockk {
             coEvery { getAccessTokens(any()) } returns QiitaApiResult.Success(response = accessTokens, rate = null, pagination = null)
-            coEvery { getAuthenticatedUser(any()) } returns QiitaApiResult.Success(
-                response = authenticatedUser,
-                rate = null,
-                pagination = null
-            )
+            coEvery { getAuthenticatedUser(any()) } coAnswers {
+                delay(500L)
+                QiitaApiResult.Success(
+                    response = authenticatedUser,
+                    rate = null,
+                    pagination = null
+                )
+            }
         }
 
         val viewModel = LoginViewModel(qiitaRepository, userDataStore)
-        viewModel.requestEvent(LoginInputEvent.RequestAccessTokens("code"))
+        viewModel.dispatchAction(LoginAction.RequestAccessTokens("code"))
 
-        viewModel.outputEvent
+        viewModel.uiState
             .test {
-                Truth.assertThat(awaitItem()).isSameInstanceAs(LoginOutputEvent.SuccessLogin)
+                with(awaitItem()) {
+                    Truth.assertThat(screenContent).isEqualTo(LoginUiState.ScreenContent.LOADING)
+                    Truth.assertThat(events).isEmpty()
+                }
+                with(awaitItem()) {
+                    Truth.assertThat(screenContent).isEqualTo(LoginUiState.ScreenContent.EMPTY)
+                    Truth.assertThat(events).hasSize(1)
+                    Truth.assertThat(events[0]).isInstanceOf(LoginEvent.ShowSuccessLoginSnackbarEvent::class.java)
+                }
                 cancelAndIgnoreRemainingEvents()
             }
 
@@ -71,24 +80,31 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `when getAccessTokens returns failure then outputEvent emits FailureLogin`() = runBlocking {
+    fun `when getAccessTokens returns failure then uiState's events contain ShowFailureLoginSnackbarEvent`() = runTest {
         val qiitaRepository: QiitaRepository = mockk {
-            coEvery { getAccessTokens(any()) } returns QiitaApiResult.Failure.HttpFailure(
-                statusCode = 403,
-                error = Error(message = "Forbidden", type = "forbidden"),
-                rate = null
-            )
+            coEvery { getAccessTokens(any()) } coAnswers {
+                delay(500L)
+                QiitaApiResult.Failure.HttpFailure(
+                    statusCode = 403,
+                    error = Error(message = "Forbidden", type = "forbidden"),
+                    rate = null
+                )
+            }
         }
 
         val viewModel = LoginViewModel(qiitaRepository, userDataStore)
-        viewModel.requestEvent(LoginInputEvent.RequestAccessTokens("code"))
+        viewModel.dispatchAction(LoginAction.RequestAccessTokens("code"))
 
-        viewModel.outputEvent
+        viewModel.uiState
             .test {
-                val expectItem = awaitItem() as? LoginOutputEvent.FailureLogin
-                with(expectItem) {
-                    Truth.assertThat(this).isNotNull()
-                    Truth.assertThat(this?.code).isEqualTo("code")
+                with(awaitItem()) {
+                    Truth.assertThat(screenContent).isEqualTo(LoginUiState.ScreenContent.LOADING)
+                    Truth.assertThat(events).isEmpty()
+                }
+                with(awaitItem()) {
+                    Truth.assertThat(screenContent).isEqualTo(LoginUiState.ScreenContent.EMPTY)
+                    Truth.assertThat(events).hasSize(1)
+                    Truth.assertThat(events[0]).isInstanceOf(LoginEvent.ShowFailureLoginSnackbarEvent::class.java)
                 }
 
                 cancelAndIgnoreRemainingEvents()
