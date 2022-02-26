@@ -14,7 +14,7 @@ sealed class QiitaApiResult<out T> {
         internal class Mapper<T : Any> : ApiSuccessModelMapper<T, Success<T>> {
             override fun map(apiErrorResponse: ApiResponse.Success<T>): Success<T> {
                 return with(apiErrorResponse) {
-                    Success(data!!, Rate.parseHeaders(headers), pagination = Pagination(headers))
+                    Success(data, Rate.parseHeaders(headers), pagination = Pagination(headers))
                 }
             }
         }
