@@ -71,7 +71,7 @@ deps.AndroidX.Navigation = [
     ui: "androidx.navigation:navigation-ui-ktx:$versions.navigation",
 ]
 
-versions.room = "2.4.1"
+versions.room = "2.4.2"
 deps.AndroidX.Room = [
     runtime: "androidx.room:room-runtime:$versions.room",
     ktx: "androidx.room:room-ktx:$versions.room",
@@ -121,7 +121,7 @@ deps.Moshi = [
     adapters: "com.squareup.moshi:moshi-adapters:$versions.moshi",
 ]
 
-versions.hilt = "2.40.5"
+versions.hilt = "2.41"
 deps.Dagger = [:]
 deps.Dagger.Hilt = [
     android: "com.google.dagger:hilt-android:$versions.hilt",
