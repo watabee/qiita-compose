@@ -12,10 +12,12 @@ import com.github.watabee.qiitacompose.repository.UserRepository
 import com.github.watabee.qiitacompose.ui.common.LocalNavHostController
 import com.github.watabee.qiitacompose.ui.home.HomeScreen
 import com.github.watabee.qiitacompose.ui.itemdetail.ItemDetailScreen
+import com.github.watabee.qiitacompose.ui.login.LoginScreen
 import com.github.watabee.qiitacompose.ui.mypage.MyPageScreen
 import com.github.watabee.qiitacompose.ui.navigation.AppRouting
 import com.github.watabee.qiitacompose.ui.search.SearchScreen
 import com.github.watabee.qiitacompose.ui.user.UserScreen
+import com.github.watabee.qiitacompose.util.Env
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -26,13 +28,14 @@ object MainDestinations {
     const val MYPAGE = "mypage"
     const val SEARCH = "search"
     const val ITEM_DETAIL = "item/{url}"
+    const val LOGIN = "login"
 }
 
 @Composable
-fun NavGraph(startDestination: String = MainDestinations.HOME, userRepository: UserRepository, openLoginScreen: () -> Unit) {
+fun NavGraph(startDestination: String = MainDestinations.HOME, env: Env, userRepository: UserRepository) {
     val navController = rememberNavController()
-    val appRouter = remember(navController, userRepository, openLoginScreen) {
-        AppRouter(navController, userRepository, openLoginScreen)
+    val appRouter = remember(navController, userRepository) {
+        AppRouter(navController, userRepository)
     }
 
     CompositionLocalProvider(
@@ -62,14 +65,16 @@ fun NavGraph(startDestination: String = MainDestinations.HOME, userRepository: U
             composable(MainDestinations.ITEM_DETAIL) { backStackEntry ->
                 ItemDetailScreen(url = URLDecoder.decode(backStackEntry.arguments?.getString("url")!!, StandardCharsets.UTF_8.toString()))
             }
+            composable(MainDestinations.LOGIN) {
+                LoginScreen(qiitaClientId = env.qiitaClientId) { navController.navigateUp() }
+            }
         }
     }
 }
 
 class AppRouter(
     navController: NavController,
-    private val userRepository: UserRepository,
-    override val openLoginScreen: () -> Unit
+    private val userRepository: UserRepository
 ) : AppRouting {
     override val openUserScreen: suspend (user: User) -> Unit = { user ->
         userRepository.insertOrUpdate(user)
@@ -86,5 +91,9 @@ class AppRouter(
 
     override val openItemDetailScreen: (url: String) -> Unit = {
         navController.navigate("item/${URLEncoder.encode(it, StandardCharsets.UTF_8.toString())}")
+    }
+
+    override val openLoginScreen: () -> Unit = {
+        navController.navigate(MainDestinations.LOGIN)
     }
 }

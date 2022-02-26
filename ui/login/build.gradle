@@ -17,6 +17,14 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion Versions.composeCompiler
+    }
+
     testOptions {
         unitTests {
             includeAndroidResources = true
@@ -29,19 +37,25 @@ dependencies {
     implementation projects.ui.common
     implementation projects.data
 
-    implementation Deps.AndroidX.appcompat
-    implementation Deps.AndroidX.activity
-    implementation Deps.AndroidX.fragment
-    implementation Deps.AndroidX.core
+    // Compose
+    implementation Deps.AndroidX.Compose.runtime
+    implementation Deps.AndroidX.Compose.ui
+    implementation Deps.AndroidX.Compose.foundation
+    implementation Deps.AndroidX.Compose.foundationLayout
+    implementation Deps.AndroidX.Compose.material
+    implementation Deps.AndroidX.Compose.uiTooling
+    implementation Deps.AndroidX.Compose.paging
+    implementation Deps.AndroidX.Lifecycle.ViewModel.compose
 
     implementation Deps.AndroidX.Lifecycle.ViewModel.ktx
 
     implementation Deps.Google.material
 
+    implementation Deps.Accompanist.insets
+    implementation Deps.Accompanist.web
+
     implementation Deps.Dagger.Hilt.android
     kapt Deps.Dagger.Hilt.androidCompiler
-
-    implementation Deps.Insetter.insetter
 
     implementation Deps.timber
 

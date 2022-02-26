@@ -140,6 +140,7 @@ deps.Accompanist = [
     flowLayout: "com.google.accompanist:accompanist-flowlayout:$versions.accompanist",
     swipeRefresh: "com.google.accompanist:accompanist-swiperefresh:$versions.accompanist",
     insets: "com.google.accompanist:accompanist-insets:$versions.accompanist",
+    web: "com.google.accompanist:accompanist-webview:$versions.accompanist",
 ]
 
 deps.Insetter = [

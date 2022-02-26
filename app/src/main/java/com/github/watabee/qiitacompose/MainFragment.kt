@@ -10,9 +10,9 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import com.github.watabee.qiitacompose.repository.UserRepository
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
+import com.github.watabee.qiitacompose.util.Env
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.statusBarsPadding
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,6 +22,7 @@ import javax.inject.Inject
 internal class MainFragment : Fragment() {
 
     @Inject lateinit var userRepository: UserRepository
+    @Inject lateinit var env: Env
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return ComposeView(context = requireContext()).apply {
@@ -31,9 +32,7 @@ internal class MainFragment : Fragment() {
                         // A surface container using the 'background' color from the theme
                         Surface(color = MaterialTheme.colors.background) {
                             Column(modifier = Modifier.statusBarsPadding()) {
-                                NavGraph(userRepository = userRepository) {
-                                    findNavController().navigate(R.id.nav_login)
-                                }
+                                NavGraph(env = env, userRepository = userRepository)
                             }
                         }
                     }
