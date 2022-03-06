@@ -33,9 +33,9 @@ import coil.transform.CircleCropTransformation
 import com.github.watabee.qiitacompose.api.response.Item
 import com.github.watabee.qiitacompose.api.response.User
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
-import com.github.watabee.qiitacompose.ui.util.AppDateFormatter
+import com.github.watabee.qiitacompose.ui.util.format
 import kotlinx.coroutines.launch
-import java.util.Date
+import java.time.OffsetDateTime
 
 @Composable
 internal fun ItemListItem(item: Item, openUserScreen: suspend (User) -> Unit, openItemDetailScreen: (String) -> Unit) {
@@ -75,7 +75,7 @@ internal fun ItemListItem(item: Item, openUserScreen: suspend (User) -> Unit, op
                     Spacer(modifier = Modifier.requiredWidth(4.dp))
                     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                         Text(
-                            text = "が${AppDateFormatter.dateToString("yyyy年MM月dd日", item.createdAt)}に投稿",
+                            text = "が${item.createdAt.format("yyyy年MM月dd日")}に投稿",
                             style = MaterialTheme.typography.body2
                         )
                     }
@@ -120,8 +120,8 @@ private fun PreviewItemListItem() {
             item = Item(
                 id = "id",
                 title = "title",
-                createdAt = Date(),
-                updatedAt = Date(),
+                createdAt = OffsetDateTime.now(),
+                updatedAt = OffsetDateTime.now(),
                 url = "",
                 user = User(
                     id = "id",

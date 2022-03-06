@@ -12,6 +12,8 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
+
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -50,4 +52,10 @@ dependencies {
     api Deps.AndroidX.Hilt.compose
 
     implementation Deps.timber
+
+    coreLibraryDesugaring Deps.desugarJdkLibs
+
+    testImplementation Deps.junit
+    testImplementation Deps.truth
+    testImplementation Deps.AndroidX.Test.junit
 }
