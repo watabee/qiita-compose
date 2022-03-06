@@ -17,12 +17,10 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -71,7 +69,6 @@ fun MyPageScreen(closeMyPageScreen: () -> Unit) {
     }
 
     MyPageScreen(
-        scaffoldState = rememberScaffoldState(),
         state = state,
         isVisibleLogoutDialog = isVisibleLogoutDialog,
         setVisibleLogoutDialog = setVisibleLogoutDialog,
@@ -83,7 +80,6 @@ fun MyPageScreen(closeMyPageScreen: () -> Unit) {
 
 @Composable
 private fun MyPageScreen(
-    scaffoldState: ScaffoldState,
     state: MyPageViewModel.State,
     isVisibleLogoutDialog: Boolean,
     setVisibleLogoutDialog: (Boolean) -> Unit,
@@ -92,7 +88,6 @@ private fun MyPageScreen(
     closeMyPageScreen: () -> Unit
 ) {
     Scaffold(
-        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
                 navigationIcon = {
