@@ -5,12 +5,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,12 +26,11 @@ import com.github.watabee.qiitacompose.ui.navigation.AppRouting
 import com.github.watabee.qiitacompose.ui.theme.QiitaFontFamily
 
 @Composable
-fun HomeScreen(scaffoldState: ScaffoldState = rememberScaffoldState(), appRouting: AppRouting) {
+fun HomeScreen(appRouting: AppRouting) {
     val viewModel: HomeViewModel = hiltViewModel()
     val userData: UserData? by viewModel.userData.collectAsState(initial = null)
 
     HomeScreen(
-        scaffoldState = scaffoldState,
         userData = userData,
         appRouting = appRouting
     )
@@ -41,12 +38,10 @@ fun HomeScreen(scaffoldState: ScaffoldState = rememberScaffoldState(), appRoutin
 
 @Composable
 private fun HomeScreen(
-    scaffoldState: ScaffoldState,
     userData: UserData?,
     appRouting: AppRouting
 ) {
     Scaffold(
-        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
                 title = {

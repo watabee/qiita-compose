@@ -23,9 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ErrorScreen(onRetryButtonClicked: () -> Unit) {
+fun ErrorScreen(modifier: Modifier = Modifier, onRetryButtonClicked: () -> Unit) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colors.background)
             .padding(horizontal = 16.dp)

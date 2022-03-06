@@ -1,11 +1,14 @@
 package com.github.watabee.qiitacompose.ui.login
 
-import androidx.annotation.StringRes
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.watabee.qiitacompose.api.QiitaApiResult
 import com.github.watabee.qiitacompose.datastore.UserDataStore
 import com.github.watabee.qiitacompose.repository.QiitaRepository
+import com.github.watabee.qiitacompose.ui.util.Message
+import com.github.watabee.qiitacompose.ui.util.SnackbarManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -14,14 +17,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class LoginViewModel @Inject constructor(
     private val qiitaRepository: QiitaRepository,
-    private val userDataStore: UserDataStore
+    private val userDataStore: UserDataStore,
+    private val snackbarManager: SnackbarManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())
@@ -37,17 +40,23 @@ internal class LoginViewModel @Inject constructor(
                 }
             }
             LoginAction.ShowLoadWebErrorSnackbar -> {
-                _uiState.update { uiState ->
-                    uiState.copy(events = uiState.events + LoginEvent.ShowLoadWebErrorSnackbarEvent())
-                }
+                snackbarManager.showMessage(
+                    messageTextId = R.string.login_error_loading_web,
+                    duration = SnackbarDuration.Indefinite,
+                    action = Message.Action(R.string.login_retry) {
+                        navigateUp()
+                    }
+                )
             }
         }
     }
 
-    fun onEventDone(eventId: Long) {
-        _uiState.update { uiState ->
-            uiState.copy(events = uiState.events.filterNot { it.id == eventId })
-        }
+    private fun navigateUp() {
+        _uiState.update { uiState -> uiState.copy(shouldNavigateUp = true) }
+    }
+
+    fun onNavigateUpDone() {
+        _uiState.update { uiState -> uiState.copy(shouldNavigateUp = false) }
     }
 
     private fun requestAccessToken(code: String): Job = viewModelScope.launch {
@@ -59,37 +68,49 @@ internal class LoginViewModel @Inject constructor(
                     is QiitaApiResult.Success -> {
                         userDataStore.updateUserData(accessToken, getAuthenticatedUserResult.response.profileImageUrl)
                         _uiState.update { uiState ->
-                            uiState.copy(
-                                screenContent = LoginUiState.ScreenContent.EMPTY,
-                                events = uiState.events + LoginEvent.ShowSuccessLoginSnackbarEvent()
-                            )
+                            uiState.copy(screenContent = LoginUiState.ScreenContent.EMPTY)
                         }
+                        snackbarManager.showMessage(
+                            messageTextId = R.string.login_success_login,
+                            duration = SnackbarDuration.Indefinite,
+                            action = Message.Action(messageId = android.R.string.ok) {
+                                navigateUp()
+                            }
+                        )
                     }
                     is QiitaApiResult.Failure -> {
                         _uiState.update { uiState ->
-                            uiState.copy(
-                                screenContent = LoginUiState.ScreenContent.EMPTY,
-                                events = uiState.events + LoginEvent.ShowFailureLoginSnackbarEvent(code)
-                            )
+                            uiState.copy(screenContent = LoginUiState.ScreenContent.EMPTY)
                         }
+                        showRetrySnackbar(code)
                     }
                 }
             }
             is QiitaApiResult.Failure -> {
                 _uiState.update { uiState ->
-                    uiState.copy(
-                        screenContent = LoginUiState.ScreenContent.EMPTY,
-                        events = uiState.events + LoginEvent.ShowFailureLoginSnackbarEvent(code)
-                    )
+                    uiState.copy(screenContent = LoginUiState.ScreenContent.EMPTY)
                 }
+                showRetrySnackbar(code)
             }
         }
+    }
+
+    private fun showRetrySnackbar(code: String) {
+        snackbarManager.showMessage(
+            messageTextId = R.string.login_failure_login,
+            duration = SnackbarDuration.Indefinite,
+            action = Message.Action(messageId = R.string.login_retry) { result: SnackbarResult ->
+                if (result == SnackbarResult.ActionPerformed) {
+                    dispatchAction(LoginAction.RequestAccessTokens(code))
+                }
+            }
+        )
     }
 }
 
 internal data class LoginUiState(
     val screenContent: ScreenContent = ScreenContent.WEBVIEW,
-    val events: List<LoginEvent> = emptyList()
+    val shouldNavigateUp: Boolean = false
 ) {
     enum class ScreenContent {
         EMPTY, LOADING, WEBVIEW
@@ -101,23 +122,4 @@ internal sealed interface LoginAction {
     class RequestAccessTokens(val code: String) : LoginAction
 
     object ShowLoadWebErrorSnackbar : LoginAction
-}
-
-internal sealed class LoginEvent {
-    val id: Long = UUID.randomUUID().mostSignificantBits
-
-    class ShowLoadWebErrorSnackbarEvent : LoginEvent() {
-        val messageResId: Int @StringRes get() = R.string.login_error_loading_web
-        val actionLabelResId: Int @StringRes get() = R.string.login_retry
-    }
-
-    class ShowSuccessLoginSnackbarEvent : LoginEvent() {
-        val messageResId: Int @StringRes get() = R.string.login_success_login
-        val actionLabelResId: Int @StringRes get() = android.R.string.ok
-    }
-
-    data class ShowFailureLoginSnackbarEvent(val code: String) : LoginEvent() {
-        val messageResId: Int @StringRes get() = R.string.login_failure_login
-        val actionLabelResId: Int @StringRes get() = R.string.login_retry
-    }
 }

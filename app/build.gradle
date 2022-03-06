@@ -77,13 +77,9 @@ dependencies {
 
     implementation Deps.AndroidX.appcompat
     implementation Deps.AndroidX.activity
-    implementation Deps.AndroidX.fragment
     implementation Deps.AndroidX.core
 
     implementation Deps.AndroidX.Lifecycle.ViewModel.ktx
-
-    implementation Deps.AndroidX.Navigation.fragment
-    implementation Deps.AndroidX.Navigation.ui
 
     implementation Deps.Google.material
 

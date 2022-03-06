@@ -1,31 +1,30 @@
 package com.github.watabee.qiitacompose
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
+import com.github.watabee.qiitacompose.repository.UserRepository
+import com.github.watabee.qiitacompose.ui.util.SnackbarManager
+import com.github.watabee.qiitacompose.util.Env
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity() {
+
+    @Inject lateinit var userRepository: UserRepository
+    @Inject lateinit var snackbarManager: SnackbarManager
+    @Inject lateinit var env: Env
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        return findNavController().navigateUp() || super.onSupportNavigateUp()
-    }
-
-    /**
-     * See https://issuetracker.google.com/142847973
-     */
-    private fun findNavController(): NavController {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        return navHostFragment.navController
+        setContent {
+            val appState =
+                rememberAppState(qiitaClientId = env.qiitaClientId, userRepository = userRepository, snackbarManager = snackbarManager)
+            QiitaApp(appState = appState)
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.github.watabee.qiitacompose.ui.login
 
+import androidx.compose.material.SnackbarDuration
 import app.cash.turbine.test
 import com.github.watabee.qiitacompose.api.QiitaApiResult
 import com.github.watabee.qiitacompose.api.response.AccessTokens
@@ -7,12 +8,14 @@ import com.github.watabee.qiitacompose.api.response.AuthenticatedUser
 import com.github.watabee.qiitacompose.api.response.Error
 import com.github.watabee.qiitacompose.datastore.UserDataStore
 import com.github.watabee.qiitacompose.repository.QiitaRepository
+import com.github.watabee.qiitacompose.ui.util.SnackbarManager
 import com.google.common.truth.Truth
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -29,6 +32,7 @@ import kotlin.time.ExperimentalTime
 class LoginViewModelTest {
 
     @MockK private lateinit var userDataStore: UserDataStore
+    @MockK private lateinit var snackbarManager: SnackbarManager
 
     @Before
     fun setup() {
@@ -42,7 +46,7 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `when getAccessTokens and getAuthenticatedUser return success then uiState's events contain ShowSuccessLoginSnackbarEvent`() = runTest {
+    fun `when getAccessTokens and getAuthenticatedUser return success then show success snackbar message`() = runTest {
         val accessTokens = AccessTokens(clientId = "client_id", scopes = emptyList(), token = "token")
 
         val qiitaRepository: QiitaRepository = mockk {
@@ -57,19 +61,18 @@ class LoginViewModelTest {
             }
         }
 
-        val viewModel = LoginViewModel(qiitaRepository, userDataStore)
+        val viewModel = LoginViewModel(qiitaRepository, userDataStore, snackbarManager)
         viewModel.dispatchAction(LoginAction.RequestAccessTokens("code"))
 
         viewModel.uiState
             .test {
                 with(awaitItem()) {
                     Truth.assertThat(screenContent).isEqualTo(LoginUiState.ScreenContent.LOADING)
-                    Truth.assertThat(events).isEmpty()
+                    verify(exactly = 0) { snackbarManager.showMessage(any(), any(), any()) }
                 }
                 with(awaitItem()) {
                     Truth.assertThat(screenContent).isEqualTo(LoginUiState.ScreenContent.EMPTY)
-                    Truth.assertThat(events).hasSize(1)
-                    Truth.assertThat(events[0]).isInstanceOf(LoginEvent.ShowSuccessLoginSnackbarEvent::class.java)
+                    verify(exactly = 1) { snackbarManager.showMessage(R.string.login_success_login, SnackbarDuration.Indefinite, any()) }
                 }
                 cancelAndIgnoreRemainingEvents()
             }
@@ -80,7 +83,7 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `when getAccessTokens returns failure then uiState's events contain ShowFailureLoginSnackbarEvent`() = runTest {
+    fun `when getAccessTokens returns failure then show failure snackbar message`() = runTest {
         val qiitaRepository: QiitaRepository = mockk {
             coEvery { getAccessTokens(any()) } coAnswers {
                 delay(500L)
@@ -92,19 +95,18 @@ class LoginViewModelTest {
             }
         }
 
-        val viewModel = LoginViewModel(qiitaRepository, userDataStore)
+        val viewModel = LoginViewModel(qiitaRepository, userDataStore, snackbarManager)
         viewModel.dispatchAction(LoginAction.RequestAccessTokens("code"))
 
         viewModel.uiState
             .test {
                 with(awaitItem()) {
                     Truth.assertThat(screenContent).isEqualTo(LoginUiState.ScreenContent.LOADING)
-                    Truth.assertThat(events).isEmpty()
+                    verify(exactly = 0) { snackbarManager.showMessage(any(), any(), any()) }
                 }
                 with(awaitItem()) {
                     Truth.assertThat(screenContent).isEqualTo(LoginUiState.ScreenContent.EMPTY)
-                    Truth.assertThat(events).hasSize(1)
-                    Truth.assertThat(events[0]).isInstanceOf(LoginEvent.ShowFailureLoginSnackbarEvent::class.java)
+                    verify(exactly = 1) { snackbarManager.showMessage(R.string.login_failure_login, SnackbarDuration.Indefinite, any()) }
                 }
 
                 cancelAndIgnoreRemainingEvents()

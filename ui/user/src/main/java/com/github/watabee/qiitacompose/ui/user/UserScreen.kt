@@ -26,12 +26,10 @@ import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -95,7 +93,6 @@ internal fun UserScreen(userViewModel: UserViewModel, userId: String, openLoginS
 
 @Composable
 internal fun UserScreen(
-    scaffoldState: ScaffoldState = rememberScaffoldState(),
     userUiModel: UserUiModel,
     retryToGetUserInfo: () -> Unit,
     openLoginScreen: () -> Unit,
@@ -115,7 +112,6 @@ internal fun UserScreen(
     }
 
     Scaffold(
-        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
                 navigationIcon = {
@@ -128,8 +124,9 @@ internal fun UserScreen(
                 }
             )
         },
-        content = {
+        content = { paddingValues ->
             UserScreen(
+                modifier = Modifier.padding(paddingValues),
                 userUiModel = userUiModel,
                 retryToGetUserInfo = retryToGetUserInfo,
                 openLoginScreen = openLoginScreen,
@@ -142,6 +139,7 @@ internal fun UserScreen(
 
 @Composable
 private fun UserScreen(
+    modifier: Modifier = Modifier,
     userUiModel: UserUiModel,
     retryToGetUserInfo: () -> Unit,
     openLoginScreen: () -> Unit,
@@ -150,13 +148,14 @@ private fun UserScreen(
 ) {
     when {
         userUiModel.isLoading -> {
-            LoadingScreen()
+            LoadingScreen(modifier)
         }
         userUiModel.getUserInfoError -> {
-            ErrorScreen(onRetryButtonClicked = { retryToGetUserInfo() })
+            ErrorScreen(modifier, onRetryButtonClicked = { retryToGetUserInfo() })
         }
         userUiModel.user != null -> {
             UserProfileScreen(
+                modifier,
                 userUiModel.user,
                 userUiModel.followButtonState,
                 userUiModel.followingTags,
@@ -170,6 +169,7 @@ private fun UserScreen(
 
 @Composable
 private fun UserProfileScreen(
+    modifier: Modifier = Modifier,
     user: User,
     followButtonState: UserUiModel.FollowButtonState,
     followingTags: List<Tag>,
@@ -178,7 +178,7 @@ private fun UserProfileScreen(
     unfollowUser: (String) -> Unit
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .navigationBarsPadding()
@@ -350,7 +350,7 @@ private fun PreviewUserProfileScreen() {
 
     QiitaTheme {
         UserProfileScreen(
-            user,
+            user = user,
             followButtonState = UserUiModel.FollowButtonState.PROCESSING,
             followingTags = tags,
             openLoginScreen = {},

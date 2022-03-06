@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import javax.inject.Singleton
 
 interface AppDataStore {
     suspend fun lastTagsFetchedAt(): Long
@@ -18,6 +19,7 @@ interface AppDataStore {
     suspend fun updateLastTagsFetchedAt(fetchedAt: Long)
 }
 
+@Singleton
 internal class AppDataStoreImpl @Inject constructor(@ApplicationContext private val appContext: Context) : AppDataStore {
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("app")
 

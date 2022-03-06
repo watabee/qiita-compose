@@ -30,11 +30,6 @@ dependencies {
     implementation projects.data
     implementation projects.ui.common
 
-    implementation Deps.AndroidX.appcompat
-    implementation Deps.AndroidX.activity
-    implementation Deps.AndroidX.fragment
-    implementation Deps.AndroidX.core
-
     // Compose
     implementation Deps.AndroidX.Compose.runtime
     implementation Deps.AndroidX.Compose.ui
