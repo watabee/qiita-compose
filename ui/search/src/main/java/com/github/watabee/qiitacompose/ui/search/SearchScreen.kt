@@ -1,6 +1,5 @@
 package com.github.watabee.qiitacompose.ui.search
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -58,7 +57,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImage
 import com.github.watabee.qiitacompose.api.response.Tag
 import com.github.watabee.qiitacompose.api.response.User
 import com.github.watabee.qiitacompose.ui.common.AppOutlinedButton
@@ -268,8 +267,8 @@ private fun TagsList(tags: List<Tag>, onTagClicked: (Tag) -> Unit) {
             ) {
                 tags.forEach { tag ->
                     AppOutlinedButton(onClick = { onTagClicked(tag) }) {
-                        Image(
-                            painter = rememberImagePainter(data = tag.iconUrl),
+                        AsyncImage(
+                            model = tag.iconUrl,
                             modifier = Modifier.size(16.dp),
                             contentDescription = null
                         )

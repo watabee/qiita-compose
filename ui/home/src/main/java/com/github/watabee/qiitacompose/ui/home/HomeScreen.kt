@@ -1,6 +1,5 @@
 package com.github.watabee.qiitacompose.ui.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -13,12 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.github.watabee.qiitacompose.data.UserData
 import com.github.watabee.qiitacompose.ui.items.ItemsScreen
@@ -68,13 +69,11 @@ private fun HomeScreen(
 @Composable
 private fun UserIcon(imageUrl: String?, iconSize: Dp) {
     if (!imageUrl.isNullOrBlank()) {
-        Image(
-            painter = rememberImagePainter(
-                data = imageUrl,
-                builder = {
-                    transformations(CircleCropTransformation())
-                }
-            ),
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(imageUrl)
+                .transformations(CircleCropTransformation())
+                .build(),
             contentDescription = null,
             modifier = Modifier.size(iconSize)
         )

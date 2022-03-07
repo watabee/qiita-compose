@@ -1,6 +1,5 @@
 package com.github.watabee.qiitacompose.ui.mypage
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,12 +30,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.github.watabee.qiitacompose.api.response.AuthenticatedUser
 import com.github.watabee.qiitacompose.ui.common.AppAlertDialog
@@ -46,7 +47,6 @@ import com.github.watabee.qiitacompose.ui.common.LoadingScreen
 import com.github.watabee.qiitacompose.ui.common.SnsIconButtons
 import com.github.watabee.qiitacompose.ui.common.UserCountTexts
 import com.google.accompanist.insets.navigationBarsPadding
-import kotlinx.coroutines.flow.collect
 
 @Composable
 fun MyPageScreen(closeMyPageScreen: () -> Unit) {
@@ -153,13 +153,10 @@ private fun MyPageScreen(user: AuthenticatedUser, onLogoutButtonClicked: () -> U
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.requiredHeight(28.dp))
-        Image(
-            painter = rememberImagePainter(
-                data = user.profileImageUrl,
-                builder = {
-                    transformations(CircleCropTransformation())
-                }
-            ),
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(user.profileImageUrl)
+                .transformations(CircleCropTransformation()),
             contentDescription = null,
             modifier = Modifier.requiredSize(72.dp),
         )
