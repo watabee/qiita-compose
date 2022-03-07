@@ -1,6 +1,5 @@
 package com.github.watabee.qiitacompose.ui.user
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,7 +44,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.github.watabee.qiitacompose.api.response.Tag
 import com.github.watabee.qiitacompose.api.response.User
@@ -186,13 +186,11 @@ private fun UserProfileScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.requiredHeight(28.dp))
-        Image(
-            painter = rememberImagePainter(
-                data = user.profileImageUrl,
-                builder = {
-                    transformations(CircleCropTransformation())
-                }
-            ),
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(user.profileImageUrl)
+                .transformations(CircleCropTransformation())
+                .build(),
             contentDescription = null,
             modifier = Modifier.requiredSize(72.dp),
         )
