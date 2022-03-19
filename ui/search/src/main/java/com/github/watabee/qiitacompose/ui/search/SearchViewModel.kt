@@ -29,8 +29,8 @@ internal class SearchViewModel @Inject constructor(
 ) : ViewModel() {
 
     val state: StateFlow<State> = tagDao.getAllTags()
-        .map { State(it) }
-        .stateIn(viewModelScope, started = SharingStarted.Eagerly, initialValue = State(emptyList()))
+        .map { State(isFindingTags = false, tags = it) }
+        .stateIn(viewModelScope, started = SharingStarted.Eagerly, initialValue = State(isFindingTags = true))
 
     private val queryFlow = MutableStateFlow<String?>(null)
     val itemsFlow = queryFlow.filterNotNull()
@@ -56,6 +56,7 @@ internal class SearchViewModel @Inject constructor(
     }
 
     data class State(
+        val isFindingTags: Boolean = false,
         val tags: List<Tag> = emptyList()
     )
 
