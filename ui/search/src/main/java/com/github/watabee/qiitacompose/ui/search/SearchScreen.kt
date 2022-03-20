@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -21,7 +20,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.BackdropScaffold
-import androidx.compose.material.BackdropValue
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
@@ -33,23 +31,18 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.primarySurface
-import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -77,67 +70,53 @@ fun SearchScreen(
 ) {
     val viewModel: SearchViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
-    val keyboardController = LocalSoftwareKeyboardController.current
-
-    var query by rememberSaveable { mutableStateOf("") }
 
     val lazyPagingItems = viewModel.itemsFlow.collectAsLazyPagingItems()
     val isRefreshing = lazyPagingItems.loadState.refresh is LoadState.Loading
     val isError = lazyPagingItems.loadState.refresh is LoadState.Error
 
-    val lazyListState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(viewModel) {
         viewModel.dispatchAction(SearchViewModel.Action.FindTags)
     }
 
-    val backdropScaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed)
+    val screenState = rememberSearchScreenState(viewModel = viewModel)
 
-    BackHandler(backdropScaffoldState.isConcealed) {
+    BackHandler(screenState.backdropScaffoldState.isConcealed) {
         coroutineScope.launch {
-            backdropScaffoldState.reveal()
-        }
-    }
-
-    val search: (String) -> Unit = { query ->
-        keyboardController?.hide()
-        coroutineScope.launch {
-            backdropScaffoldState.conceal()
-        }
-        viewModel.dispatchAction(SearchViewModel.Action.SearchByQuery(query))
-        coroutineScope.launch {
-            lazyListState.scrollToItem(0)
+            screenState.revealBackLayerContent()
         }
     }
 
     if (!state.isFindingTags) {
         BackdropScaffold(
             frontLayerScrimColor = Color.Unspecified,
-            scaffoldState = backdropScaffoldState,
+            scaffoldState = screenState.backdropScaffoldState,
             peekHeight = 72.dp,
             appBar = {
                 SearchBar(
-                    query = query,
-                    onQueryChanged = { query = it },
+                    query = screenState.query,
+                    onQueryChanged = { screenState.query = it },
                     onClearQuery = {
-                        query = ""
                         coroutineScope.launch {
-                            backdropScaffoldState.reveal()
+                            screenState.clearQuery()
                         }
                     },
-                    onSearch = search,
+                    onSearch = {
+                        coroutineScope.launch {
+                            screenState.searchByQuery(it)
+                        }
+                    },
                     onNavIconClicked = closeSearchScreen
                 )
             },
             backLayerContent = {
                 TagsList(
                     tags = state.tags,
-                    onTagClicked = {
-                        query = it.id
-                        search(it.id)
+                    onTagClicked = { tag: Tag ->
                         coroutineScope.launch {
-                            backdropScaffoldState.conceal()
+                            screenState.searchByTag(tag.id)
                         }
                     }
                 )
@@ -154,7 +133,7 @@ fun SearchScreen(
                         if (lazyPagingItems.itemCount > 0) {
                             ItemsList(
                                 lazyPagingItems = lazyPagingItems,
-                                lazyListState = lazyListState,
+                                lazyListState = screenState.lazyListState,
                                 openUserScreen = openUserScreen,
                                 openItemDetailScreen = openItemDetailScreen
                             )
