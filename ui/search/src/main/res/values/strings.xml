@@ -2,4 +2,5 @@
 <resources>
     <string name="search_hint">キーワードを入力</string>
     <string name="search_tags_title">タグ</string>
+    <string name="search_empty_message">検索結果はありません</string>
 </resources>
