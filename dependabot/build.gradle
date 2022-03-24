@@ -129,7 +129,7 @@ deps.Coil = [
     coilCompose: "io.coil-kt:coil-compose:$versions.coil",
 ]
 
-versions.accompanist = "0.24.4-SNAPSHOT"
+versions.accompanist = "0.24.6-SNAPSHOT"
 deps.Accompanist = [
     flowLayout: "com.google.accompanist:accompanist-flowlayout:$versions.accompanist",
     swipeRefresh: "com.google.accompanist:accompanist-swiperefresh:$versions.accompanist",
