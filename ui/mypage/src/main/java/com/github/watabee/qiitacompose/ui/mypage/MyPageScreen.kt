@@ -100,8 +100,9 @@ private fun MyPageScreen(
                 }
             )
         },
-        content = {
+        content = { paddingValues ->
             MyPageScreen(
+                modifier = Modifier.padding(paddingValues),
                 state = state,
                 isVisibleLogoutDialog = isVisibleLogoutDialog,
                 setVisibleLogoutDialog = setVisibleLogoutDialog,
@@ -114,6 +115,7 @@ private fun MyPageScreen(
 
 @Composable
 private fun MyPageScreen(
+    modifier: Modifier = Modifier,
     state: MyPageViewModel.State,
     isVisibleLogoutDialog: Boolean,
     setVisibleLogoutDialog: (Boolean) -> Unit,
@@ -136,16 +138,16 @@ private fun MyPageScreen(
             ErrorScreen { getAuthenticatedUser() }
         }
         state.authenticatedUser != null -> {
-            MyPageScreen(user = state.authenticatedUser, onLogoutButtonClicked = { setVisibleLogoutDialog(true) })
+            MyPageScreen(modifier = modifier, user = state.authenticatedUser, onLogoutButtonClicked = { setVisibleLogoutDialog(true) })
             LogoutDialog(isVisible = isVisibleLogoutDialog, setVisible = setVisibleLogoutDialog, requestToLogout = logout)
         }
     }
 }
 
 @Composable
-private fun MyPageScreen(user: AuthenticatedUser, onLogoutButtonClicked: () -> Unit) {
+private fun MyPageScreen(modifier: Modifier = Modifier, user: AuthenticatedUser, onLogoutButtonClicked: () -> Unit) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .navigationBarsPadding()

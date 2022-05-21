@@ -28,13 +28,13 @@ import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
-fun ItemsScreen(openUserScreen: suspend (User) -> Unit, openItemDetailScreen: (String) -> Unit) {
+fun ItemsScreen(modifier: Modifier = Modifier, openUserScreen: suspend (User) -> Unit, openItemDetailScreen: (String) -> Unit) {
     val viewModel: ItemsViewModel = hiltViewModel()
     val lazyPagingItems = viewModel.itemsFlow.collectAsLazyPagingItems()
     val isRefreshing = lazyPagingItems.loadState.refresh is LoadState.Loading
     val isError = lazyPagingItems.loadState.refresh is LoadState.Error
 
-    Surface(modifier = Modifier.fillMaxSize()) {
+    Surface(modifier = modifier.fillMaxSize()) {
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
             onRefresh = { lazyPagingItems.refresh() },
