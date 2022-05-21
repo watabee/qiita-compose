@@ -1,5 +1,6 @@
 package com.github.watabee.qiitacompose.ui.home
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -60,8 +61,8 @@ private fun HomeScreen(
                 }
             )
         },
-        content = {
-            ItemsScreen(appRouting.openUserScreen, appRouting.openItemDetailScreen)
+        content = { paddingValues ->
+            ItemsScreen(modifier = Modifier.padding(paddingValues), appRouting.openUserScreen, appRouting.openItemDetailScreen)
         }
     )
 }

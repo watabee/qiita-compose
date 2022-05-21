@@ -20,17 +20,17 @@ def versions = [
 ]
 ext.Versions = versions
 
-deps.androidGradlePlugin = "com.android.tools.build:gradle:7.2.0-beta02"
-deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:6.3.0"
+deps.androidGradlePlugin = "com.android.tools.build:gradle:7.2.0"
+deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:6.6.1"
 deps.secretsGradlePlugin = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
 
-versions.kotlin = "1.6.10"
+versions.kotlin = "1.6.21"
 deps.Kotlin = [
     stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin",
     gradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
 ]
 
-versions.coroutines = "1.6.0"
+versions.coroutines = "1.6.1"
 deps.Kotlin.Coroutines = [
     core: "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines",
     android: "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines",
@@ -72,8 +72,8 @@ deps.AndroidX.Room = [
     compiler: "androidx.room:room-compiler:$versions.room",
 ]
 
-versions.compose = "1.2.0-alpha04"
-versions.composeCompiler = "1.2.0-alpha04"
+versions.compose = "1.2.0-beta02"
+versions.composeCompiler = "1.2.0-beta02"
 deps.AndroidX.Compose = [
     compiler: "androidx.compose.compiler:compiler:$versions.composeCompiler",
     runtime: "androidx.compose.runtime:runtime:$versions.compose",
@@ -115,7 +115,7 @@ deps.Moshi = [
     adapters: "com.squareup.moshi:moshi-adapters:$versions.moshi",
 ]
 
-versions.hilt = "2.41"
+versions.hilt = "2.42"
 deps.Dagger = [:]
 deps.Dagger.Hilt = [
     android: "com.google.dagger:hilt-android:$versions.hilt",
@@ -123,13 +123,13 @@ deps.Dagger.Hilt = [
     androidGradlePlugin: "com.google.dagger:hilt-android-gradle-plugin:$versions.hilt",
 ]
 
-versions.coil = "2.0.0-rc01"
+versions.coil = "2.1.0"
 deps.Coil = [
     coil: "io.coil-kt:coil:$versions.coil",
     coilCompose: "io.coil-kt:coil-compose:$versions.coil",
 ]
 
-versions.accompanist = "0.24.4-SNAPSHOT"
+versions.accompanist = "0.24.9-beta"
 deps.Accompanist = [
     flowLayout: "com.google.accompanist:accompanist-flowlayout:$versions.accompanist",
     swipeRefresh: "com.google.accompanist:accompanist-swiperefresh:$versions.accompanist",
