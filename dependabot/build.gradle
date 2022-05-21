@@ -24,7 +24,7 @@ deps.androidGradlePlugin = "com.android.tools.build:gradle:7.2.0"
 deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:6.3.0"
 deps.secretsGradlePlugin = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
 
-versions.kotlin = "1.6.10"
+versions.kotlin = "1.6.21"
 deps.Kotlin = [
     stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin",
     gradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
@@ -72,8 +72,8 @@ deps.AndroidX.Room = [
     compiler: "androidx.room:room-compiler:$versions.room",
 ]
 
-versions.compose = "1.2.0-alpha04"
-versions.composeCompiler = "1.2.0-alpha04"
+versions.compose = "1.2.0-beta02"
+versions.composeCompiler = "1.2.0-beta02"
 deps.AndroidX.Compose = [
     compiler: "androidx.compose.compiler:compiler:$versions.composeCompiler",
     runtime: "androidx.compose.runtime:runtime:$versions.compose",
@@ -129,7 +129,7 @@ deps.Coil = [
     coilCompose: "io.coil-kt:coil-compose:$versions.coil",
 ]
 
-versions.accompanist = "0.24.4-SNAPSHOT"
+versions.accompanist = "0.24.9-beta"
 deps.Accompanist = [
     flowLayout: "com.google.accompanist:accompanist-flowlayout:$versions.accompanist",
     swipeRefresh: "com.google.accompanist:accompanist-swiperefresh:$versions.accompanist",
