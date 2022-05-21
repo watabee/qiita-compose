@@ -83,7 +83,7 @@ deps.AndroidX.Compose = [
     foundationLayout: "androidx.compose.foundation:foundation-layout:$versions.compose",
     material: "androidx.compose.material:material:$versions.compose",
     themeAdapter: "androidx.compose.material:compose-theme-adapter:$versions.compose",
-    constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.0",
+    constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.1",
 
     paging: "androidx.paging:paging-compose:1.0.0-alpha14",
     navigation: "androidx.navigation:navigation-compose:2.4.1",
@@ -94,7 +94,7 @@ deps.AndroidX.Hilt = [
 ]
 
 deps.Google = [
-    material: "com.google.android.material:material:1.5.0",
+    material: "com.google.android.material:material:1.6.0",
 ]
 
 versions.okhttp = "4.9.3"
@@ -150,7 +150,7 @@ deps.desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
 deps.junit = "junit:junit:4.13.2"
 deps.truth = "com.google.truth:truth:1.1.3"
 deps.turbine = "app.cash.turbine:turbine:0.7.0"
-deps.robolectric = "org.robolectric:robolectric:4.7.3"
+deps.robolectric = "org.robolectric:robolectric:4.8.1"
 
 deps.Mockk = [
     mockk: "io.mockk:mockk:1.12.3",
