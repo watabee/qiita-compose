@@ -30,7 +30,7 @@ deps.Kotlin = [
     gradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
 ]
 
-versions.coroutines = "1.6.1"
+versions.coroutines = "1.6.4"
 deps.Kotlin.Coroutines = [
     core: "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines",
     android: "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines",
