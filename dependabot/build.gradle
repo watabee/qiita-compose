@@ -13,7 +13,7 @@ def versions = [
     androidMinSdkVersion: 24,
     androidTargetSdkVersion: 30,
 
-    buildToolsVersion: "31.0.0",
+    buildToolsVersion: "33.0.0",
 
     androidVersionCode: (versionMajor * 10000 + versionMinor * 100 + versionPatch) * 100 + versionOffset,
     androidVersionName: "$versionMajor.$versionMinor.$versionPatch"
