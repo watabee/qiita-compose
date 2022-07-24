@@ -86,7 +86,7 @@ deps.AndroidX.Compose = [
     constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.1",
 
     paging: "androidx.paging:paging-compose:1.0.0-alpha15",
-    navigation: "androidx.navigation:navigation-compose:2.4.2",
+    navigation: "androidx.navigation:navigation-compose:2.5.0",
 ]
 
 deps.AndroidX.Hilt = [
