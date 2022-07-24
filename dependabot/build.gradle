@@ -9,11 +9,11 @@ def versionOffset = 0
 def versions = [
     ktlint: "0.43.2",
 
-    androidCompileSdkVersion: 31,
+    androidCompileSdkVersion: 32,
     androidMinSdkVersion: 24,
     androidTargetSdkVersion: 30,
 
-    buildToolsVersion: "31.0.0",
+    buildToolsVersion: "33.0.0",
 
     androidVersionCode: (versionMajor * 10000 + versionMinor * 100 + versionPatch) * 100 + versionOffset,
     androidVersionName: "$versionMajor.$versionMinor.$versionPatch"
@@ -24,13 +24,13 @@ deps.androidGradlePlugin = "com.android.tools.build:gradle:7.2.0"
 deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:6.6.1"
 deps.secretsGradlePlugin = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
 
-versions.kotlin = "1.6.21"
+versions.kotlin = "1.7.0"
 deps.Kotlin = [
     stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin",
     gradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
 ]
 
-versions.coroutines = "1.6.1"
+versions.coroutines = "1.6.4"
 deps.Kotlin.Coroutines = [
     core: "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines",
     android: "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines",
@@ -38,10 +38,10 @@ deps.Kotlin.Coroutines = [
 ]
 
 deps.AndroidX = [
-    appcompat: "androidx.appcompat:appcompat:1.4.1",
-    activity: "androidx.activity:activity-ktx:1.4.0",
-    fragment: "androidx.fragment:fragment-ktx:1.4.1",
-    core: "androidx.core:core-ktx:1.7.0",
+    appcompat: "androidx.appcompat:appcompat:1.4.2",
+    activity: "androidx.activity:activity-ktx:1.5.0",
+    fragment: "androidx.fragment:fragment-ktx:1.5.0",
+    core: "androidx.core:core-ktx:1.8.0",
     dataStorePreferences: "androidx.datastore:datastore-preferences:1.0.0",
 ]
 
@@ -53,7 +53,7 @@ deps.AndroidX.Test = [
     junit: "androidx.test.ext:junit-ktx:1.1.3",
 ]
 
-versions.lifecycle = "2.4.1"
+versions.lifecycle = "2.5.0"
 deps.AndroidX.Lifecycle = [
     runtime: "androidx.lifecycle:lifecycle-runtime-ktx:$versions.lifecycle",
     compiler: "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle",
@@ -72,8 +72,8 @@ deps.AndroidX.Room = [
     compiler: "androidx.room:room-compiler:$versions.room",
 ]
 
-versions.compose = "1.2.0-beta02"
-versions.composeCompiler = "1.2.0-beta02"
+versions.compose = "1.2.0-rc03"
+versions.composeCompiler = "1.2.0"
 deps.AndroidX.Compose = [
     compiler: "androidx.compose.compiler:compiler:$versions.composeCompiler",
     runtime: "androidx.compose.runtime:runtime:$versions.compose",
@@ -85,8 +85,8 @@ deps.AndroidX.Compose = [
     themeAdapter: "androidx.compose.material:compose-theme-adapter:$versions.compose",
     constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.1",
 
-    paging: "androidx.paging:paging-compose:1.0.0-alpha14",
-    navigation: "androidx.navigation:navigation-compose:2.4.2",
+    paging: "androidx.paging:paging-compose:1.0.0-alpha15",
+    navigation: "androidx.navigation:navigation-compose:2.5.0",
 ]
 
 deps.AndroidX.Hilt = [
@@ -94,10 +94,10 @@ deps.AndroidX.Hilt = [
 ]
 
 deps.Google = [
-    material: "com.google.android.material:material:1.5.0",
+    material: "com.google.android.material:material:1.6.1",
 ]
 
-versions.okhttp = "4.9.3"
+versions.okhttp = "4.10.0"
 deps.OkHttp = [
     okhttp: "com.squareup.okhttp3:okhttp:$versions.okhttp",
     loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:$versions.okhttp",
@@ -115,7 +115,7 @@ deps.Moshi = [
     adapters: "com.squareup.moshi:moshi-adapters:$versions.moshi",
 ]
 
-versions.hilt = "2.42"
+versions.hilt = "2.43"
 deps.Dagger = [:]
 deps.Dagger.Hilt = [
     android: "com.google.dagger:hilt-android:$versions.hilt",
@@ -129,7 +129,7 @@ deps.Coil = [
     coilCompose: "io.coil-kt:coil-compose:$versions.coil",
 ]
 
-versions.accompanist = "0.24.9-beta"
+versions.accompanist = "0.24.14-SNAPSHOT"
 deps.Accompanist = [
     flowLayout: "com.google.accompanist:accompanist-flowlayout:$versions.accompanist",
     swipeRefresh: "com.google.accompanist:accompanist-swiperefresh:$versions.accompanist",
@@ -141,7 +141,7 @@ deps.Insetter = [
     insetter: "dev.chrisbanes.insetter:insetter:0.6.1",
 ]
 
-deps.sandwich = "com.github.skydoves:sandwich:1.2.3"
+deps.sandwich = "com.github.skydoves:sandwich:1.2.5"
 
 deps.timber = "com.jakewharton.timber:timber:5.0.1"
 
