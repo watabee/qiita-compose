@@ -9,7 +9,7 @@ def versionOffset = 0
 def versions = [
     ktlint: "0.43.2",
 
-    androidCompileSdkVersion: 31,
+    androidCompileSdkVersion: 32,
     androidMinSdkVersion: 24,
     androidTargetSdkVersion: 30,
 
