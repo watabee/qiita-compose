@@ -97,7 +97,7 @@ deps.Google = [
     material: "com.google.android.material:material:1.6.1",
 ]
 
-versions.okhttp = "4.9.3"
+versions.okhttp = "4.10.0"
 deps.OkHttp = [
     okhttp: "com.squareup.okhttp3:okhttp:$versions.okhttp",
     loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:$versions.okhttp",
