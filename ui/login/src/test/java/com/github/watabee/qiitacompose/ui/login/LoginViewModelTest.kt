@@ -32,6 +32,7 @@ import kotlin.time.ExperimentalTime
 class LoginViewModelTest {
 
     @MockK private lateinit var userDataStore: UserDataStore
+
     @MockK private lateinit var snackbarManager: SnackbarManager
 
     @Before

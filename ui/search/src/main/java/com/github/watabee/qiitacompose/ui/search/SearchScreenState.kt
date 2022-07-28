@@ -89,7 +89,6 @@ internal fun rememberSearchScreenState(
     viewModel: SearchViewModel,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
 ): SearchScreenState {
-
     return rememberSaveable(
         viewModel,
         keyboardController,

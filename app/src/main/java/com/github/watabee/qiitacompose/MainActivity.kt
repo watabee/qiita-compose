@@ -14,7 +14,9 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     @Inject lateinit var userRepository: UserRepository
+
     @Inject lateinit var snackbarManager: SnackbarManager
+
     @Inject lateinit var env: Env
 
     override fun onCreate(savedInstanceState: Bundle?) {
