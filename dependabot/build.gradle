@@ -39,7 +39,7 @@ deps.Kotlin.Coroutines = [
 
 deps.AndroidX = [
     appcompat: "androidx.appcompat:appcompat:1.4.2",
-    activity: "androidx.activity:activity-ktx:1.5.0",
+    activity: "androidx.activity:activity-ktx:1.5.1",
     fragment: "androidx.fragment:fragment-ktx:1.5.0",
     core: "androidx.core:core-ktx:1.8.0",
     dataStorePreferences: "androidx.datastore:datastore-preferences:1.0.0",
