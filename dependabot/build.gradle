@@ -145,7 +145,7 @@ deps.sandwich = "com.github.skydoves:sandwich:1.2.5"
 
 deps.timber = "com.jakewharton.timber:timber:5.0.1"
 
-deps.desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
+deps.desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.2.0"
 
 deps.junit = "junit:junit:4.13.2"
 deps.truth = "com.google.truth:truth:1.1.3"
