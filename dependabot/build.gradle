@@ -65,7 +65,7 @@ deps.AndroidX.Lifecycle.ViewModel = [
     compose: "androidx.lifecycle:lifecycle-viewmodel-compose:$versions.lifecycle",
 ]
 
-versions.room = "2.4.2"
+versions.room = "2.4.3"
 deps.AndroidX.Room = [
     runtime: "androidx.room:room-runtime:$versions.room",
     ktx: "androidx.room:room-ktx:$versions.room",
