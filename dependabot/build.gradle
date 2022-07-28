@@ -7,7 +7,7 @@ def versionPatch = 0
 def versionOffset = 0
 
 def versions = [
-    ktlint: "0.43.2",
+    ktlint: "0.46.1",
 
     androidCompileSdkVersion: 32,
     androidMinSdkVersion: 24,
@@ -21,7 +21,7 @@ def versions = [
 ext.Versions = versions
 
 deps.androidGradlePlugin = "com.android.tools.build:gradle:7.2.1"
-deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:6.6.1"
+deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:6.9.0"
 deps.secretsGradlePlugin = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
 
 versions.kotlin = "1.7.0"

@@ -160,7 +160,7 @@ private fun MyPageScreen(modifier: Modifier = Modifier, user: AuthenticatedUser,
                 .data(user.profileImageUrl)
                 .transformations(CircleCropTransformation()),
             contentDescription = null,
-            modifier = Modifier.requiredSize(72.dp),
+            modifier = Modifier.requiredSize(72.dp)
         )
         Spacer(modifier = Modifier.requiredHeight(16.dp))
 

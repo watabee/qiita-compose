@@ -47,6 +47,11 @@ subprojects { subproject ->
             targetExclude('bin/**/*.kt')
 
             ktlint(Versions.ktlint)
+                .editorConfigOverride(
+                    [
+                        "disabled_rules": "filename"
+                    ]
+                )
         }
     }
 

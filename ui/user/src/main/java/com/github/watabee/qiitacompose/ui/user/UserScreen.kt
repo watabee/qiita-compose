@@ -63,7 +63,6 @@ import com.google.accompanist.insets.navigationBarsPadding
 
 @Composable
 fun UserScreen(userId: String, appRouting: AppRouting, navigateUp: () -> Unit) {
-
     UserScreen(
         userViewModel = hiltViewModel(),
         userId = userId,
@@ -192,7 +191,7 @@ private fun UserProfileScreen(
                 .transformations(CircleCropTransformation())
                 .build(),
             contentDescription = null,
-            modifier = Modifier.requiredSize(72.dp),
+            modifier = Modifier.requiredSize(72.dp)
         )
         Spacer(modifier = Modifier.requiredHeight(16.dp))
 

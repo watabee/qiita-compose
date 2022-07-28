@@ -22,8 +22,10 @@ internal interface QiitaApiService {
 
     @GET("/api/v2/items")
     suspend fun findItems(
-        @IntRange(from = 1, to = 100) @Query("page") page: Int,
-        @IntRange(from = 1, to = 100) @Query("per_page") perPage: Int,
+        @IntRange(from = 1, to = 100) @Query("page")
+        page: Int,
+        @IntRange(from = 1, to = 100) @Query("per_page")
+        perPage: Int,
         @Query("query") query: String?
     ): ApiResponse<List<Item>>
 
@@ -48,8 +50,10 @@ internal interface QiitaApiService {
 
     @GET("/api/v2/tags")
     suspend fun findTags(
-        @IntRange(from = 1, to = 100) @Query("page") page: Int,
-        @IntRange(from = 1, to = 100) @Query("per_page") perPage: Int,
+        @IntRange(from = 1, to = 100) @Query("page")
+        page: Int,
+        @IntRange(from = 1, to = 100) @Query("per_page")
+        perPage: Int,
         @Query("sort") sort: SortTag?
     ): ApiResponse<List<Tag>>
 }

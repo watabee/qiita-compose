@@ -56,7 +56,7 @@ internal fun ItemListItem(item: Item, openUserScreen: suspend (User) -> Unit, op
                             .transformations(CircleCropTransformation())
                             .build(),
                         contentDescription = null,
-                        modifier = Modifier.requiredSize(20.dp),
+                        modifier = Modifier.requiredSize(20.dp)
                     )
                     Spacer(modifier = Modifier.requiredWidth(8.dp))
                     TextButton(

@@ -225,7 +225,6 @@ private fun TagsList(tags: List<Tag>, onTagClicked: (Tag) -> Unit) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
     ) {
-
         Spacer(modifier = Modifier.requiredHeight(16.dp))
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(text = stringResource(id = R.string.search_tags_title), style = MaterialTheme.typography.subtitle2)

@@ -34,7 +34,6 @@ fun ItemDetailScreen(url: String) {
     BackHandler(enabled = canGoBack, onBack = { goBack?.invoke() })
 
     Box(modifier = Modifier.fillMaxSize()) {
-
         AndroidView(
             modifier = Modifier
                 .fillMaxSize()
