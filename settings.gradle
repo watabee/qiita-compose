@@ -1,3 +1,14 @@
+pluginManagement {
+    plugins {
+        id 'com.google.devtools.ksp' version '1.7.0-1.0.6'
+    }
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
 rootProject.name = "qiita-compose"
 include ':app'
 include ':base'

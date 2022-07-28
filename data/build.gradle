@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.devtools.ksp'
 }
 
 android {
@@ -12,13 +13,9 @@ android {
         minSdkVersion Versions.androidMinSdkVersion
         targetSdkVersion Versions.androidTargetSdkVersion
 
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += [
-                    "room.schemaLocation": "$projectDir/schemas".toString(),
-                    "room.incremental"   : "true"
-                ]
-            }
+        ksp {
+            arg "room.schemaLocation", "$projectDir/schemas".toString()
+            arg "room.incremental", "true"
         }
     }
 
@@ -44,12 +41,12 @@ dependencies {
     implementation Deps.Retrofit.moshi
 
     api Deps.Moshi.moshi
-    kapt Deps.Moshi.codegen
+    ksp Deps.Moshi.codegen
     implementation Deps.Moshi.adapters
 
     implementation Deps.AndroidX.Room.runtime
     implementation Deps.AndroidX.Room.ktx
-    kapt Deps.AndroidX.Room.compiler
+    ksp Deps.AndroidX.Room.compiler
 
     implementation Deps.sandwich
 
