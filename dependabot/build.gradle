@@ -24,7 +24,7 @@ deps.androidGradlePlugin = "com.android.tools.build:gradle:7.3.1"
 deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:6.9.0"
 deps.secretsGradlePlugin = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
 
-versions.kotlin = "1.7.0"
+versions.kotlin = "1.7.20"
 deps.Kotlin = [
     stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin",
     gradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
@@ -72,17 +72,16 @@ deps.AndroidX.Room = [
     compiler: "androidx.room:room-compiler:$versions.room",
 ]
 
-versions.compose = "1.2.0"
-versions.composeCompiler = "1.2.0"
+versions.composeCompiler = "1.3.2"
 deps.AndroidX.Compose = [
-    compiler: "androidx.compose.compiler:compiler:$versions.composeCompiler",
-    runtime: "androidx.compose.runtime:runtime:$versions.compose",
-    ui: "androidx.compose.ui:ui:$versions.compose",
-    uiTooling: "androidx.compose.ui:ui-tooling:$versions.compose",
-    foundation: "androidx.compose.foundation:foundation:$versions.compose",
-    foundationLayout: "androidx.compose.foundation:foundation-layout:$versions.compose",
-    material: "androidx.compose.material:material:$versions.compose",
-    themeAdapter: "androidx.compose.material:compose-theme-adapter:$versions.compose",
+    bom: "androidx.compose:compose-bom:2022.10.00",
+    runtime: "androidx.compose.runtime:runtime",
+    ui: "androidx.compose.ui:ui",
+    uiTooling: "androidx.compose.ui:ui-tooling",
+    foundation: "androidx.compose.foundation:foundation",
+    foundationLayout: "androidx.compose.foundation:foundation-layout",
+    material: "androidx.compose.material:material",
+    themeAdapter: "androidx.compose.material:compose-theme-adapter",
     constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.1",
 
     paging: "androidx.paging:paging-compose:1.0.0-alpha15",

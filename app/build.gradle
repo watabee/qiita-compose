@@ -84,6 +84,7 @@ dependencies {
     implementation Deps.Google.material
 
     // Compose
+    implementation platform(Deps.AndroidX.Compose.bom)
     implementation Deps.AndroidX.Compose.runtime
     implementation Deps.AndroidX.Compose.ui
     implementation Deps.AndroidX.Compose.foundation

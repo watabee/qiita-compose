@@ -39,6 +39,7 @@ dependencies {
     implementation Deps.AndroidX.activity
     implementation Deps.AndroidX.core
 
+    implementation platform(Deps.AndroidX.Compose.bom)
     implementation Deps.AndroidX.Compose.material
     implementation Deps.AndroidX.Compose.navigation
     implementation Deps.AndroidX.Compose.uiTooling
