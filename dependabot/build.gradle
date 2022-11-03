@@ -122,7 +122,7 @@ deps.Dagger.Hilt = [
     androidGradlePlugin: "com.google.dagger:hilt-android-gradle-plugin:$versions.hilt",
 ]
 
-versions.coil = "2.1.0"
+versions.coil = "2.2.2"
 deps.Coil = [
     coil: "io.coil-kt:coil:$versions.coil",
     coilCompose: "io.coil-kt:coil-compose:$versions.coil",
