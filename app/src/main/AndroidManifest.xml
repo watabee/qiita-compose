@@ -16,7 +16,8 @@
             android:name="com.github.watabee.qiitacompose.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.App.NoActionBar"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

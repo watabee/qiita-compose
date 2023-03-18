@@ -4,7 +4,7 @@ import android.content.Context
 import com.github.watabee.qiitacompose.api.QiitaApiService
 import com.github.watabee.qiitacompose.api.interceptor.AccessTokenInterceptor
 import com.github.watabee.qiitacompose.util.OffsetDateTimeAdapter
-import com.skydoves.sandwich.coroutines.CoroutinesResponseCallAdapterFactory
+import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import com.squareup.moshi.Moshi
 import dagger.Binds
 import dagger.Module
@@ -72,7 +72,7 @@ internal abstract class NetworkModule {
             Retrofit.Builder()
                 .baseUrl("https://qiita.com")
                 .client(okHttpClient)
-                .addCallAdapterFactory(CoroutinesResponseCallAdapterFactory.create())
+                .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .build()
 

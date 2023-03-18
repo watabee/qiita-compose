@@ -9,9 +9,9 @@ def versionOffset = 0
 def versions = [
     ktlint: "0.46.1",
 
-    androidCompileSdkVersion: 32,
+    androidCompileSdkVersion: 33,
     androidMinSdkVersion: 24,
-    androidTargetSdkVersion: 30,
+    androidTargetSdkVersion: 31,
 
     buildToolsVersion: "33.0.0",
 
@@ -20,11 +20,11 @@ def versions = [
 ]
 ext.Versions = versions
 
-deps.androidGradlePlugin = "com.android.tools.build:gradle:7.2.1"
-deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:6.9.0"
+deps.androidGradlePlugin = "com.android.tools.build:gradle:7.4.1"
+deps.spotlessGradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:6.11.0"
 deps.secretsGradlePlugin = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
 
-versions.kotlin = "1.7.0"
+versions.kotlin = "1.8.10"
 deps.Kotlin = [
     stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin",
     gradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin",
@@ -38,10 +38,10 @@ deps.Kotlin.Coroutines = [
 ]
 
 deps.AndroidX = [
-    appcompat: "androidx.appcompat:appcompat:1.4.2",
-    activity: "androidx.activity:activity-ktx:1.5.1",
-    fragment: "androidx.fragment:fragment-ktx:1.5.1",
-    core: "androidx.core:core-ktx:1.8.0",
+    appcompat: "androidx.appcompat:appcompat:1.6.0-rc01",
+    activity: "androidx.activity:activity-ktx:1.6.1",
+    fragment: "androidx.fragment:fragment-ktx:1.5.4",
+    core: "androidx.core:core-ktx:1.9.0",
     dataStorePreferences: "androidx.datastore:datastore-preferences:1.0.0",
 ]
 
@@ -53,7 +53,7 @@ deps.AndroidX.Test = [
     junit: "androidx.test.ext:junit-ktx:1.1.3",
 ]
 
-versions.lifecycle = "2.5.1"
+versions.lifecycle = "2.6.0"
 deps.AndroidX.Lifecycle = [
     runtime: "androidx.lifecycle:lifecycle-runtime-ktx:$versions.lifecycle",
     compiler: "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle",
@@ -65,28 +65,27 @@ deps.AndroidX.Lifecycle.ViewModel = [
     compose: "androidx.lifecycle:lifecycle-viewmodel-compose:$versions.lifecycle",
 ]
 
-versions.room = "2.4.3"
+versions.room = "2.5.0"
 deps.AndroidX.Room = [
     runtime: "androidx.room:room-runtime:$versions.room",
     ktx: "androidx.room:room-ktx:$versions.room",
     compiler: "androidx.room:room-compiler:$versions.room",
 ]
 
-versions.compose = "1.2.0"
-versions.composeCompiler = "1.2.0"
+versions.composeCompiler = "1.4.3"
 deps.AndroidX.Compose = [
-    compiler: "androidx.compose.compiler:compiler:$versions.composeCompiler",
-    runtime: "androidx.compose.runtime:runtime:$versions.compose",
-    ui: "androidx.compose.ui:ui:$versions.compose",
-    uiTooling: "androidx.compose.ui:ui-tooling:$versions.compose",
-    foundation: "androidx.compose.foundation:foundation:$versions.compose",
-    foundationLayout: "androidx.compose.foundation:foundation-layout:$versions.compose",
-    material: "androidx.compose.material:material:$versions.compose",
-    themeAdapter: "androidx.compose.material:compose-theme-adapter:$versions.compose",
+    bom: "androidx.compose:compose-bom:2023.01.00",
+    runtime: "androidx.compose.runtime:runtime",
+    ui: "androidx.compose.ui:ui",
+    uiTooling: "androidx.compose.ui:ui-tooling",
+    foundation: "androidx.compose.foundation:foundation",
+    foundationLayout: "androidx.compose.foundation:foundation-layout",
+    material: "androidx.compose.material:material",
+    themeAdapter: "androidx.compose.material:compose-theme-adapter",
     constraintLayout: "androidx.constraintlayout:constraintlayout-compose:1.0.1",
 
-    paging: "androidx.paging:paging-compose:1.0.0-alpha15",
-    navigation: "androidx.navigation:navigation-compose:2.5.1",
+    paging: "androidx.paging:paging-compose:1.0.0-alpha17",
+    navigation: "androidx.navigation:navigation-compose:2.5.3",
 ]
 
 deps.AndroidX.Hilt = [
@@ -94,7 +93,7 @@ deps.AndroidX.Hilt = [
 ]
 
 deps.Google = [
-    material: "com.google.android.material:material:1.6.1",
+    material: "com.google.android.material:material:1.7.0",
 ]
 
 versions.okhttp = "4.10.0"
@@ -108,14 +107,14 @@ deps.Retrofit = [
     moshi: "com.squareup.retrofit2:converter-moshi:2.9.0",
 ]
 
-versions.moshi = "1.13.0"
+versions.moshi = "1.14.0"
 deps.Moshi = [
     moshi: "com.squareup.moshi:moshi:$versions.moshi",
     codegen: "com.squareup.moshi:moshi-kotlin-codegen:$versions.moshi",
     adapters: "com.squareup.moshi:moshi-adapters:$versions.moshi",
 ]
 
-versions.hilt = "2.43"
+versions.hilt = "2.45"
 deps.Dagger = [:]
 deps.Dagger.Hilt = [
     android: "com.google.dagger:hilt-android:$versions.hilt",
@@ -123,13 +122,13 @@ deps.Dagger.Hilt = [
     androidGradlePlugin: "com.google.dagger:hilt-android-gradle-plugin:$versions.hilt",
 ]
 
-versions.coil = "2.1.0"
+versions.coil = "2.2.2"
 deps.Coil = [
     coil: "io.coil-kt:coil:$versions.coil",
     coilCompose: "io.coil-kt:coil-compose:$versions.coil",
 ]
 
-versions.accompanist = "0.25.0"
+versions.accompanist = "0.28.0"
 deps.Accompanist = [
     flowLayout: "com.google.accompanist:accompanist-flowlayout:$versions.accompanist",
     swipeRefresh: "com.google.accompanist:accompanist-swiperefresh:$versions.accompanist",
@@ -141,16 +140,16 @@ deps.Insetter = [
     insetter: "dev.chrisbanes.insetter:insetter:0.6.1",
 ]
 
-deps.sandwich = "com.github.skydoves:sandwich:1.2.5"
+deps.sandwich = "com.github.skydoves:sandwich:1.3.2"
 
 deps.timber = "com.jakewharton.timber:timber:5.0.1"
 
-deps.desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
+deps.desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.2.2"
 
 deps.junit = "junit:junit:4.13.2"
 deps.truth = "com.google.truth:truth:1.1.3"
-deps.turbine = "app.cash.turbine:turbine:0.8.0"
-deps.robolectric = "org.robolectric:robolectric:4.8.1"
+deps.turbine = "app.cash.turbine:turbine:0.12.0"
+deps.robolectric = "org.robolectric:robolectric:4.9"
 
 deps.Mockk = [
     mockk: "io.mockk:mockk:1.13.4",

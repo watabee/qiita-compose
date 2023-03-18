@@ -1,6 +1,6 @@
 package com.github.watabee.qiitacompose.ui.user
 
-import app.cash.turbine.FlowTurbine
+import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import com.github.watabee.qiitacompose.api.QiitaApiResult
 import com.github.watabee.qiitacompose.api.response.Tag
@@ -320,7 +320,7 @@ class UserViewModelTest {
     }
 }
 
-private suspend fun FlowTurbine<UserUiModel>.assertIsLoading() {
+private suspend fun ReceiveTurbine<UserUiModel>.assertIsLoading() {
     val uiModel = awaitItem()
     Truth.assertThat(uiModel.isLoading).isTrue()
     Truth.assertThat(uiModel.getUserInfoError).isFalse()
