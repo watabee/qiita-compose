@@ -1,5 +1,20 @@
 # Qiita Compose
 
+This is a project for an unofficial [Qiita](https://qiita.com/) client application.
+
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src="./art/top.png" width=320></td>
+    <td><img src="./art/mypage.png" width=320></td>
+  </tr>
+  <tr>
+    <td><img src="./art/search.png" width=320></td>
+    <td><img src="./art/search_tags.png" width=320></td>
+  </tr>
+</table>
+
 ## Setup
 
 This project requires the following keys.
