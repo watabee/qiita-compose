@@ -158,7 +158,8 @@ private fun MyPageScreen(modifier: Modifier = Modifier, user: AuthenticatedUser,
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(user.profileImageUrl)
-                .transformations(CircleCropTransformation()),
+                .transformations(CircleCropTransformation())
+                .build(),
             contentDescription = null,
             modifier = Modifier.requiredSize(72.dp)
         )
