@@ -47,7 +47,7 @@ deps.AndroidX = [
 
 deps.AndroidX.Test = [
     core: "androidx.test:core:1.5.0",
-    runner: "androidx.test:runner:1.4.0",
+    runner: "androidx.test:runner:1.5.2",
     rules: "androidx.test:rules:1.4.0",
     espressoCore: "androidx.test.espresso:espresso-core:3.4.0",
     junit: "androidx.test.ext:junit-ktx:1.1.3",
