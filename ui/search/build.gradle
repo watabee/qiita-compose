@@ -24,6 +24,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion Versions.composeCompiler
     }
+    namespace 'com.github.watabee.qiitacompose.ui.search'
 }
 
 dependencies {

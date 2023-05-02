@@ -37,6 +37,7 @@ import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
 import com.github.watabee.qiitacompose.ui.util.format
 import kotlinx.coroutines.launch
 import java.time.OffsetDateTime
+import com.github.watabee.qiitacompose.ui.common.R as uiCommonR
 
 @Composable
 internal fun ItemListItem(item: Item, openUserScreen: suspend (User) -> Unit, openItemDetailScreen: (String) -> Unit) {
@@ -85,7 +86,7 @@ internal fun ItemListItem(item: Item, openUserScreen: suspend (User) -> Unit, op
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_tags),
+                            painter = painterResource(id = uiCommonR.drawable.ic_tags),
                             contentDescription = null
                         )
                     }

@@ -29,6 +29,7 @@ android {
     lintOptions {
         abortOnError false
     }
+    namespace 'com.github.watabee.qiitacompose.ui.common'
 }
 
 dependencies {

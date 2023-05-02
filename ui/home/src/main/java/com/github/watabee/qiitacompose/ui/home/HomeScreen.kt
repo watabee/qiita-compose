@@ -26,6 +26,7 @@ import com.github.watabee.qiitacompose.data.UserData
 import com.github.watabee.qiitacompose.ui.items.ItemsScreen
 import com.github.watabee.qiitacompose.ui.navigation.AppRouting
 import com.github.watabee.qiitacompose.ui.theme.QiitaFontFamily
+import com.github.watabee.qiitacompose.ui.common.R as uiCommonR
 
 @Composable
 fun HomeScreen(appRouting: AppRouting) {
@@ -80,7 +81,7 @@ private fun UserIcon(imageUrl: String?, iconSize: Dp) {
         )
     } else {
         Icon(
-            painter = painterResource(id = R.drawable.ic_blank_user),
+            painter = painterResource(id = uiCommonR.drawable.ic_blank_user),
             contentDescription = null,
             modifier = Modifier.size(iconSize)
         )

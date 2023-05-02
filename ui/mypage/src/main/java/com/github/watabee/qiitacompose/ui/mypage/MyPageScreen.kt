@@ -47,6 +47,7 @@ import com.github.watabee.qiitacompose.ui.common.LoadingScreen
 import com.github.watabee.qiitacompose.ui.common.SnsIconButtons
 import com.github.watabee.qiitacompose.ui.common.UserCountTexts
 import com.google.accompanist.insets.navigationBarsPadding
+import com.github.watabee.qiitacompose.ui.common.R as uiCommonR
 
 @Composable
 fun MyPageScreen(closeMyPageScreen: () -> Unit) {
@@ -211,12 +212,12 @@ private fun LogoutDialog(isVisible: Boolean, setVisible: (Boolean) -> Unit, requ
     if (isVisible) {
         AppAlertDialog(
             text = stringResource(id = R.string.mypage_confirm_to_logout),
-            confirmButtonText = stringResource(id = R.string.common_yes),
+            confirmButtonText = stringResource(id = uiCommonR.string.common_yes),
             onConfirmButtonClicked = {
                 requestToLogout()
                 setVisible(false)
             },
-            dismissButtonText = stringResource(id = R.string.common_no),
+            dismissButtonText = stringResource(id = uiCommonR.string.common_no),
             onDismissButtonClicked = { setVisible(false) },
             onDismissRequest = { setVisible(false) }
         )

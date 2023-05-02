@@ -30,6 +30,7 @@ android {
             includeAndroidResources = true
         }
     }
+    namespace 'com.github.watabee.qiitacompose.ui.login'
 }
 
 dependencies {
