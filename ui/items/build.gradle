@@ -26,6 +26,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion Versions.composeCompiler
     }
+    namespace 'com.github.watabee.qiitacompose.ui.items'
 }
 
 dependencies {

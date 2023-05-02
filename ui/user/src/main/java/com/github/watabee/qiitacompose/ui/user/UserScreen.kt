@@ -60,6 +60,7 @@ import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
 import com.github.watabee.qiitacompose.ui.theme.tagBackground
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.insets.navigationBarsPadding
+import com.github.watabee.qiitacompose.ui.common.R as uiCommonR
 
 @Composable
 fun UserScreen(userId: String, appRouting: AppRouting, navigateUp: () -> Unit) {
@@ -302,7 +303,7 @@ private fun FollowingTags(followingTags: List<Tag>) {
 
     Spacer(modifier = Modifier.requiredHeight(48.dp))
     Row(modifier = Modifier.fillMaxWidth()) {
-        Icon(painter = painterResource(id = R.drawable.ic_tags), contentDescription = null, tint = MaterialTheme.colors.primary)
+        Icon(painter = painterResource(id = uiCommonR.drawable.ic_tags), contentDescription = null, tint = MaterialTheme.colors.primary)
         Spacer(modifier = Modifier.requiredWidth(8.dp))
         Text(text = stringResource(id = R.string.user_following_tags), style = MaterialTheme.typography.body2, fontWeight = FontWeight.W700)
     }
