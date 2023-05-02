@@ -41,7 +41,7 @@ deps.AndroidX = [
     appcompat: "androidx.appcompat:appcompat:1.6.1",
     activity: "androidx.activity:activity-ktx:1.7.1",
     fragment: "androidx.fragment:fragment-ktx:1.5.7",
-    core: "androidx.core:core-ktx:1.9.0",
+    core: "androidx.core:core-ktx:1.10.0",
     dataStorePreferences: "androidx.datastore:datastore-preferences:1.0.0",
 ]
 
