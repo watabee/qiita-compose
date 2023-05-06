@@ -92,7 +92,7 @@ private fun LoginScreen(
         }
     )
 
-    val currentUrl = webViewState.content.getCurrentUrl()
+    val currentUrl = webViewState.lastLoadedUrl
     // TODO: handle error
     if (currentUrl?.startsWith(CALLBACK_URL) == true) {
         val uri = Uri.parse(currentUrl)
