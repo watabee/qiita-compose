@@ -6,7 +6,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "qiita-compose"
+rootProject.name = "QiitaCompose"
 include ':app'
 include ':base'
 include ':base-android'
