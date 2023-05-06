@@ -1,15 +1,15 @@
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
+    alias(libs.plugins.hilt.android)
 }
 
 android {
-    compileSdkVersion Versions.androidCompileSdkVersion
+    compileSdkVersion libs.versions.compileSdk.get().toInteger()
     defaultConfig {
-        minSdkVersion Versions.androidMinSdkVersion
-        targetSdkVersion Versions.androidTargetSdkVersion
+        minSdkVersion libs.versions.minSdk.get().toInteger()
+        targetSdkVersion libs.versions.targetSdk.get().toInteger()
     }
 
     compileOptions {
@@ -22,7 +22,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion Versions.composeCompiler
+        kotlinCompilerExtensionVersion libs.versions.compose.compiler.get()
     }
     namespace 'com.github.watabee.qiitacompose.ui.home'
 }
@@ -33,22 +33,20 @@ dependencies {
     implementation projects.ui.items
 
     // Compose
-    implementation platform(Deps.AndroidX.Compose.bom)
-    implementation Deps.AndroidX.Compose.runtime
-    implementation Deps.AndroidX.Compose.ui
-    implementation Deps.AndroidX.Compose.foundation
-    implementation Deps.AndroidX.Compose.foundationLayout
-    implementation Deps.AndroidX.Compose.material
-    implementation Deps.AndroidX.Compose.uiTooling
-    implementation Deps.AndroidX.Compose.paging
-    implementation Deps.AndroidX.Lifecycle.ViewModel.compose
+    implementation platform(libs.androidx.compose.bom)
+    implementation libs.androidx.compose.runtime
+    implementation libs.androidx.compose.ui
+    implementation libs.androidx.compose.foundation
+    implementation libs.androidx.compose.foundation.layout
+    implementation libs.androidx.compose.material
+    implementation libs.androidx.compose.ui.tooling
+    implementation libs.androidx.paging.compose
+    implementation libs.androidx.lifecycle.viewmodel.compose
 
-    implementation Deps.Coil.coilCompose
+    implementation libs.coil.compose
 
-    implementation Deps.Dagger.Hilt.android
-    kapt Deps.Dagger.Hilt.androidCompiler
+    implementation libs.hilt.android
+    kapt libs.hilt.android.compiler
 
-    implementation Deps.Google.material
-
-    implementation Deps.timber
+    implementation libs.timber
 }

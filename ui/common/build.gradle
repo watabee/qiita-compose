@@ -1,14 +1,14 @@
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
     id 'kotlin-kapt'
 }
 
 android {
-    compileSdkVersion Versions.androidCompileSdkVersion
+    compileSdkVersion libs.versions.compileSdk.get().toInteger()
     defaultConfig {
-        minSdkVersion Versions.androidMinSdkVersion
-        targetSdkVersion Versions.androidTargetSdkVersion
+        minSdkVersion libs.versions.minSdk.get().toInteger()
+        targetSdkVersion libs.versions.targetSdk.get().toInteger()
     }
 
     compileOptions {
@@ -23,7 +23,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion Versions.composeCompiler
+        kotlinCompilerExtensionVersion libs.versions.compose.compiler.get()
     }
 
     lintOptions {
@@ -36,27 +36,27 @@ dependencies {
     api projects.baseAndroid
     implementation projects.data
 
-    implementation Deps.AndroidX.appcompat
-    implementation Deps.AndroidX.activity
-    implementation Deps.AndroidX.core
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.activity.ktx
+    implementation libs.androidx.core.ktx
 
-    implementation platform(Deps.AndroidX.Compose.bom)
-    implementation Deps.AndroidX.Compose.material
-    implementation Deps.AndroidX.Compose.navigation
-    implementation Deps.AndroidX.Compose.uiTooling
-    implementation Deps.AndroidX.Compose.constraintLayout
+    implementation platform(libs.androidx.compose.bom)
+    implementation libs.androidx.compose.material
+    implementation libs.androidx.compose.ui.tooling
+    implementation libs.androidx.compose.constraintlayout
+    implementation libs.androidx.navigation.compose
 
-    api Deps.AndroidX.Lifecycle.runtime
+    api libs.androidx.lifecycle.runtime.ktx
 
-    implementation Deps.Google.material
+    api libs.material
 
-    api Deps.AndroidX.Hilt.compose
+    api libs.androidx.hilt.navigation.compose
 
-    implementation Deps.timber
+    implementation libs.timber
 
-    coreLibraryDesugaring Deps.desugarJdkLibs
+    coreLibraryDesugaring libs.desugarJdkLibs
 
-    testImplementation Deps.junit
-    testImplementation Deps.truth
-    testImplementation Deps.AndroidX.Test.junit
+    testImplementation libs.junit
+    testImplementation libs.truth
+    testImplementation libs.androidx.test.junit.ktx
 }
