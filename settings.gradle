@@ -1,7 +1,4 @@
 pluginManagement {
-    plugins {
-        id 'com.google.devtools.ksp' version '1.8.20-1.0.11'
-    }
     repositories {
         google()
         mavenCentral()
@@ -22,7 +19,5 @@ include ':ui:items'
 include ':ui:search'
 include ':ui:user'
 include ':ui:mypage'
-
-include ':dependabot'
 
 enableFeaturePreview('TYPESAFE_PROJECT_ACCESSORS')

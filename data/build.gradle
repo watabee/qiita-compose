@@ -1,17 +1,17 @@
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
-    id 'dagger.hilt.android.plugin'
-    id 'com.google.devtools.ksp'
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
-    compileSdkVersion Versions.androidCompileSdkVersion
+    compileSdkVersion libs.versions.compileSdk.get().toInteger()
     defaultConfig {
-        minSdkVersion Versions.androidMinSdkVersion
-        targetSdkVersion Versions.androidTargetSdkVersion
+        minSdkVersion libs.versions.minSdk.get().toInteger()
+        targetSdkVersion libs.versions.targetSdk.get().toInteger()
 
         ksp {
             arg "room.schemaLocation", "$projectDir/schemas".toString()
@@ -35,34 +35,34 @@ android {
 dependencies {
     api projects.baseAndroid
 
-    implementation Deps.OkHttp.okhttp
-    debugImplementation Deps.OkHttp.loggingInterceptor
+    implementation libs.okttp
+    debugImplementation libs.okttp.logging
 
-    implementation Deps.Retrofit.retrofit
-    implementation Deps.Retrofit.moshi
+    implementation libs.retrofit
+    implementation libs.retrofit.converter.moshi
 
-    api Deps.Moshi.moshi
-    ksp Deps.Moshi.codegen
-    implementation Deps.Moshi.adapters
+    api libs.moshi
+    ksp libs.moshi.codegen
+    implementation libs.moshi.adapters
 
-    implementation Deps.AndroidX.Room.runtime
-    implementation Deps.AndroidX.Room.ktx
-    ksp Deps.AndroidX.Room.compiler
+    implementation libs.androidx.room.runtime
+    implementation libs.androidx.room.ktx
+    ksp libs.androidx.room.compiler
 
-    implementation Deps.sandwich
+    implementation libs.sandwich
 
-    implementation Deps.Coil.coil
+    implementation libs.coil
 
-    implementation Deps.AndroidX.dataStorePreferences
+    implementation libs.androidx.datastore.preferences
 
-    implementation Deps.Dagger.Hilt.android
-    kapt Deps.Dagger.Hilt.androidCompiler
+    implementation libs.hilt.android
+    kapt libs.hilt.android.compiler
 
-    implementation Deps.timber
+    implementation libs.timber
 
-    coreLibraryDesugaring Deps.desugarJdkLibs
+    coreLibraryDesugaring libs.desugarJdkLibs
 
-    testImplementation Deps.junit
-    testImplementation Deps.truth
-    testImplementation Deps.AndroidX.Test.junit
+    testImplementation libs.junit
+    testImplementation libs.truth
+    testImplementation libs.androidx.test.junit.ktx
 }

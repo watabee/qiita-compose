@@ -1,13 +1,15 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'dagger.hilt.android.plugin'
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    id 'kotlin-kapt'
+    alias(libs.plugins.hilt.android)
+}
 
 android {
-    compileSdkVersion Versions.androidCompileSdkVersion
+    compileSdkVersion libs.versions.compileSdk.get().toInteger()
     defaultConfig {
-        minSdkVersion Versions.androidMinSdkVersion
-        targetSdkVersion Versions.androidTargetSdkVersion
+        minSdkVersion libs.versions.minSdk.get().toInteger()
+        targetSdkVersion libs.versions.targetSdk.get().toInteger()
     }
 
     compileOptions {
@@ -20,8 +22,8 @@ android {
 dependencies {
     api projects.base
 
-    implementation Deps.Kotlin.Coroutines.android
+    implementation libs.coroutines.android
 
-    implementation Deps.Dagger.Hilt.android
-    kapt Deps.Dagger.Hilt.androidCompiler
+    implementation libs.hilt.android
+    kapt libs.hilt.android.compiler
 }

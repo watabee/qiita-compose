@@ -277,7 +277,9 @@ private fun FollowButton(
                 onClick = { followUser(userId) },
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.small.copy(all = CornerSize(0.dp)),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium))
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                )
             ) {
                 Text(text = stringResource(id = R.string.user_follow), style = MaterialTheme.typography.body2, fontWeight = FontWeight.W700)
             }
@@ -287,7 +289,9 @@ private fun FollowButton(
                 onClick = openLoginScreen,
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.small.copy(all = CornerSize(0.dp)),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium))
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                )
             ) {
                 Text(text = stringResource(id = R.string.user_follow), style = MaterialTheme.typography.body2, fontWeight = FontWeight.W700)
             }

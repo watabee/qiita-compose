@@ -1,21 +1,26 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
-    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.secrets)
 }
 
+def versionMajor = 1
+def versionMinor = 0
+def versionPatch = 0
+def versionOffset = 0
+
 android {
-    compileSdkVersion Versions.androidCompileSdkVersion
-    buildToolsVersion Versions.buildToolsVersion
+    compileSdkVersion libs.versions.compileSdk.get().toInteger()
+    buildToolsVersion libs.versions.buildTools.get()
 
     defaultConfig {
         applicationId "com.github.watabee.qiitacompose"
-        minSdkVersion Versions.androidMinSdkVersion
-        targetSdkVersion Versions.androidTargetSdkVersion
-        versionCode Versions.androidVersionCode
-        versionName Versions.androidVersionName
+        minSdkVersion libs.versions.minSdk.get().toInteger()
+        targetSdkVersion libs.versions.targetSdk.get().toInteger()
+        versionCode ((versionMajor * 10000 + versionMinor * 100 + versionPatch) * 100 + versionOffset)
+        versionName "$versionMajor.$versionMinor.$versionPatch"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -53,7 +58,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion Versions.composeCompiler
+        kotlinCompilerExtensionVersion libs.versions.compose.compiler.get()
     }
 
     packagingOptions {
@@ -72,36 +77,35 @@ dependencies {
     implementation projects.ui.items
     implementation projects.ui.search
 
-    implementation Deps.Kotlin.stdlib
-    implementation Deps.Kotlin.Coroutines.core
-    implementation Deps.Kotlin.Coroutines.android
+    implementation libs.coroutines.core
+    implementation libs.coroutines.android
 
-    implementation Deps.AndroidX.appcompat
-    implementation Deps.AndroidX.activity
-    implementation Deps.AndroidX.core
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.activity.ktx
+    implementation libs.androidx.core.ktx
 
-    implementation Deps.AndroidX.Lifecycle.ViewModel.ktx
+    implementation libs.androidx.lifecycle.viewmodel.ktx
 
-    implementation Deps.Google.material
+    implementation libs.material
 
     // Compose
-    implementation platform(Deps.AndroidX.Compose.bom)
-    implementation Deps.AndroidX.Compose.runtime
-    implementation Deps.AndroidX.Compose.ui
-    implementation Deps.AndroidX.Compose.foundation
-    implementation Deps.AndroidX.Compose.foundationLayout
-    implementation Deps.AndroidX.Compose.material
-    implementation Deps.AndroidX.Compose.uiTooling
-    implementation Deps.AndroidX.Lifecycle.ViewModel.compose
-    implementation Deps.AndroidX.Compose.navigation
+    implementation platform(libs.androidx.compose.bom)
+    implementation libs.androidx.compose.runtime
+    implementation libs.androidx.compose.ui
+    implementation libs.androidx.compose.foundation
+    implementation libs.androidx.compose.foundation.layout
+    implementation libs.androidx.compose.material
+    implementation libs.androidx.compose.ui.tooling
+    implementation libs.androidx.lifecycle.viewmodel.compose
+    implementation libs.androidx.navigation.compose
 
-    implementation Deps.Coil.coil
-    implementation Deps.Accompanist.insets
+    implementation libs.coil
+    implementation libs.accompanist.insets
 
-    implementation Deps.Dagger.Hilt.android
-    kapt Deps.Dagger.Hilt.androidCompiler
+    implementation libs.hilt.android
+    kapt libs.hilt.android.compiler
 
-    implementation Deps.timber
+    implementation libs.timber
 }
 
 hilt {
