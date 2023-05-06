@@ -19,6 +19,7 @@ class PaginationTest(private val headers: Headers, private val expectedPaginatio
     companion object {
         @Parameterized.Parameters
         @JvmStatic
+        @Suppress("ktlint:max-line-length")
         fun data() = listOf(
             arrayOf(
                 mapOf(
