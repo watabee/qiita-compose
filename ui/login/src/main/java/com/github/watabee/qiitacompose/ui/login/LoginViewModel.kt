@@ -121,5 +121,5 @@ internal data class LoginUiState(
 internal sealed interface LoginAction {
     class RequestAccessTokens(val code: String) : LoginAction
 
-    object ShowLoadWebErrorSnackbar : LoginAction
+    data object ShowLoadWebErrorSnackbar : LoginAction
 }
