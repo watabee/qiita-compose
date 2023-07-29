@@ -1,5 +1,5 @@
 [versions]
-agp = "8.0.1"
+agp = "8.1.0"
 kotlin = "1.9.0"
 ksp = "1.9.0-1.0.12"
 ktlint = "0.46.1"
@@ -17,7 +17,7 @@ accompanist = "0.30.1"
 compileSdk = "33"
 minSdk = "24"
 targetSdk = "31"
-buildTools = "33.0.0"
+buildTools = "34.0.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
