@@ -8,6 +8,7 @@ hilt = "2.47"
 compose-bom = "2023.06.01"
 compose-compiler = "1.5.1"
 androidx-core = "1.10.1"
+androidx-fragment = "1.6.1"
 androidx-lifecycle = "2.6.1"
 androidx-navigation = "2.7.0-rc01"
 androidx-paging = "3.2.0"
@@ -38,7 +39,7 @@ coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-androi
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.1" }
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version = "1.7.1" }
-androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version = "1.6.0" }
+androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "androidx-fragment" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version = "1.0.0" }
 androidx-test-core = { module = "androidx.test:core", version = "1.5.0" }
