@@ -12,8 +12,8 @@ def versionPatch = 0
 def versionOffset = 0
 
 android {
-    compileSdkVersion libs.versions.compileSdk.get().toInteger()
-    buildToolsVersion libs.versions.buildTools.get()
+    compileSdk libs.versions.compileSdk.get().toInteger()
+    buildToolsVersion = libs.versions.buildTools.get()
 
     defaultConfig {
         applicationId "com.github.watabee.qiitacompose"
