@@ -35,6 +35,7 @@ fun ItemsScreen(modifier: Modifier = Modifier, openUserScreen: suspend (User) ->
     val isError = lazyPagingItems.loadState.refresh is LoadState.Error
 
     Surface(modifier = modifier.fillMaxSize()) {
+        // TODO: Migrate to Modifier.pullRefresh()
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
             onRefresh = { lazyPagingItems.refresh() },
