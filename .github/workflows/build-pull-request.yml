@@ -67,8 +67,15 @@ jobs:
           bundle install --gemfile=.ci/Gemfile
           bundle exec --gemfile=.ci/Gemfile danger --dangerfile=".ci/danger/static_analysis.danger"
 
+      - name: Upload reports
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: reports
+          path: app/build/reports/*
+
       - name: Upload build outputs
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-outputs
           path: app/build/outputs/apk/**/*.apk
