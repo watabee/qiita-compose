@@ -77,7 +77,7 @@ private fun LoginScreen(
     onRequestAccessToken: (code: String) -> Unit,
     onLoadError: () -> Unit
 ) {
-    val state = remember { UUID.randomUUID().toString().replace("-", "") }
+    val state = remember { createState() }
     val url = remember(state, qiitaClientId) {
         "https://qiita.com/api/v2/oauth/authorize?client_id=$qiitaClientId&scope=read_qiita+write_qiita&state=$state"
     }
@@ -103,4 +103,8 @@ private fun LoginScreen(
             onRequestAccessToken(code)
         }
     }
+}
+
+private fun createState(): String {
+    return UUID.randomUUID().toString().replace("-", "")
 }
