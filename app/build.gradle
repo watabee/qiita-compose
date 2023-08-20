@@ -23,6 +23,15 @@ android {
         versionName "$versionMajor.$versionMinor.$versionPatch"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        defaultConfig {
+            javaCompileOptions {
+                annotationProcessorOptions {
+                    // https://dagger.dev/dev-guide/compiler-options#ignore-provision-key-wildcards
+                    arguments = ["dagger.ignoreProvisionKeyWildcards": "enabled"]
+                }
+            }
+        }
     }
 
     signingConfigs {

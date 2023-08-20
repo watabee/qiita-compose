@@ -73,15 +73,15 @@ internal class MyPageViewModel @Inject constructor(
     }
 
     sealed class Action {
-        object GetAuthenticatedUser : Action()
+        data object GetAuthenticatedUser : Action()
 
-        object Logout : Action()
+        data object Logout : Action()
     }
 
     sealed class Event {
-        object EmptyAccessToken : Event()
+        data object EmptyAccessToken : Event()
 
-        object CompletedLogout : Event()
+        data object CompletedLogout : Event()
     }
 
     data class State(

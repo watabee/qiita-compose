@@ -61,7 +61,7 @@ internal class SearchViewModel @Inject constructor(
     )
 
     sealed interface Action {
-        object FindTags : Action
+        data object FindTags : Action
 
         data class SearchByQuery(val query: String) : Action
     }

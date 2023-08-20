@@ -18,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
+import androidx.paging.compose.itemKey
 import com.github.watabee.qiitacompose.api.response.Item
 import com.github.watabee.qiitacompose.api.response.User
 import com.github.watabee.qiitacompose.ui.common.ErrorScreen
@@ -35,6 +35,7 @@ fun ItemsScreen(modifier: Modifier = Modifier, openUserScreen: suspend (User) ->
     val isError = lazyPagingItems.loadState.refresh is LoadState.Error
 
     Surface(modifier = modifier.fillMaxSize()) {
+        // TODO: Migrate to Modifier.pullRefresh()
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
             onRefresh = { lazyPagingItems.refresh() },
@@ -69,8 +70,11 @@ fun ItemsList(
     openItemDetailScreen: (String) -> Unit
 ) {
     LazyColumn(modifier, lazyListState) {
-        items(lazyPagingItems, key = { it.id }) {
-            it?.let { item -> ItemListItem(item = item, openUserScreen = openUserScreen, openItemDetailScreen) }
+        items(lazyPagingItems.itemCount, key = lazyPagingItems.itemKey { it.id }) { index ->
+            val item = lazyPagingItems[index]
+            if (item != null) {
+                ItemListItem(item = item, openUserScreen = openUserScreen, openItemDetailScreen)
+            }
         }
 
         when (lazyPagingItems.loadState.append) {
