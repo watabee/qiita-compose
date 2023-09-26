@@ -1,17 +1,17 @@
 [versions]
 agp = "8.2.0-beta05"
-kotlin = "1.9.0"
-ksp = "1.9.0-1.0.12"
+kotlin = "1.9.10"
+ksp = "1.9.10-1.0.13"
 ktlint = "0.46.1"
 coroutines = "1.7.3"
-hilt = "2.47"
-compose-bom = "2023.06.01"
-compose-compiler = "1.5.1"
-androidx-core = "1.10.1"
+hilt = "2.48"
+compose-bom = "2023.09.01"
+compose-compiler = "1.5.3"
+androidx-core = "1.12.0"
 androidx-fragment = "1.6.1"
 androidx-lifecycle = "2.6.2"
-androidx-navigation = "2.7.0"
-androidx-paging = "3.2.0"
+androidx-navigation = "2.7.3"
+androidx-paging = "3.2.1"
 androidx-room = "2.5.2"
 okhttp = "4.11.0"
 retrofit = "2.9.0"
@@ -39,7 +39,7 @@ coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", ve
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.1" }
-androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version = "1.7.1" }
+androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version = "1.7.2" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "androidx-fragment" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version = "1.0.0" }
