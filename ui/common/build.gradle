@@ -32,6 +32,26 @@ android {
         abortOnError false
     }
     namespace 'com.github.watabee.qiitacompose.ui.common'
+
+    testOptions {
+        managedDevices {
+            devices {
+                pixel4api30 (com.android.build.api.dsl.ManagedVirtualDevice) {
+                    // Use device profiles you typically see in Android Studio.
+                    device = "Pixel 4"
+                    // Use only API levels 27 and higher.
+                    apiLevel = 30
+                    // To include Google services, use "google".
+                    systemImageSource = "aosp"
+                }
+            }
+            groups {
+                ci {
+                    targetDevices.add(devices.pixel4api30)
+                }
+            }
+        }
+    }
 }
 
 dependencies {

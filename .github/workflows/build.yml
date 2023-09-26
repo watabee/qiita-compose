@@ -1,4 +1,4 @@
-name: Build (Pull Request)
+name: Build
 
 on: pull_request
 
@@ -13,6 +13,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v3
@@ -66,3 +67,51 @@ jobs:
         with:
           name: build-outputs
           path: app/build/outputs/apk/**/*.apk
+
+  androidTest-GMD:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup-java
+
+      - name: Accept Android licenses
+        run: yes | "$ANDROID_HOME"/cmdline-tools/latest/bin/sdkmanager --licenses || true
+
+      - name: Generate cache key
+        run: ./checksum.sh checksum.txt
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('checksum.txt') }}
+
+      - name: Create local.properties
+        env:
+          QIITA_CLIENT_ID: ${{ secrets.QIITA_CLIENT_ID }}
+          QIITA_CLIENT_SECRET: ${{ secrets.QIITA_CLIENT_SECRET }}
+        run: |
+          echo "QIITA_CLIENT_ID=$QIITA_CLIENT_ID" >> local.properties
+          echo "QIITA_CLIENT_SECRET=$QIITA_CLIENT_SECRET" >> local.properties
+
+      - name: Build AndroidTest apps
+        run: ./gradlew packageDebug packageDebugAndroidTest
+
+      - name: Run instrumented tests with GMD
+        run: ./gradlew ciDebugAndroidTest --no-parallel --max-workers=1
+          -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect" -Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true
+
+      - name: Upload test reports
+        if: success() || failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-reports-GMD
+          path: '**/build/reports/androidTests'
+
+      - name: Print disk space usage
+        if: failure()
+        run: df -h

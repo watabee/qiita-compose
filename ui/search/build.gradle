@@ -13,6 +13,8 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
+
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
@@ -28,6 +30,8 @@ android {
 }
 
 dependencies {
+    coreLibraryDesugaring libs.desugarJdkLibs
+
     implementation projects.data
     implementation projects.ui.common
     implementation projects.ui.items
