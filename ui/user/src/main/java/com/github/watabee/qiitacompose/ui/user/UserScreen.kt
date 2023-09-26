@@ -126,7 +126,9 @@ internal fun UserScreen(
         },
         content = { paddingValues ->
             UserScreen(
-                modifier = Modifier.padding(paddingValues),
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize(),
                 userUiModel = userUiModel,
                 retryToGetUserInfo = retryToGetUserInfo,
                 openLoginScreen = openLoginScreen,
@@ -151,7 +153,7 @@ private fun UserScreen(
             LoadingScreen(modifier)
         }
         userUiModel.getUserInfoError -> {
-            ErrorScreen(modifier, onRetryButtonClicked = { retryToGetUserInfo() })
+            ErrorScreen(modifier = modifier, onRetryButtonClicked = { retryToGetUserInfo() })
         }
         userUiModel.user != null -> {
             UserProfileScreen(
@@ -179,7 +181,6 @@ private fun UserProfileScreen(
 ) {
     Column(
         modifier = modifier
-            .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .navigationBarsPadding()
             .padding(24.dp),
