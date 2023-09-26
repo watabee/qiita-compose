@@ -81,9 +81,10 @@ fun ItemDetailScreen(url: String) {
             )
         }
         if (showError) {
-            ErrorScreen {
-                reload?.invoke()
-            }
+            ErrorScreen(
+                modifier = Modifier.fillMaxSize(),
+                onRetryButtonClicked = { reload?.invoke() }
+            )
         }
     }
 }

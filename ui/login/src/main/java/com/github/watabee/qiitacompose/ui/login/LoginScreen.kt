@@ -55,8 +55,13 @@ fun LoginScreen(qiitaClientId: String, navigateUp: () -> Unit) {
             when (uiState.screenContent) {
                 LoginUiState.ScreenContent.EMPTY -> {}
                 LoginUiState.ScreenContent.LOADING -> {
-                    LoadingScreen(modifier = Modifier.padding(paddingValues))
+                    LoadingScreen(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues)
+                    )
                 }
+
                 LoginUiState.ScreenContent.WEBVIEW -> {
                     LoginScreen(
                         modifier = Modifier.padding(paddingValues),

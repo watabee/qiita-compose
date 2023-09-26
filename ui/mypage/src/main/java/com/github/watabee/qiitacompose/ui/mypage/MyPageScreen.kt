@@ -63,6 +63,7 @@ fun MyPageScreen(closeMyPageScreen: () -> Unit) {
                 MyPageViewModel.Event.CompletedLogout -> {
                     closeMyPageScreenState()
                 }
+
                 MyPageViewModel.Event.EmptyAccessToken -> { /* TODO */
                 }
             }
@@ -133,11 +134,13 @@ private fun MyPageScreen(
 
     when {
         state.isLoading -> {
-            LoadingScreen()
+            LoadingScreen(modifier = Modifier.fillMaxSize())
         }
+
         state.isError -> {
-            ErrorScreen { getAuthenticatedUser() }
+            ErrorScreen(modifier = Modifier.fillMaxSize(), onRetryButtonClicked = getAuthenticatedUser)
         }
+
         state.authenticatedUser != null -> {
             MyPageScreen(modifier = modifier, user = state.authenticatedUser, onLogoutButtonClicked = { setVisibleLogoutDialog(true) })
             LogoutDialog(isVisible = isVisibleLogoutDialog, setVisible = setVisibleLogoutDialog, requestToLogout = logout)

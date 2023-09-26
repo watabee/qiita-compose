@@ -48,7 +48,10 @@ fun ItemsScreen(modifier: Modifier = Modifier, openUserScreen: suspend (User) ->
             }
         ) {
             if (isError) {
-                ErrorScreen(onRetryButtonClicked = { lazyPagingItems.retry() })
+                ErrorScreen(
+                    modifier = Modifier.fillMaxSize(),
+                    onRetryButtonClicked = { lazyPagingItems.retry() }
+                )
             } else {
                 ItemsList(
                     modifier = Modifier.navigationBarsPadding(),
