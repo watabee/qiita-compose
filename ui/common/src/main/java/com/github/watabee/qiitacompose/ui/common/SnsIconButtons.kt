@@ -21,7 +21,7 @@ fun SnsIconButtons(
     onGithubButtonClicked: () -> Unit = {},
     onTwitterButtonClicked: () -> Unit = {},
     onFacebookButtonClicked: () -> Unit = {},
-    onLinkedinButtonClicked: () -> Unit = {}
+    onLinkedinButtonClicked: () -> Unit = {},
 ) {
     if (githubLoginName.isNullOrBlank() && twitterScreenName.isNullOrBlank() && facebookId.isNullOrBlank() && linkedinId.isNullOrBlank()) {
         return

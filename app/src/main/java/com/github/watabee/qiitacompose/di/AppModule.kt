@@ -13,7 +13,6 @@ internal abstract class AppModule {
 
     companion object {
         @Provides
-        fun provideEnv(): Env =
-            Env(qiitaClientId = BuildConfig.QIITA_CLIENT_ID, qiitaClientSecret = BuildConfig.QIITA_CLIENT_SECRET)
+        fun provideEnv(): Env = Env(qiitaClientId = BuildConfig.QIITA_CLIENT_ID, qiitaClientSecret = BuildConfig.QIITA_CLIENT_SECRET)
     }
 }

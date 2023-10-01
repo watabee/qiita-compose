@@ -19,36 +19,36 @@ class PaginationTest(private val headers: Headers, private val expectedPaginatio
     companion object {
         @Parameterized.Parameters
         @JvmStatic
-        @Suppress("ktlint:max-line-length")
+        @Suppress("ktlint:standard:max-line-length")
         fun data() = listOf(
             arrayOf(
                 mapOf(
                     "total-count" to "29455",
-                    "link" to "<https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"first\", <https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"prev\", <https://qiita.com/api/v2/items?page=3&per_page=10&query=Android>; rel=\"next\", <https://qiita.com/api/v2/items?page=2946&per_page=10&query=Android>; rel=\"last\""
+                    "link" to "<https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"first\", <https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"prev\", <https://qiita.com/api/v2/items?page=3&per_page=10&query=Android>; rel=\"next\", <https://qiita.com/api/v2/items?page=2946&per_page=10&query=Android>; rel=\"last\"",
                 ).toHeaders(),
-                Pagination(totalCount = 29455, firstPage = 1, prevPage = 1, nextPage = 3, lastPage = 2946)
+                Pagination(totalCount = 29455, firstPage = 1, prevPage = 1, nextPage = 3, lastPage = 2946),
             ),
             arrayOf(
                 mapOf(
                     "total-count" to "29455",
-                    "link" to "<https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"first\", <https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"prev\", <https://qiita.com/api/v2/items?page=2946&per_page=10&query=Android>; rel=\"last\""
+                    "link" to "<https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"first\", <https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"prev\", <https://qiita.com/api/v2/items?page=2946&per_page=10&query=Android>; rel=\"last\"",
                 ).toHeaders(),
-                Pagination(totalCount = 29455, firstPage = 1, prevPage = 1, nextPage = null, lastPage = 2946)
+                Pagination(totalCount = 29455, firstPage = 1, prevPage = 1, nextPage = null, lastPage = 2946),
             ),
             arrayOf(
                 mapOf("total-count" to "29455").toHeaders(),
-                null
+                null,
             ),
             arrayOf(
                 mapOf(
-                    "link" to "<https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"first\", <https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"prev\", <https://qiita.com/api/v2/items?page=2946&per_page=10&query=Android>; rel=\"last\""
+                    "link" to "<https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"first\", <https://qiita.com/api/v2/items?page=1&per_page=10&query=Android>; rel=\"prev\", <https://qiita.com/api/v2/items?page=2946&per_page=10&query=Android>; rel=\"last\"",
                 ).toHeaders(),
-                null
+                null,
             ),
             arrayOf(
                 emptyMap<String, String>().toHeaders(),
-                null
-            )
+                null,
+            ),
         )
     }
 }

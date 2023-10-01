@@ -37,7 +37,7 @@ sealed class QiitaApiResult<out T> {
                         HttpFailure(
                             statusCode.code,
                             moshi.adapter(Error::class.java).fromJson(errorBody!!.source())!!,
-                            Rate.parseHeaders(headers)
+                            Rate.parseHeaders(headers),
                         )
                     }
                 }

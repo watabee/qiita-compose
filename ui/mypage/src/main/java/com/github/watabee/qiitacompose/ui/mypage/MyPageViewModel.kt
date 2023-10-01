@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class MyPageViewModel @Inject constructor(
     private val qiitaRepository: QiitaRepository,
-    private val userDataStore: UserDataStore
+    private val userDataStore: UserDataStore,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(State(isLoading = true))
@@ -87,6 +87,6 @@ internal class MyPageViewModel @Inject constructor(
     data class State(
         val isLoading: Boolean = false,
         val isError: Boolean = false,
-        val authenticatedUser: AuthenticatedUser? = null
+        val authenticatedUser: AuthenticatedUser? = null,
     )
 }

@@ -25,12 +25,12 @@ fun QiitaApp(appState: AppState) {
         QiitaTheme {
             Scaffold(
                 modifier = Modifier.systemBarsPadding(),
-                scaffoldState = appState.scaffoldState
+                scaffoldState = appState.scaffoldState,
             ) { paddingValues ->
                 NavHost(
                     navController = appState.navController,
                     startDestination = MainDestinations.HOME,
-                    modifier = Modifier.padding(paddingValues)
+                    modifier = Modifier.padding(paddingValues),
                 ) {
                     qiitaAppNavGraph(appState)
                 }
@@ -47,7 +47,7 @@ private fun NavGraphBuilder.qiitaAppNavGraph(appState: AppState) {
         UserScreen(
             userId = backStackEntry.arguments?.getString("userId")!!,
             appRouting = appState.appRouter,
-            navigateUp = appState::navigateUp
+            navigateUp = appState::navigateUp,
         )
     }
     composable(MainDestinations.MYPAGE) {
@@ -57,7 +57,7 @@ private fun NavGraphBuilder.qiitaAppNavGraph(appState: AppState) {
         SearchScreen(
             openUserScreen = appState.appRouter.openUserScreen,
             openItemDetailScreen = appState.appRouter.openItemDetailScreen,
-            closeSearchScreen = appState::navigateUp
+            closeSearchScreen = appState::navigateUp,
         )
     }
     composable(MainDestinations.ITEM_DETAIL) { backStackEntry ->

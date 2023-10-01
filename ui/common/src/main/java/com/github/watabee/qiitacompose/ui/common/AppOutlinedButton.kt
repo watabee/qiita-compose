@@ -24,7 +24,7 @@ fun AppOutlinedButton(
     elevation: ButtonElevation? = null,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(),
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable RowScope.() -> Unit,
 ) {
     OutlinedButton(
         onClick,
@@ -36,6 +36,6 @@ fun AppOutlinedButton(
         border = BorderStroke(1.dp, MaterialTheme.colors.primary),
         colors,
         contentPadding,
-        content
+        content,
     )
 }

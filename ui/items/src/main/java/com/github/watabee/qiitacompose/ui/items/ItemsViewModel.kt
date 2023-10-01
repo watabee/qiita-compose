@@ -13,6 +13,6 @@ import javax.inject.Inject
 internal class ItemsViewModel @Inject constructor(qiitaRepository: QiitaRepository) : ViewModel() {
     val itemsFlow = Pager(
         config = PagingConfig(pageSize = 20, enablePlaceholders = false, initialLoadSize = 20),
-        pagingSourceFactory = { ItemsPagingSource(qiitaRepository) }
+        pagingSourceFactory = { ItemsPagingSource(qiitaRepository) },
     ).flow.cachedIn(viewModelScope)
 }

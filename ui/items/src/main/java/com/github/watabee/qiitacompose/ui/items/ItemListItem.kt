@@ -47,7 +47,7 @@ internal fun ItemListItem(item: Item, openUserScreen: suspend (User) -> Unit, op
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable(onClick = { openItemDetailScreen(item.url) })
-                .padding(all = 16.dp)
+                .padding(all = 16.dp),
         ) {
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -57,7 +57,7 @@ internal fun ItemListItem(item: Item, openUserScreen: suspend (User) -> Unit, op
                             .transformations(CircleCropTransformation())
                             .build(),
                         contentDescription = null,
-                        modifier = Modifier.requiredSize(20.dp)
+                        modifier = Modifier.requiredSize(20.dp),
                     )
                     Spacer(modifier = Modifier.requiredWidth(8.dp))
                     TextButton(
@@ -66,9 +66,9 @@ internal fun ItemListItem(item: Item, openUserScreen: suspend (User) -> Unit, op
                         },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = Color.Transparent,
-                            contentColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.high)
+                            contentColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.high),
                         ),
-                        contentPadding = PaddingValues(0.dp)
+                        contentPadding = PaddingValues(0.dp),
                     ) {
                         Text(text = "@${item.user.id}", style = MaterialTheme.typography.body2)
                     }
@@ -76,7 +76,7 @@ internal fun ItemListItem(item: Item, openUserScreen: suspend (User) -> Unit, op
                     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                         Text(
                             text = "が${item.createdAt.format("yyyy年MM月dd日")}に投稿",
-                            style = MaterialTheme.typography.body2
+                            style = MaterialTheme.typography.body2,
                         )
                     }
                 }
@@ -87,13 +87,13 @@ internal fun ItemListItem(item: Item, openUserScreen: suspend (User) -> Unit, op
                     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                         Icon(
                             painter = painterResource(id = uiCommonR.drawable.ic_tags),
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
                     Spacer(modifier = Modifier.requiredWidth(8.dp))
                     Text(
                         text = item.tags.joinToString(", ") { it.name },
-                        style = MaterialTheme.typography.body2
+                        style = MaterialTheme.typography.body2,
                     )
                 }
                 Spacer(modifier = Modifier.requiredHeight(8.dp))
@@ -101,7 +101,7 @@ internal fun ItemListItem(item: Item, openUserScreen: suspend (User) -> Unit, op
                     Icon(
                         painter = painterResource(id = R.drawable.ic_items_lgtm),
                         contentDescription = null,
-                        tint = MaterialTheme.colors.primary
+                        tint = MaterialTheme.colors.primary,
                     )
                     Spacer(modifier = Modifier.requiredWidth(8.dp))
                     Text(text = item.likesCount.toString(), style = MaterialTheme.typography.body2)
@@ -137,7 +137,7 @@ private fun PreviewItemListItem() {
                     githubLoginName = null,
                     twitterScreenName = null,
                     websiteUrl = null,
-                    linkedinId = null
+                    linkedinId = null,
                 ),
                 likesCount = 10,
                 reactionsCount = 20,
@@ -150,11 +150,11 @@ private fun PreviewItemListItem() {
                     Item.Tag("JavaScript"),
                     Item.Tag("JavaScript"),
                     Item.Tag("JavaScript"),
-                    Item.Tag("JavaScript")
-                )
+                    Item.Tag("JavaScript"),
+                ),
             ),
             openUserScreen = {},
-            openItemDetailScreen = {}
+            openItemDetailScreen = {},
         )
     }
 }

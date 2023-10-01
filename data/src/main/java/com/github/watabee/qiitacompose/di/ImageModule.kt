@@ -31,7 +31,7 @@ internal abstract class ImageModule {
         fun provideImageLoader(
             @ApplicationContext appContext: Context,
             @Base okHttpClient: OkHttpClient,
-            logger: Optional<Logger>
+            logger: Optional<Logger>,
         ): ImageLoader {
             return ImageLoader.Builder(appContext)
                 .memoryCache {

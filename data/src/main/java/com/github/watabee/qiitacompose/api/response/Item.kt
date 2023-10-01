@@ -16,7 +16,7 @@ data class Item(
     @Json(name = "reactions_count") val reactionsCount: Int,
     @Json(name = "page_views_count") val pageViewsCount: Int?,
     @Json(name = "comments_count") val commentsCount: Int,
-    val tags: List<Tag>
+    val tags: List<Tag>,
 ) {
     @JsonClass(generateAdapter = true)
     data class Tag(val name: String)

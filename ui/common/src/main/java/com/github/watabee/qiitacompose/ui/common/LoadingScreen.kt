@@ -19,7 +19,7 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
         modifier = modifier
             .testTag("LoadingScreen")
             .padding(16.dp),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator()
     }

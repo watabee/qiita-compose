@@ -6,5 +6,5 @@ import com.github.watabee.qiitacompose.api.response.User
 
 @Entity(tableName = "users", primaryKeys = ["id"])
 internal data class UserEntity(
-    @Embedded val user: User
+    @Embedded val user: User,
 )

@@ -23,7 +23,7 @@ fun UserCountTexts(itemsCount: Int, followeesCount: Int, followersCount: Int) {
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 24.dp),
         ) {
             val (itemsText, followeesText, followersText) = createRefs()
             Text(
@@ -36,7 +36,7 @@ fun UserCountTexts(itemsCount: Int, followeesCount: Int, followersCount: Int) {
                     start.linkTo(parent.start)
                     end.linkTo(followeesText.start)
                 },
-                style = MaterialTheme.typography.caption
+                style = MaterialTheme.typography.caption,
             )
             Text(
                 text = stringResource(id = R.string.common_user_followees_count, followeesCount),
@@ -48,7 +48,7 @@ fun UserCountTexts(itemsCount: Int, followeesCount: Int, followersCount: Int) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 },
-                style = MaterialTheme.typography.caption
+                style = MaterialTheme.typography.caption,
             )
             Text(
                 text = stringResource(id = R.string.common_user_followers_count, followersCount),
@@ -60,7 +60,7 @@ fun UserCountTexts(itemsCount: Int, followeesCount: Int, followersCount: Int) {
                     start.linkTo(followeesText.end)
                     end.linkTo(parent.end)
                 },
-                style = MaterialTheme.typography.caption
+                style = MaterialTheme.typography.caption,
             )
         }
     }

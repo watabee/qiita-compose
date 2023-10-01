@@ -32,14 +32,14 @@ fun ErrorScreen(onRetryButtonClicked: () -> Unit, modifier: Modifier = Modifier)
             .testTag("ErrorScreen")
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
                 painter = painterResource(id = R.drawable.ic_error),
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colors.error),
-                modifier = Modifier.requiredSize(32.dp)
+                modifier = Modifier.requiredSize(32.dp),
             )
             Spacer(modifier = Modifier.requiredWidth(8.dp))
             Text(text = stringResource(id = R.string.common_connection_error_message), style = MaterialTheme.typography.body1)
@@ -49,7 +49,7 @@ fun ErrorScreen(onRetryButtonClicked: () -> Unit, modifier: Modifier = Modifier)
 
         AppOutlinedButton(
             onClick = onRetryButtonClicked,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text(text = stringResource(id = R.string.common_retry), style = MaterialTheme.typography.button)
         }
@@ -63,7 +63,7 @@ fun PreviewErrorScreen() {
         Surface {
             ErrorScreen(
                 modifier = Modifier.fillMaxSize(),
-                onRetryButtonClicked = {}
+                onRetryButtonClicked = {},
             )
         }
     }

@@ -15,8 +15,8 @@ import com.github.watabee.qiitacompose.db.entity.UserEntity
     version = 2,
     exportSchema = true,
     autoMigrations = [
-        AutoMigration(from = 1, to = 2)
-    ]
+        AutoMigration(from = 1, to = 2),
+    ],
 )
 internal abstract class AppDatabase : RoomDatabase() {
 

@@ -35,15 +35,12 @@ fun HomeScreen(appRouting: AppRouting) {
 
     HomeScreen(
         userData = userData,
-        appRouting = appRouting
+        appRouting = appRouting,
     )
 }
 
 @Composable
-private fun HomeScreen(
-    userData: UserData?,
-    appRouting: AppRouting
-) {
+private fun HomeScreen(userData: UserData?, appRouting: AppRouting) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -59,12 +56,12 @@ private fun HomeScreen(
                     IconButton(onClick = onClickAction) {
                         UserIcon(imageUrl = userData?.imageUrl, iconSize = 24.dp)
                     }
-                }
+                },
             )
         },
         content = { paddingValues ->
             ItemsScreen(modifier = Modifier.padding(paddingValues), appRouting.openUserScreen, appRouting.openItemDetailScreen)
-        }
+        },
     )
 }
 
@@ -77,13 +74,13 @@ private fun UserIcon(imageUrl: String?, iconSize: Dp) {
                 .transformations(CircleCropTransformation())
                 .build(),
             contentDescription = null,
-            modifier = Modifier.size(iconSize)
+            modifier = Modifier.size(iconSize),
         )
     } else {
         Icon(
             painter = painterResource(id = uiCommonR.drawable.ic_blank_user),
             contentDescription = null,
-            modifier = Modifier.size(iconSize)
+            modifier = Modifier.size(iconSize),
         )
     }
 }

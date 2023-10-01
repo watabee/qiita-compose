@@ -21,5 +21,5 @@ data class AuthenticatedUser(
     @Json(name = "profile_image_url") val profileImageUrl: String,
     @Json(name = "team_only") val teamOnly: Boolean,
     @Json(name = "twitter_screen_name") val twitterScreenName: String?,
-    @Json(name = "website_url") val websiteUrl: String?
+    @Json(name = "website_url") val websiteUrl: String?,
 )

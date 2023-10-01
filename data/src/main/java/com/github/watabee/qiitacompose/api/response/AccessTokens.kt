@@ -7,5 +7,5 @@ import com.squareup.moshi.JsonClass
 data class AccessTokens(
     @Json(name = "client_id") val clientId: String,
     val scopes: List<String>,
-    val token: String
+    val token: String,
 )

@@ -29,7 +29,7 @@ import javax.inject.Inject
 class UserViewModel @Inject constructor(
     private val qiitaRepository: QiitaRepository,
     private val userRepository: UserRepository,
-    dataStore: UserDataStore
+    dataStore: UserDataStore,
 ) : ViewModel() {
 
     private val isLoggedIn: StateFlow<Boolean> = dataStore.userDataFlow
@@ -75,7 +75,7 @@ class UserViewModel @Inject constructor(
                 val (user, isFollowingUserResult, getUserFollowingTagsResult) = awaitAll(
                     async { userRepository.findById(userId) },
                     async { qiitaRepository.isFollowingUser(userId) },
-                    async { qiitaRepository.getUserFollowingTags(userId) }
+                    async { qiitaRepository.getUserFollowingTags(userId) },
                 )
                 @Suppress("UNCHECKED_CAST")
                 if (user is User && getUserFollowingTagsResult is QiitaApiResult.Success<*>) {
@@ -109,7 +109,7 @@ class UserViewModel @Inject constructor(
                     val newToastMessage = ToastMessage(messageResId = R.string.user_follow_user_error_message)
                     uiModel.copy(
                         toastMessages = uiModel.toastMessages + newToastMessage,
-                        followButtonState = UserUiModel.FollowButtonState.UNFOLLOWING
+                        followButtonState = UserUiModel.FollowButtonState.UNFOLLOWING,
                     )
                 }
             }

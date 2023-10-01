@@ -48,7 +48,7 @@ fun LoginScreen(qiitaClientId: String, navigateUp: () -> Unit) {
                 },
                 title = {
                     Text(text = stringResource(id = R.string.login_toolbar_title))
-                }
+                },
             )
         },
         content = { paddingValues ->
@@ -58,7 +58,7 @@ fun LoginScreen(qiitaClientId: String, navigateUp: () -> Unit) {
                     LoadingScreen(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(paddingValues)
+                            .padding(paddingValues),
                     )
                 }
 
@@ -67,11 +67,11 @@ fun LoginScreen(qiitaClientId: String, navigateUp: () -> Unit) {
                         modifier = Modifier.padding(paddingValues),
                         qiitaClientId = qiitaClientId,
                         onRequestAccessToken = { viewModel.dispatchAction(LoginAction.RequestAccessTokens(it)) },
-                        onLoadError = { viewModel.dispatchAction(LoginAction.ShowLoadWebErrorSnackbar) }
+                        onLoadError = { viewModel.dispatchAction(LoginAction.ShowLoadWebErrorSnackbar) },
                     )
                 }
             }
-        }
+        },
     )
 }
 
@@ -80,7 +80,7 @@ private fun LoginScreen(
     modifier: Modifier = Modifier,
     qiitaClientId: String,
     onRequestAccessToken: (code: String) -> Unit,
-    onLoadError: () -> Unit
+    onLoadError: () -> Unit,
 ) {
     val state = remember { createState() }
     val url = remember(state, qiitaClientId) {
@@ -94,7 +94,7 @@ private fun LoginScreen(
         onCreated = { webView ->
             @SuppressLint("SetJavaScriptEnabled")
             webView.settings.javaScriptEnabled = true
-        }
+        },
     )
 
     val currentUrl = webViewState.lastLoadedUrl

@@ -46,11 +46,11 @@ interface QiitaRepository {
 internal class QiitaRepositoryImpl @Inject constructor(
     private val moshi: Moshi,
     private val qiitaApiService: QiitaApiService,
-    private val env: Env
+    private val env: Env,
 ) : QiitaRepository {
 
     private suspend fun <T : Any> ApiResponse<T>.toApiResult(
-        successMapper: ApiSuccessModelMapper<T, QiitaApiResult.Success<T>> = QiitaApiResult.Success.Mapper()
+        successMapper: ApiSuccessModelMapper<T, QiitaApiResult.Success<T>> = QiitaApiResult.Success.Mapper(),
     ): QiitaApiResult<T> = flow {
         suspendOnSuccess(successMapper) { emit(this) }
             .suspendOnError(QiitaApiResult.Failure.HttpFailure.Mapper(moshi)) { emit(this) }
@@ -79,7 +79,7 @@ internal class QiitaRepositoryImpl @Inject constructor(
                     QiitaApiResult.Success(
                         response = true,
                         rate = Rate.parseHeaders(response.headers),
-                        pagination = Pagination(response.headers)
+                        pagination = Pagination(response.headers),
                     )
                 }
                 is ApiResponse.Failure.Error -> {
@@ -87,7 +87,7 @@ internal class QiitaRepositoryImpl @Inject constructor(
                         QiitaApiResult.Success(
                             response = false,
                             rate = Rate.parseHeaders(response.headers),
-                            pagination = Pagination(response.headers)
+                            pagination = Pagination(response.headers),
                         )
                     } else {
                         QiitaApiResult.Failure.HttpFailure.Mapper(moshi).map(response)
