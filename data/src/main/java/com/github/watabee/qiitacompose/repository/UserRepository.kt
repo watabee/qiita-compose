@@ -11,7 +11,7 @@ interface UserRepository {
 }
 
 internal class UserRepositoryImpl @Inject constructor(
-    private val userDao: UserDao
+    private val userDao: UserDao,
 ) : UserRepository {
     override suspend fun findById(userId: String): User? {
         return userDao.findById(userId)

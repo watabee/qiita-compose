@@ -6,5 +6,5 @@ import com.github.watabee.qiitacompose.api.response.Tag
 
 @Entity(tableName = "tags", primaryKeys = ["id"])
 internal data class TagEntity(
-    @Embedded val tag: Tag
+    @Embedded val tag: Tag,
 )

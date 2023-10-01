@@ -12,7 +12,10 @@ value class ToastMessageId(val id: Long)
 @Stable
 data class ToastMessage(
     val message: Message,
-    val isLengthShort: Boolean // true: Toast.LENGTH_SHORT false: Toast.LENGTH_LONG
+    /**
+     * true: Toast.LENGTH_SHORT false: Toast.LENGTH_LONG
+     */
+    val isLengthShort: Boolean,
 ) {
     constructor(message: String, isLengthShort: Boolean = true) : this(Message.StringMessage(message), isLengthShort)
     constructor(@StringRes messageResId: Int, isLengthShort: Boolean = true) : this(Message.ResourceMessage(messageResId), isLengthShort)

@@ -27,7 +27,7 @@ internal class SearchScreenState(
     private val keyboardController: SoftwareKeyboardController?,
     initialBackdropValue: BackdropValue = BackdropValue.Revealed,
     initialFirstVisibleItemIndex: Int = 0,
-    initialFirstVisibleItemScrollOffset: Int = 0
+    initialFirstVisibleItemScrollOffset: Int = 0,
 ) {
     val lazyListState = LazyListState(initialFirstVisibleItemIndex, initialFirstVisibleItemScrollOffset)
     val backdropScaffoldState = BackdropScaffoldState(initialBackdropValue)
@@ -60,13 +60,14 @@ internal class SearchScreenState(
     }
 
     companion object {
+        @Suppress("ktlint:standard:function-naming")
         fun Saver(viewModel: SearchViewModel, keyboardController: SoftwareKeyboardController?): Saver<SearchScreenState, *> = listSaver(
             save = {
                 listOf(
                     it.query,
                     it.backdropScaffoldState.currentValue,
                     it.lazyListState.firstVisibleItemIndex,
-                    it.lazyListState.firstVisibleItemScrollOffset
+                    it.lazyListState.firstVisibleItemScrollOffset,
                 )
             },
             restore = {
@@ -76,9 +77,9 @@ internal class SearchScreenState(
                     keyboardController = keyboardController,
                     initialBackdropValue = it[1] as BackdropValue,
                     initialFirstVisibleItemIndex = it[2] as Int,
-                    initialFirstVisibleItemScrollOffset = it[3] as Int
+                    initialFirstVisibleItemScrollOffset = it[3] as Int,
                 )
-            }
+            },
         )
     }
 }
@@ -87,12 +88,12 @@ internal class SearchScreenState(
 internal fun rememberSearchScreenState(
     initialQuery: String = "",
     viewModel: SearchViewModel,
-    keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
+    keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
 ): SearchScreenState {
     return rememberSaveable(
         viewModel,
         keyboardController,
-        saver = SearchScreenState.Saver(viewModel, keyboardController)
+        saver = SearchScreenState.Saver(viewModel, keyboardController),
     ) {
         SearchScreenState(initialQuery, viewModel, keyboardController)
     }

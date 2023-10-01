@@ -344,10 +344,10 @@ private val user = User(
     name = "Innkuri Kiita",
     organization = null,
     twitterScreenName = "twitter",
-    websiteUrl = null
+    websiteUrl = null,
 )
 
 private val tags: List<Tag> = listOf(
     Tag(id = "Android", itemsCount = 1000, followersCount = 100, iconUrl = ""),
-    Tag(id = "iOS", itemsCount = 1000, followersCount = 100, iconUrl = "")
+    Tag(id = "iOS", itemsCount = 1000, followersCount = 100, iconUrl = ""),
 )

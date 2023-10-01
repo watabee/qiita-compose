@@ -43,21 +43,21 @@ fun ItemsScreen(modifier: Modifier = Modifier, openUserScreen: suspend (User) ->
                 SwipeRefreshIndicator(
                     state = state,
                     refreshTriggerDistance = refreshTrigger,
-                    contentColor = MaterialTheme.colors.primary
+                    contentColor = MaterialTheme.colors.primary,
                 )
-            }
+            },
         ) {
             if (isError) {
                 ErrorScreen(
                     modifier = Modifier.fillMaxSize(),
-                    onRetryButtonClicked = { lazyPagingItems.retry() }
+                    onRetryButtonClicked = { lazyPagingItems.retry() },
                 )
             } else {
                 ItemsList(
                     modifier = Modifier.navigationBarsPadding(),
                     lazyPagingItems = lazyPagingItems,
                     openUserScreen = openUserScreen,
-                    openItemDetailScreen = openItemDetailScreen
+                    openItemDetailScreen = openItemDetailScreen,
                 )
             }
         }
@@ -70,7 +70,7 @@ fun ItemsList(
     modifier: Modifier = Modifier,
     lazyListState: LazyListState = rememberLazyListState(),
     openUserScreen: suspend (User) -> Unit,
-    openItemDetailScreen: (String) -> Unit
+    openItemDetailScreen: (String) -> Unit,
 ) {
     LazyColumn(modifier, lazyListState) {
         items(lazyPagingItems.itemCount, key = lazyPagingItems.itemKey { it.id }) { index ->
@@ -104,7 +104,7 @@ private fun LoadingListItem() {
         modifier = Modifier
             .fillMaxWidth()
             .requiredHeight(64.dp)
-            .wrapContentSize()
+            .wrapContentSize(),
     )
 }
 
@@ -113,7 +113,7 @@ private fun ErrorListItem() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .requiredHeight(64.dp)
+            .requiredHeight(64.dp),
     ) {
     }
 }

@@ -22,5 +22,5 @@ data class User(
     @Json(name = "github_login_name") val githubLoginName: String?,
     @Json(name = "linkedin_id") val linkedinId: String?,
     @Json(name = "twitter_screen_name") val twitterScreenName: String?,
-    @Json(name = "website_url") val websiteUrl: String?
+    @Json(name = "website_url") val websiteUrl: String?,
 ) : Parcelable

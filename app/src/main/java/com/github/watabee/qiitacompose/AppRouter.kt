@@ -18,7 +18,7 @@ internal object MainDestinations {
 
 internal class AppRouter(
     navController: NavController,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) : AppRouting {
     override val openUserScreen: suspend (user: User) -> Unit = { user ->
         userRepository.insertOrUpdate(user)

@@ -10,7 +10,7 @@ import com.github.watabee.qiitacompose.ui.common.R
 
 object QiitaFontFamily {
     val codecCold = FontFamily(
-        Font(resId = R.font.codec_cold_bold, weight = FontWeight.Bold)
+        Font(resId = R.font.codec_cold_bold, weight = FontWeight.Bold),
     )
 }
 
@@ -24,12 +24,12 @@ val typography =
         subtitle2 = TextStyle(fontWeight = FontWeight.W700, fontSize = 18.sp, lineHeight = 28.8.sp),
         body1 = TextStyle(fontWeight = FontWeight.W400, fontSize = 16.sp, lineHeight = 28.8.sp),
         body2 = TextStyle(fontWeight = FontWeight.W400, fontSize = 14.sp, lineHeight = 25.2.sp),
-        caption = TextStyle(fontWeight = FontWeight.W400, fontSize = 12.sp, lineHeight = 21.6.sp)
+        caption = TextStyle(fontWeight = FontWeight.W400, fontSize = 12.sp, lineHeight = 21.6.sp),
         /* Other default text styles to override
         button = TextStyle(
             fontFamily = FontFamily.Default,
             fontWeight = FontWeight.W500,
             fontSize = 14.sp
         ),
-        */
+         */
     )

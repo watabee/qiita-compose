@@ -25,7 +25,7 @@ import javax.inject.Inject
 internal class SearchViewModel @Inject constructor(
     private val qiitaRepository: QiitaRepository,
     tagDao: TagDao,
-    private val findTagsUseCase: FindTagsUseCase
+    private val findTagsUseCase: FindTagsUseCase,
 ) : ViewModel() {
 
     val state: StateFlow<State> = tagDao.getAllTags()
@@ -38,7 +38,7 @@ internal class SearchViewModel @Inject constructor(
             Pager(
                 config = PagingConfig(pageSize = 20, enablePlaceholders = false, initialLoadSize = 20),
                 initialKey = ItemKey(page = 1, query = query),
-                pagingSourceFactory = { ItemsPagingSource(qiitaRepository) }
+                pagingSourceFactory = { ItemsPagingSource(qiitaRepository) },
             ).flow
         }.cachedIn(viewModelScope)
 
@@ -57,7 +57,7 @@ internal class SearchViewModel @Inject constructor(
 
     data class State(
         val isFindingTags: Boolean = false,
-        val tags: List<Tag> = emptyList()
+        val tags: List<Tag> = emptyList(),
     )
 
     sealed interface Action {

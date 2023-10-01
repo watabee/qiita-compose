@@ -68,7 +68,7 @@ fun UserScreen(userId: String, appRouting: AppRouting, navigateUp: () -> Unit) {
         userViewModel = hiltViewModel(),
         userId = userId,
         openLoginScreen = appRouting.openLoginScreen,
-        navigateUp = navigateUp
+        navigateUp = navigateUp,
     )
 }
 
@@ -87,7 +87,7 @@ internal fun UserScreen(userViewModel: UserViewModel, userId: String, openLoginS
         followUser = { userViewModel.dispatchAction(UserViewModel.Action.FollowUser(it)) },
         unfollowUser = { userViewModel.dispatchAction(UserViewModel.Action.UnfollowUser(it)) },
         navigateUp = navigateUp,
-        onToastMessageShown = { userViewModel.toastMessageShown(it) }
+        onToastMessageShown = { userViewModel.toastMessageShown(it) },
     )
 }
 
@@ -99,7 +99,7 @@ internal fun UserScreen(
     followUser: (String) -> Unit,
     unfollowUser: (String) -> Unit,
     navigateUp: () -> Unit,
-    onToastMessageShown: (ToastMessageId) -> Unit
+    onToastMessageShown: (ToastMessageId) -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -121,7 +121,7 @@ internal fun UserScreen(
                 },
                 title = {
                     Text(text = userUiModel.user?.name.orEmpty())
-                }
+                },
             )
         },
         content = { paddingValues ->
@@ -133,9 +133,9 @@ internal fun UserScreen(
                 retryToGetUserInfo = retryToGetUserInfo,
                 openLoginScreen = openLoginScreen,
                 followUser = followUser,
-                unfollowUser = unfollowUser
+                unfollowUser = unfollowUser,
             )
-        }
+        },
     )
 }
 
@@ -146,7 +146,7 @@ private fun UserScreen(
     retryToGetUserInfo: () -> Unit,
     openLoginScreen: () -> Unit,
     followUser: (String) -> Unit,
-    unfollowUser: (String) -> Unit
+    unfollowUser: (String) -> Unit,
 ) {
     when {
         userUiModel.isLoading -> {
@@ -163,7 +163,7 @@ private fun UserScreen(
                 userUiModel.followingTags,
                 openLoginScreen,
                 followUser,
-                unfollowUser
+                unfollowUser,
             )
         }
     }
@@ -177,14 +177,14 @@ private fun UserProfileScreen(
     followingTags: List<Tag>,
     openLoginScreen: () -> Unit,
     followUser: (String) -> Unit,
-    unfollowUser: (String) -> Unit
+    unfollowUser: (String) -> Unit,
 ) {
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
             .navigationBarsPadding()
             .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.requiredHeight(28.dp))
         AsyncImage(
@@ -193,7 +193,7 @@ private fun UserProfileScreen(
                 .transformations(CircleCropTransformation())
                 .build(),
             contentDescription = null,
-            modifier = Modifier.requiredSize(72.dp)
+            modifier = Modifier.requiredSize(72.dp),
         )
         Spacer(modifier = Modifier.requiredHeight(16.dp))
 
@@ -209,7 +209,7 @@ private fun UserProfileScreen(
             githubLoginName = user.githubLoginName,
             twitterScreenName = user.twitterScreenName,
             facebookId = user.facebookId,
-            linkedinId = user.linkedinId
+            linkedinId = user.linkedinId,
         )
         Spacer(modifier = Modifier.requiredHeight(16.dp))
         Divider(modifier = Modifier.padding(horizontal = 24.dp))
@@ -223,7 +223,7 @@ private fun UserProfileScreen(
                 style = MaterialTheme.typography.body1,
                 lineHeight = 24.sp,
                 modifier = Modifier.padding(top = 24.dp),
-                fontWeight = FontWeight.W400
+                fontWeight = FontWeight.W400,
 
             )
         }
@@ -234,7 +234,7 @@ private fun UserProfileScreen(
             state = followButtonState,
             openLoginScreen = openLoginScreen,
             followUser = followUser,
-            unfollowUser = unfollowUser
+            unfollowUser = unfollowUser,
         )
 
         FollowingTags(followingTags = followingTags)
@@ -247,7 +247,7 @@ private fun FollowButton(
     state: UserUiModel.FollowButtonState,
     openLoginScreen: () -> Unit,
     followUser: (String) -> Unit,
-    unfollowUser: (String) -> Unit
+    unfollowUser: (String) -> Unit,
 ) {
     when (state) {
         UserUiModel.FollowButtonState.PROCESSING -> {
@@ -255,7 +255,7 @@ private fun FollowButton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .requiredHeight(48.dp),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 CircularProgressIndicator()
             }
@@ -264,12 +264,12 @@ private fun FollowButton(
             Button(
                 onClick = { unfollowUser(userId) },
                 modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.small.copy(all = CornerSize(0.dp))
+                shape = MaterialTheme.shapes.small.copy(all = CornerSize(0.dp)),
             ) {
                 Text(
                     text = stringResource(id = R.string.user_now_following),
                     style = MaterialTheme.typography.body2,
-                    fontWeight = FontWeight.W700
+                    fontWeight = FontWeight.W700,
                 )
             }
         }
@@ -279,8 +279,8 @@ private fun FollowButton(
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.small.copy(all = CornerSize(0.dp)),
                 colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-                )
+                    contentColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium),
+                ),
             ) {
                 Text(text = stringResource(id = R.string.user_follow), style = MaterialTheme.typography.body2, fontWeight = FontWeight.W700)
             }
@@ -291,8 +291,8 @@ private fun FollowButton(
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.small.copy(all = CornerSize(0.dp)),
                 colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-                )
+                    contentColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium),
+                ),
             ) {
                 Text(text = stringResource(id = R.string.user_follow), style = MaterialTheme.typography.body2, fontWeight = FontWeight.W700)
             }
@@ -320,7 +320,7 @@ private fun FollowingTags(followingTags: List<Tag>) {
                 modifier = Modifier
                     .background(color = MaterialTheme.colors.tagBackground)
                     .padding(horizontal = 8.dp, vertical = 4.dp),
-                style = MaterialTheme.typography.caption
+                style = MaterialTheme.typography.caption,
             )
         }
     }
@@ -343,12 +343,12 @@ private fun PreviewUserProfileScreen() {
         name = "Innkuri Kiita",
         organization = null,
         twitterScreenName = "twitter",
-        websiteUrl = null
+        websiteUrl = null,
     )
 
     val tags = listOf(
         Tag(id = "Android", itemsCount = 1000, followersCount = 100, iconUrl = ""),
-        Tag(id = "iOS", itemsCount = 1000, followersCount = 100, iconUrl = "")
+        Tag(id = "iOS", itemsCount = 1000, followersCount = 100, iconUrl = ""),
     )
 
     QiitaTheme {
@@ -358,7 +358,7 @@ private fun PreviewUserProfileScreen() {
             followingTags = tags,
             openLoginScreen = {},
             followUser = {},
-            unfollowUser = {}
+            unfollowUser = {},
         )
     }
 }

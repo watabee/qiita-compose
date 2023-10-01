@@ -25,7 +25,7 @@ data class Pagination(val totalCount: Int, val firstPage: Int, val prevPage: Int
                 firstPage = pages[FIRST]!!,
                 prevPage = pages[PREV],
                 nextPage = pages[NEXT],
-                lastPage = pages[LAST]!!
+                lastPage = pages[LAST]!!,
             )
         }
 

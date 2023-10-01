@@ -24,7 +24,7 @@ import javax.inject.Inject
 internal class LoginViewModel @Inject constructor(
     private val qiitaRepository: QiitaRepository,
     private val userDataStore: UserDataStore,
-    private val snackbarManager: SnackbarManager
+    private val snackbarManager: SnackbarManager,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())
@@ -45,7 +45,7 @@ internal class LoginViewModel @Inject constructor(
                     duration = SnackbarDuration.Indefinite,
                     action = Message.Action(R.string.login_retry) {
                         navigateUp()
-                    }
+                    },
                 )
             }
         }
@@ -75,7 +75,7 @@ internal class LoginViewModel @Inject constructor(
                             duration = SnackbarDuration.Indefinite,
                             action = Message.Action(messageId = android.R.string.ok) {
                                 navigateUp()
-                            }
+                            },
                         )
                     }
                     is QiitaApiResult.Failure -> {
@@ -103,17 +103,19 @@ internal class LoginViewModel @Inject constructor(
                 if (result == SnackbarResult.ActionPerformed) {
                     dispatchAction(LoginAction.RequestAccessTokens(code))
                 }
-            }
+            },
         )
     }
 }
 
 internal data class LoginUiState(
     val screenContent: ScreenContent = ScreenContent.WEBVIEW,
-    val shouldNavigateUp: Boolean = false
+    val shouldNavigateUp: Boolean = false,
 ) {
     enum class ScreenContent {
-        EMPTY, LOADING, WEBVIEW
+        EMPTY,
+        LOADING,
+        WEBVIEW,
     }
 }
 

@@ -12,9 +12,12 @@ data class UserUiModel(
     val user: User? = null,
     val followButtonState: FollowButtonState = FollowButtonState.LOGIN_REQUIRED,
     val followingTags: List<Tag> = emptyList(),
-    val toastMessages: List<ToastMessage> = emptyList()
+    val toastMessages: List<ToastMessage> = emptyList(),
 ) {
     enum class FollowButtonState {
-        PROCESSING, FOLLOWING, UNFOLLOWING, LOGIN_REQUIRED,
+        PROCESSING,
+        FOLLOWING,
+        UNFOLLOWING,
+        LOGIN_REQUIRED,
     }
 }

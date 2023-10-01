@@ -26,7 +26,7 @@ internal interface QiitaApiService {
         page: Int,
         @IntRange(from = 1, to = 100) @Query("per_page")
         perPage: Int,
-        @Query("query") query: String?
+        @Query("query") query: String?,
     ): ApiResponse<List<Item>>
 
     @Headers("Content-Type: application/json")
@@ -54,6 +54,6 @@ internal interface QiitaApiService {
         page: Int,
         @IntRange(from = 1, to = 100) @Query("per_page")
         perPage: Int,
-        @Query("sort") sort: SortTag?
+        @Query("sort") sort: SortTag?,
     ): ApiResponse<List<Tag>>
 }

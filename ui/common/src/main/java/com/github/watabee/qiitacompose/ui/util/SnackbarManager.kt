@@ -27,7 +27,7 @@ class SnackbarManager @Inject constructor() {
                 id = UUID.randomUUID().mostSignificantBits,
                 messageId = messageTextId,
                 duration = duration,
-                action = action
+                action = action,
             )
         }
     }

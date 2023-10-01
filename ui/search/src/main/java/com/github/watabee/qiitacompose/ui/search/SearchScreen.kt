@@ -64,11 +64,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun SearchScreen(
-    openUserScreen: suspend (User) -> Unit,
-    openItemDetailScreen: (String) -> Unit,
-    closeSearchScreen: () -> Unit
-) {
+fun SearchScreen(openUserScreen: suspend (User) -> Unit, openItemDetailScreen: (String) -> Unit, closeSearchScreen: () -> Unit) {
     val viewModel: SearchViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
 
@@ -109,7 +105,7 @@ fun SearchScreen(
                             screenState.searchByQuery(it)
                         }
                     },
-                    onNavIconClicked = closeSearchScreen
+                    onNavIconClicked = closeSearchScreen,
                 )
             },
             backLayerContent = {
@@ -119,7 +115,7 @@ fun SearchScreen(
                         coroutineScope.launch {
                             screenState.searchByTag(tag.id)
                         }
-                    }
+                    },
                 )
             },
             frontLayerContent = {
@@ -130,7 +126,7 @@ fun SearchScreen(
                     isError -> {
                         ErrorScreen(
                             modifier = Modifier.fillMaxSize(),
-                            onRetryButtonClicked = { lazyPagingItems.retry() }
+                            onRetryButtonClicked = { lazyPagingItems.retry() },
                         )
                     }
                     else -> {
@@ -139,14 +135,14 @@ fun SearchScreen(
                                 lazyPagingItems = lazyPagingItems,
                                 lazyListState = screenState.lazyListState,
                                 openUserScreen = openUserScreen,
-                                openItemDetailScreen = openItemDetailScreen
+                                openItemDetailScreen = openItemDetailScreen,
                             )
                         } else {
                             EmptyMessage()
                         }
                     }
                 }
-            }
+            },
         )
     }
 }
@@ -158,13 +154,13 @@ private fun SearchBar(
     onQueryChanged: (String) -> Unit,
     onClearQuery: () -> Unit,
     onSearch: (String) -> Unit,
-    onNavIconClicked: () -> Unit
+    onNavIconClicked: () -> Unit,
 ) {
     Surface(
         color = MaterialTheme.colors.surface,
         elevation = AppBarDefaults.TopAppBarElevation,
         shape = RectangleShape,
-        modifier = Modifier
+        modifier = Modifier,
     ) {
         Row(
             Modifier
@@ -172,14 +168,14 @@ private fun SearchBar(
                 .padding(AppBarDefaults.ContentPadding)
                 .height(56.dp),
             horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                 IconButton(onClick = onNavIconClicked) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
                         tint = MaterialTheme.colors.primarySurface,
-                        contentDescription = null
+                        contentDescription = null,
                     )
                 }
             }
@@ -189,7 +185,7 @@ private fun SearchBar(
             Box(
                 modifier = Modifier
                     .weight(1f),
-                contentAlignment = Alignment.CenterStart
+                contentAlignment = Alignment.CenterStart,
             ) {
                 if (query.isEmpty()) {
                     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.disabled) {
@@ -201,12 +197,12 @@ private fun SearchBar(
                     onValueChange = onQueryChanged,
                     singleLine = true,
                     textStyle = MaterialTheme.typography.body1.copy(
-                        color = MaterialTheme.typography.body1.color.copy(alpha = ContentAlpha.high)
+                        color = MaterialTheme.typography.body1.color.copy(alpha = ContentAlpha.high),
                     ),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                     keyboardActions = KeyboardActions(onSearch = { onSearch(query) }),
                     cursorBrush = SolidColor(MaterialTheme.colors.primarySurface),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
             if (query.isNotEmpty()) {
@@ -214,7 +210,7 @@ private fun SearchBar(
                     Icon(
                         painter = painterResource(id = R.drawable.search_cancel),
                         tint = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled),
-                        contentDescription = null
+                        contentDescription = null,
                     )
                 }
             }
@@ -227,7 +223,7 @@ private fun TagsList(tags: List<Tag>, onTagClicked: (Tag) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp),
     ) {
         Spacer(modifier = Modifier.requiredHeight(16.dp))
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
@@ -238,7 +234,7 @@ private fun TagsList(tags: List<Tag>, onTagClicked: (Tag) -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
-                .padding(bottom = 16.dp)
+                .padding(bottom = 16.dp),
         ) {
             FlowRow(
                 modifier = Modifier
@@ -246,20 +242,20 @@ private fun TagsList(tags: List<Tag>, onTagClicked: (Tag) -> Unit) {
                     .wrapContentHeight(),
                 mainAxisAlignment = MainAxisAlignment.SpaceAround,
                 mainAxisSpacing = 8.dp,
-                crossAxisSpacing = 8.dp
+                crossAxisSpacing = 8.dp,
             ) {
                 tags.forEach { tag ->
                     AppOutlinedButton(onClick = { onTagClicked(tag) }) {
                         AsyncImage(
                             model = tag.iconUrl,
                             modifier = Modifier.size(16.dp),
-                            contentDescription = null
+                            contentDescription = null,
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = tag.id,
                             style = MaterialTheme.typography.caption,
-                            color = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
+                            color = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium),
                         )
                     }
                 }
@@ -274,7 +270,7 @@ private fun EmptyMessage() {
         modifier = Modifier
             .padding(top = 32.dp, start = 16.dp, end = 16.dp)
             .fillMaxWidth(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(text = stringResource(id = R.string.search_empty_message))

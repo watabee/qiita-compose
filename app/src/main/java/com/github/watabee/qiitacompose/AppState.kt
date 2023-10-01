@@ -27,7 +27,7 @@ fun rememberAppState(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     navController: NavHostController = rememberNavController(),
     resources: Resources = resources(),
-    coroutineScope: CoroutineScope = rememberCoroutineScope()
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
 ): AppState = remember(userRepository, scaffoldState, navController, snackbarManager, resources, coroutineScope) {
     AppState(qiitaClientId, userRepository, scaffoldState, navController, snackbarManager, resources, coroutineScope)
 }
@@ -40,7 +40,7 @@ class AppState(
     val navController: NavHostController,
     private val snackbarManager: SnackbarManager,
     resources: Resources,
-    coroutineScope: CoroutineScope
+    coroutineScope: CoroutineScope,
 ) {
     val appRouter: AppRouting = AppRouter(navController, userRepository)
 

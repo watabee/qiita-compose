@@ -20,7 +20,7 @@ object OffsetDateTimeAdapter : JsonAdapter<OffsetDateTime>() {
             writer.nullValue()
         } else {
             writer.value(
-                value.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+                value.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
             )
         }
     }

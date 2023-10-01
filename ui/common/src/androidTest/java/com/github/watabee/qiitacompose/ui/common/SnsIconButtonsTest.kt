@@ -30,7 +30,7 @@ class SnsIconButtonsTest {
                         twitterScreenName = "dummy",
                         facebookId = "dummy",
                         linkedinId = "dummy",
-                        onGithubButtonClicked = { isClicked = true }
+                        onGithubButtonClicked = { isClicked = true },
                     )
                 }
             }
@@ -52,7 +52,7 @@ class SnsIconButtonsTest {
                         githubLoginName = null,
                         twitterScreenName = "dummy",
                         facebookId = "dummy",
-                        linkedinId = "dummy"
+                        linkedinId = "dummy",
                     )
                 }
             }
@@ -74,7 +74,7 @@ class SnsIconButtonsTest {
                         twitterScreenName = "dummy",
                         facebookId = "dummy",
                         linkedinId = "dummy",
-                        onTwitterButtonClicked = { isClicked = true }
+                        onTwitterButtonClicked = { isClicked = true },
                     )
                 }
             }
@@ -96,7 +96,7 @@ class SnsIconButtonsTest {
                         githubLoginName = "dummy",
                         twitterScreenName = null,
                         facebookId = "dummy",
-                        linkedinId = "dummy"
+                        linkedinId = "dummy",
                     )
                 }
             }
@@ -118,7 +118,7 @@ class SnsIconButtonsTest {
                         twitterScreenName = "dummy",
                         facebookId = "dummy",
                         linkedinId = "dummy",
-                        onFacebookButtonClicked = { isClicked = true }
+                        onFacebookButtonClicked = { isClicked = true },
                     )
                 }
             }
@@ -140,7 +140,7 @@ class SnsIconButtonsTest {
                         githubLoginName = "dummy",
                         twitterScreenName = "dummy",
                         facebookId = null,
-                        linkedinId = "dummy"
+                        linkedinId = "dummy",
                     )
                 }
             }
@@ -162,7 +162,7 @@ class SnsIconButtonsTest {
                         twitterScreenName = "dummy",
                         facebookId = "dummy",
                         linkedinId = "dummy",
-                        onLinkedinButtonClicked = { isClicked = true }
+                        onLinkedinButtonClicked = { isClicked = true },
                     )
                 }
             }
@@ -184,7 +184,7 @@ class SnsIconButtonsTest {
                         githubLoginName = "dummy",
                         twitterScreenName = "dummy",
                         facebookId = "dummy",
-                        linkedinId = null
+                        linkedinId = null,
                     )
                 }
             }

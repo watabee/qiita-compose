@@ -41,11 +41,10 @@ internal abstract class NetworkModule {
         @Base
         @Provides
         @Singleton
-        fun provideOkHttpClient(): OkHttpClient =
-            OkHttpClient.Builder()
-                .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-                .readTimeout(READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-                .build()
+        fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
+            .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .readTimeout(READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .build()
 
         @Api
         @Provides
@@ -53,28 +52,25 @@ internal abstract class NetworkModule {
         fun provideOkHttpClientForApi(
             @ApplicationContext context: Context,
             @Base okHttpClient: OkHttpClient,
-            interceptors: Set<@JvmSuppressWildcards Interceptor>
-        ): OkHttpClient =
-            okHttpClient
-                .newBuilder()
-                .cache(Cache(File(context.cacheDir, "api"), MAX_CACHE_SIZE))
-                .apply { interceptors.forEach { addInterceptor(it) } }
-                .build()
+            interceptors: Set<@JvmSuppressWildcards Interceptor>,
+        ): OkHttpClient = okHttpClient
+            .newBuilder()
+            .cache(Cache(File(context.cacheDir, "api"), MAX_CACHE_SIZE))
+            .apply { interceptors.forEach { addInterceptor(it) } }
+            .build()
 
         @Provides
         @Singleton
-        fun provideMoshi(): Moshi =
-            Moshi.Builder().add(OffsetDateTime::class.java, OffsetDateTimeAdapter).build()
+        fun provideMoshi(): Moshi = Moshi.Builder().add(OffsetDateTime::class.java, OffsetDateTimeAdapter).build()
 
         @Provides
         @Singleton
-        fun provideRetrofit(@Api okHttpClient: OkHttpClient, moshi: Moshi): Retrofit =
-            Retrofit.Builder()
-                .baseUrl("https://qiita.com")
-                .client(okHttpClient)
-                .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
-                .build()
+        fun provideRetrofit(@Api okHttpClient: OkHttpClient, moshi: Moshi): Retrofit = Retrofit.Builder()
+            .baseUrl("https://qiita.com")
+            .client(okHttpClient)
+            .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .build()
 
         @Provides
         @Singleton

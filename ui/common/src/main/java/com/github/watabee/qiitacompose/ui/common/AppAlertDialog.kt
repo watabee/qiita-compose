@@ -13,7 +13,7 @@ fun AppAlertDialog(
     onConfirmButtonClicked: (() -> Unit)? = null,
     dismissButtonText: String? = null,
     onDismissButtonClicked: (() -> Unit)? = null,
-    onDismissRequest: () -> Unit = {}
+    onDismissRequest: () -> Unit = {},
 ) {
     AlertDialog(
         onDismissRequest = onDismissRequest,
@@ -24,6 +24,6 @@ fun AppAlertDialog(
         },
         dismissButton = dismissButtonText?.let {
             { TextButton(onClick = { onDismissButtonClicked?.invoke() }) { Text(text = it) } }
-        }
+        },
     )
 }

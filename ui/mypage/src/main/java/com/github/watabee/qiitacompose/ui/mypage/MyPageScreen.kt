@@ -64,7 +64,8 @@ fun MyPageScreen(closeMyPageScreen: () -> Unit) {
                     closeMyPageScreenState()
                 }
 
-                MyPageViewModel.Event.EmptyAccessToken -> { /* TODO */
+                MyPageViewModel.Event.EmptyAccessToken -> {
+                    /* TODO */
                 }
             }
         }
@@ -76,7 +77,7 @@ fun MyPageScreen(closeMyPageScreen: () -> Unit) {
         setVisibleLogoutDialog = setVisibleLogoutDialog,
         logout = { viewModel.dispatchAction(MyPageViewModel.Action.Logout) },
         getAuthenticatedUser = { viewModel.dispatchAction(MyPageViewModel.Action.GetAuthenticatedUser) },
-        closeMyPageScreen = closeMyPageScreen
+        closeMyPageScreen = closeMyPageScreen,
     )
 }
 
@@ -87,7 +88,7 @@ private fun MyPageScreen(
     setVisibleLogoutDialog: (Boolean) -> Unit,
     logout: () -> Unit,
     getAuthenticatedUser: () -> Unit,
-    closeMyPageScreen: () -> Unit
+    closeMyPageScreen: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -99,7 +100,7 @@ private fun MyPageScreen(
                 },
                 title = {
                     Text(text = stringResource(id = R.string.mypage_appbar_title))
-                }
+                },
             )
         },
         content = { paddingValues ->
@@ -109,9 +110,9 @@ private fun MyPageScreen(
                 isVisibleLogoutDialog = isVisibleLogoutDialog,
                 setVisibleLogoutDialog = setVisibleLogoutDialog,
                 logout = logout,
-                getAuthenticatedUser = getAuthenticatedUser
+                getAuthenticatedUser = getAuthenticatedUser,
             )
-        }
+        },
     )
 }
 
@@ -122,7 +123,7 @@ private fun MyPageScreen(
     isVisibleLogoutDialog: Boolean,
     setVisibleLogoutDialog: (Boolean) -> Unit,
     logout: () -> Unit,
-    getAuthenticatedUser: () -> Unit
+    getAuthenticatedUser: () -> Unit,
 ) {
     val getAuthenticatedUserState by rememberUpdatedState(getAuthenticatedUser)
 
@@ -156,7 +157,7 @@ private fun MyPageScreen(modifier: Modifier = Modifier, user: AuthenticatedUser,
             .verticalScroll(rememberScrollState())
             .navigationBarsPadding()
             .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.requiredHeight(28.dp))
         AsyncImage(
@@ -165,7 +166,7 @@ private fun MyPageScreen(modifier: Modifier = Modifier, user: AuthenticatedUser,
                 .transformations(CircleCropTransformation())
                 .build(),
             contentDescription = null,
-            modifier = Modifier.requiredSize(72.dp)
+            modifier = Modifier.requiredSize(72.dp),
         )
         Spacer(modifier = Modifier.requiredHeight(16.dp))
 
@@ -181,7 +182,7 @@ private fun MyPageScreen(modifier: Modifier = Modifier, user: AuthenticatedUser,
             githubLoginName = user.githubLoginName,
             twitterScreenName = user.twitterScreenName,
             facebookId = user.facebookId,
-            linkedinId = user.linkedinId
+            linkedinId = user.linkedinId,
         )
         Spacer(modifier = Modifier.requiredHeight(16.dp))
         Divider(modifier = Modifier.padding(horizontal = 24.dp))
@@ -195,7 +196,7 @@ private fun MyPageScreen(modifier: Modifier = Modifier, user: AuthenticatedUser,
                 style = MaterialTheme.typography.body1,
                 lineHeight = 24.sp,
                 modifier = Modifier.padding(top = 24.dp),
-                fontWeight = FontWeight.W400
+                fontWeight = FontWeight.W400,
 
             )
         }
@@ -203,7 +204,7 @@ private fun MyPageScreen(modifier: Modifier = Modifier, user: AuthenticatedUser,
         Spacer(modifier = Modifier.requiredHeight(32.dp))
         AppOutlinedButton(
             onClick = onLogoutButtonClicked,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text(text = stringResource(id = R.string.mypage_logout), style = MaterialTheme.typography.button)
         }
@@ -222,7 +223,7 @@ private fun LogoutDialog(isVisible: Boolean, setVisible: (Boolean) -> Unit, requ
             },
             dismissButtonText = stringResource(id = uiCommonR.string.common_no),
             onDismissButtonClicked = { setVisible(false) },
-            onDismissRequest = { setVisible(false) }
+            onDismissRequest = { setVisible(false) },
         )
     }
 }

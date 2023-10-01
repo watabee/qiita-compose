@@ -12,7 +12,7 @@ import javax.inject.Inject
 internal class FindTagsUseCase @Inject constructor(
     private val qiitaRepository: QiitaRepository,
     private val tagDao: TagDao,
-    private val appDataStore: AppDataStore
+    private val appDataStore: AppDataStore,
 ) {
     suspend fun execute() {
         val cacheMillis = TimeUnit.DAYS.toMillis(1L)

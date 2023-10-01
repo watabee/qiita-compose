@@ -25,7 +25,7 @@ private fun lightColorPalette(): Colors {
         surface = colorResource(id = R.color.white),
         onPrimary = colorResource(id = R.color.white),
         onBackground = colorResource(id = R.color.black),
-        onSurface = colorResource(id = R.color.black)
+        onSurface = colorResource(id = R.color.black),
     )
 }
 

@@ -70,20 +70,20 @@ fun ItemDetailScreen(url: String) {
             },
             update = { webView ->
                 webView.loadUrl(url)
-            }
+            },
         )
 
         if (showLoading) {
             CircularProgressIndicator(
                 modifier = Modifier
                     .wrapContentSize()
-                    .align(Alignment.Center)
+                    .align(Alignment.Center),
             )
         }
         if (showError) {
             ErrorScreen(
                 modifier = Modifier.fillMaxSize(),
-                onRetryButtonClicked = { reload?.invoke() }
+                onRetryButtonClicked = { reload?.invoke() },
             )
         }
     }
