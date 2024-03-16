@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id 'kotlin-kapt'
+    alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.secrets)
 }
@@ -116,7 +116,7 @@ dependencies {
     implementation libs.accompanist.insets
 
     implementation libs.hilt.android
-    kapt libs.hilt.android.compiler
+    ksp libs.hilt.android.compiler
 
     implementation libs.timber
 }
