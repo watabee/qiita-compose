@@ -1,0 +1,26 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    ":disableDependencyDashboard"
+  ],
+  "timezone": "Asia/Tokyo",
+  "prConcurrentLimit": 5,
+  "baseBranches": ["main"],
+  "labels": ["renovate"],
+  "packageRules": [
+    {
+      "matchPackagePrefixes": [
+        "androidx.compose.compiler",
+        "com.google.devtools.ksp",
+        "org.jetbrains.kotlin"
+      ],
+      "excludePackagePrefixes": [
+        "org.jetbrains.kotlinx"
+      ],
+      "groupName": "Compose Compiler and Kotlin",
+      "groupSlug": "compose_compiler_and_kotlin"
+    }
+  ],
+  "rebaseWhen": "conflicted"
+}
