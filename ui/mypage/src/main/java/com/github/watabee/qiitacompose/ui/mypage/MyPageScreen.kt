@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredSize
@@ -46,7 +47,6 @@ import com.github.watabee.qiitacompose.ui.common.ErrorScreen
 import com.github.watabee.qiitacompose.ui.common.LoadingScreen
 import com.github.watabee.qiitacompose.ui.common.SnsIconButtons
 import com.github.watabee.qiitacompose.ui.common.UserCountTexts
-import com.google.accompanist.insets.navigationBarsPadding
 import com.github.watabee.qiitacompose.ui.common.R as uiCommonR
 
 @Composable

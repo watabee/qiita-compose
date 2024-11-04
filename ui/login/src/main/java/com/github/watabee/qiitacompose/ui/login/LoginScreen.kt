@@ -3,6 +3,8 @@ package com.github.watabee.qiitacompose.ui.login
 import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -19,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.watabee.qiitacompose.ui.common.LoadingScreen
-import com.google.accompanist.insets.navigationBarsWithImePadding
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewState
 import java.util.UUID
@@ -38,7 +39,9 @@ fun LoginScreen(qiitaClientId: String, navigateUp: () -> Unit) {
     }
 
     Scaffold(
-        modifier = Modifier.navigationBarsWithImePadding(),
+        modifier = Modifier
+            .navigationBarsPadding()
+            .imePadding(),
         topBar = {
             TopAppBar(
                 navigationIcon = {

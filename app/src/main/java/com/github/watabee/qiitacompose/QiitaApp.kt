@@ -15,25 +15,22 @@ import com.github.watabee.qiitacompose.ui.mypage.MyPageScreen
 import com.github.watabee.qiitacompose.ui.search.SearchScreen
 import com.github.watabee.qiitacompose.ui.theme.QiitaTheme
 import com.github.watabee.qiitacompose.ui.user.UserScreen
-import com.google.accompanist.insets.ProvideWindowInsets
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 
 @Composable
 fun QiitaApp(appState: AppState) {
-    ProvideWindowInsets {
-        QiitaTheme {
-            Scaffold(
-                modifier = Modifier.systemBarsPadding(),
-                scaffoldState = appState.scaffoldState,
-            ) { paddingValues ->
-                NavHost(
-                    navController = appState.navController,
-                    startDestination = MainDestinations.HOME,
-                    modifier = Modifier.padding(paddingValues),
-                ) {
-                    qiitaAppNavGraph(appState)
-                }
+    QiitaTheme {
+        Scaffold(
+            modifier = Modifier.systemBarsPadding(),
+            scaffoldState = appState.scaffoldState,
+        ) { paddingValues ->
+            NavHost(
+                navController = appState.navController,
+                startDestination = MainDestinations.HOME,
+                modifier = Modifier.padding(paddingValues),
+            ) {
+                qiitaAppNavGraph(appState)
             }
         }
     }
