@@ -5,7 +5,7 @@ ksp = "2.0.21-1.0.25"
 ktlint = "1.2.1"
 coroutines = "1.8.1"
 hilt = "2.51.1"
-compose-bom = "2024.04.01"
+compose-bom = "2024.10.01"
 androidx-core = "1.13.1"
 androidx-fragment = "1.6.2"
 androidx-lifecycle = "2.8.7"
@@ -65,6 +65,7 @@ androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-mani
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation" }
 androidx-compose-foundation-layout = { module = "androidx.compose.foundation:foundation-layout" }
 androidx-compose-material = { module = "androidx.compose.material:material" }
+androidx-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
 androidx-compose-theme-adapter = { module = "androidx.compose.material:compose-theme-adapter" }
 androidx-compose-constraintlayout = { module = "androidx.constraintlayout:constraintlayout-compose", version = "1.1.0" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidx-paging" }
