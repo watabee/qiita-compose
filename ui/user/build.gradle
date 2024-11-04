@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
 }
@@ -21,9 +22,6 @@ android {
         compose true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.compose.compiler.get()
-    }
     namespace 'com.github.watabee.qiitacompose.ui.user'
 }
 
@@ -38,6 +36,7 @@ dependencies {
     implementation libs.androidx.compose.foundation
     implementation libs.androidx.compose.foundation.layout
     implementation libs.androidx.compose.material
+    implementation libs.androidx.compose.material.icons.core
     implementation libs.androidx.compose.ui.tooling
     implementation libs.androidx.paging.compose
     implementation libs.androidx.lifecycle.viewmodel.compose
