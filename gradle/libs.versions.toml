@@ -94,6 +94,6 @@ desugarJdkLibs = { module = "com.android.tools:desugar_jdk_libs", version.ref = 
 junit = { module = "junit:junit", version = "4.13.2" }
 truth = { module = "com.google.truth:truth", version = "1.4.4" }
 turbine = { module = "app.cash.turbine:turbine", version = "1.2.0" }
-robolectric = { module = "org.robolectric:robolectric", version = "4.13" }
+robolectric = { module = "org.robolectric:robolectric", version = "4.14" }
 mockk = { module = "io.mockk:mockk", version = "1.13.13" }
 
